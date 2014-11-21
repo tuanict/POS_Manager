@@ -15,17 +15,22 @@ import com.pj3.pos_manager.res_obj.Position;
 
 //android dependencies
 import android.media.Image;
+import android.net.Uri;
 
 import com.pj3.pos_manager.R;
 import com.pj3.pos_manager.res_obj.Employee;
 
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -502,11 +507,12 @@ public class Manager extends Activity{
 			}
 		});
 		
-		ImageView profile = (ImageView)dialogEdit.findViewById(R.id.picture_profile);
+		final ImageView profile = (ImageView)dialogEdit.findViewById(R.id.picture_profile);
 		profile.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+				chooseImage();
 				Toast.makeText(getApplicationContext(), "Chưa xử lí chọn ảnh", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -552,6 +558,40 @@ public class Manager extends Activity{
 		tabHost.addTab(spec);
 		
 		tabHost.setCurrentTab(0);
+	}
+	
+	private static final int PICK_IMAGE = 1;
+	private static String url_image = "";
+	public void chooseImage(){
+		
+		Intent intent_image= new Intent();
+		intent_image.setType("image/*");
+		intent_image.setAction(Intent.ACTION_GET_CONTENT);
+		Bundle bundle = new Bundle();
+		startActivityForResult(Intent.createChooser(intent_image, "Select picture"), PICK_IMAGE);
+		
+	}
+	
+	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == PICK_IMAGE && data != null && data.getData() != null) {
+			if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && null != data) {
+	            Uri selectedImage = data.getData();
+	            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+	 
+	            Cursor cursor = getContentResolver().query(selectedImage,
+	                    filePathColumn, null, null, null);
+	            cursor.moveToFirst();
+	 
+	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+	            String picturePath = cursor.getString(columnIndex);
+	            cursor.close();
+	            url_image = picturePath;
+			}
+	        }
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
