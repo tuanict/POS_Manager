@@ -11,6 +11,7 @@ import com.pj3.pos_manager.MainActivity;
 import com.pj3.pos_manager.R;
 import com.pj3.pos_manager.database.DatabaseSource;
 import com.pj3.pos_manager.res_obj.Employee;
+import com.pj3.pos_manager.res_obj.Position;
 
 //android dependencies
 import android.media.Image;
@@ -21,31 +22,43 @@ import com.pj3.pos_manager.res_obj.Employee;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.Toast;
 //restlet dependencies
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 import org.restlet.routing.VirtualHost;
 import org.restlet.Component;
 
-public class Manager extends Activity implements OnClickListener{
+public class Manager extends Activity{
 	TabHost tabHost;
 	List<Employee> employees;
 	Spinner spPosition;
@@ -65,45 +78,183 @@ public class Manager extends Activity implements OnClickListener{
 	public void main_employee(){
 		employees = new ArrayList<Employee>();
 		itemEmployee = new HashMap<LinearLayout, Employee>();
+		gridEmployees = (GridLayout) findViewById(R.id.gridEmployee);
+		spPosition = (Spinner) findViewById(R.id.spPosition);
+		addEmployee();
 		loadTab();
 		loadSpPosition();
 		loadGridEmployees(loadEmploy());
+		handlerSpinerPos();
+	}
+	
+	public void initTable_Position(){
+		Position position = new Position();
+		position.setP_id(1);
+		position.setP_name("Quản lí");
+		position.setP_salary(5000000);
+
+		db.createPosition(position);
+		position.setP_id(2);
+		position.setP_name("Bồi bàn");
+		position.setP_salary(3000000);
+
+		db.createPosition(position);
+		position.setP_id(3);
+		position.setP_name("Đầu bếp");
+		position.setP_salary(3500000);
+
+		db.createPosition(position);
 	}
 	
 	public List<Employee> loadEmploy(){
 		List<Employee> employeess = new ArrayList<Employee>();
-		Employee e1 = new Employee("Tran van a", "a@gmail.com", "12345", "a.jpg", 13467, 1);
-		Employee e2 = new Employee("Tran van b", "a@gmail.com", "874356", "a.jpg", 13467, 2);
-		Employee e3 = new Employee("Tran van b", "a@gmail.com", "34567", "a.jpg", 13467, 3);
-		employeess.add(e1);
-		employeess.add(e3);
-		employeess.add(e2);
+		int select = spPosition.getSelectedItemPosition();
+		if(select == 0){
+			employeess = db.getAllUsers();
+		}else if(select == 1){
+			employeess = db.getUserByPosition(1);
+		}else if(select == 2){
+			employeess = db.getUserByPosition(2);
+		}else if(select == 3){
+			employeess = db.getUserByPosition(3);
+		}
 		return employeess;
-		
-	}
-	
-	public void loadEmployee(List<Employee> employees){
-//		GridView gridEmployee = (GridView) findViewById(R.id.gridEmployee);
-//		for(Employee e:employees){
-//			ImageView e_image = new ImageView(gridEmployee.getContext());
-//			e_image.setTag(e);
-//			gridEmployee.addView(e_image);
-//		}
-		
 	}
 	
 	public void loadSpPosition(){
-		String[] stringPostions = {"Quản lí","Bồi bàn","Nhà bếp"};
-		ArrayAdapter<String> adapterPostion = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, stringPostions);
-		spPosition = (Spinner) findViewById(R.id.spPosition);
+		List<Position> positions = db.getPositions();
+		List<String> sList = new ArrayList<String>();
+		sList.add("Tất cả");
+		int size = positions.size();
+		for(int i = 0; i < size; i++){
+			sList.add(positions.get(i).getP_name());
+		}
+		
+		ArrayAdapter<String> adapterPostion = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, sList);
+		
 		spPosition.setAdapter(adapterPostion);
 		
 	}
 	
 	@SuppressLint("NewApi")
-	public void loadGridEmployees(List<Employee> employees){
-		gridEmployees = (GridLayout) findViewById(R.id.gridEmployee);
-		gridEmployees.setPadding(10, 10, 10, 10);
+	public void handlerSpinerPos(){
+		spPosition.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				resetGridview();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				
+			}
+		});
+	}
+	
+	public void addEmployee(){
+		ImageView addPicture = (ImageView) findViewById(R.id.addUserAction);
+		addPicture.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				active_Add_Employee();
+			}
+		});
+	}
+	
+	public void active_Add_Employee(){
+		final Dialog dialogAdd = new Dialog(Manager.this);
+    	dialogAdd.setContentView(R.layout.e_info_action);
+    	dialogAdd.setTitle("Thêm nhân viên");
+    	Button cancelButton = (Button)dialogAdd.findViewById(R.id.m_e_cancel_button);
+		cancelButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialogAdd.dismiss();
+			}
+		});
+    	Button doneButton = (Button)dialogAdd.findViewById(R.id.m_e_done_button);
+		doneButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				EditText e_name = (EditText) dialogAdd.findViewById(R.id.e_name_tb);
+				RadioGroup radio_position = (RadioGroup) dialogAdd.findViewById(R.id.radio_position);
+				RadioButton r_manager = (RadioButton) dialogAdd.findViewById(R.id.radio_manager);
+        		RadioButton r_waiter = (RadioButton) dialogAdd.findViewById(R.id.radio_waiter);
+        		RadioButton r_chef = (RadioButton) dialogAdd.findViewById(R.id.radio_chef);
+				int position = 0;
+				if(r_manager.isChecked()){
+					position = 1;
+				}else if(r_waiter.isChecked()){
+					position = 2;
+				}else if(r_chef.isChecked()){
+					position = 3;
+				}
+				
+				EditText e_email = (EditText) dialogAdd.findViewById(R.id.e_email_tb);
+				EditText e_phone = (EditText) dialogAdd.findViewById(R.id.e_phoneNumber_tb);
+				EditText e_pass = (EditText) dialogAdd.findViewById(R.id.e_pass_tb);
+				String name = e_name.getText().toString();
+				String email = e_email.getText().toString();
+				String pass = e_pass.getText().toString();
+				String phone = e_phone.getText().toString();
+				if (!checkNull(name) && !checkNull(email)
+						&& !checkNull(pass) && position != 0
+						&& !checkNull(phone) && email.contains("@")) {
+					try{
+						Employee e = new Employee(name, email, pass, "Anh",
+								Integer.valueOf(phone), position);
+						db.createUser(e);
+						resetGridview();
+						dialogAdd.setTitle("Thêm nhân viên");
+						Toast.makeText(getApplicationContext(),
+								"Thêm nhân viên thành công!",
+								Toast.LENGTH_SHORT).show();
+						dialogAdd.dismiss();
+					}catch(Exception e){
+						Toast.makeText(getApplicationContext(),
+								"Số điện thoại phải là số!",
+								Toast.LENGTH_SHORT).show();
+					}
+				} else {
+					dialogAdd.setTitle("Thêm nhân viên. Chưa điền đầy đủ thông tin");
+					Toast.makeText(getApplicationContext(),
+							"Hãy chắc chắn đã điền đầy đủ thông tin!",
+							Toast.LENGTH_SHORT).show();
+				}
+				
+				
+			}
+		});
+		
+		ImageView profile = (ImageView)dialogAdd.findViewById(R.id.picture_profile);
+		profile.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "Chưa xử lí chọn ảnh", Toast.LENGTH_SHORT).show();
+			}
+		});
+    	
+    	dialogAdd.show();
+    	
+	}
+	
+	public boolean checkNull(String input){
+		return input.equals(" ");
+	}
+	
+	@SuppressLint("NewApi")
+	public void resetGridview(){
+		gridEmployees.removeAllViews();
+		loadGridEmployees(loadEmploy());
+	}
+	@SuppressLint("NewApi")
+	public void loadGridEmployees(final List<Employee> employees){
 		int numberEmployee_current = employees.size();
 		for(int i = 0; i < numberEmployee_current; i++){
 			LinearLayout item = new LinearLayout(Manager.this);
@@ -111,9 +262,66 @@ public class Manager extends Activity implements OnClickListener{
 			item.setPadding(50, 50, 50, 50);
 			
 			item.setWeightSum(3);
-			
+			final int k = i;
 			itemEmployee.put(item, employees.get(i));
-			registerForContextMenu(item);
+			item.setOnLongClickListener(new OnLongClickListener() {
+				
+				@Override
+				public boolean onLongClick(View v) {
+					final Employee e_item = employees.get(k);
+					AlertDialog.Builder alertDialog = new AlertDialog.Builder(Manager.this);
+					alertDialog.setIcon(R.drawable.ic_launcher);
+	                alertDialog.setTitle("Quản lí nhân viên: "+ e_item.getE_name());
+	 
+	                alertDialog.setPositiveButton("Xem", new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int which) {
+	                    	viewEmployee(e_item);
+	                    }
+	                });
+	 
+	                // Setting Negative "Edit" Button
+	                alertDialog.setNegativeButton("Chỉnh sửa", new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int which) {
+	                    	editEmployee(e_item);
+	                    }
+	                });
+	 
+	                // Setting Netural "delete" Button
+	                alertDialog.setNeutralButton("Xóa", new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int which) {
+	                    	AlertDialog dialogConfirm = new AlertDialog.Builder(Manager.this)
+	                    	.setMessage("Bạn chắc chắn muốn xóa " + e_item.getE_name() + " ra khỏi danh sách?")
+	                    	.setIcon(R.drawable.ic_launcher)
+	                    	.setTitle("Xác nhận")
+	                    	.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									boolean ok = db.deleteUser(e_item.getE_id());
+				                    if(ok){
+				                    	resetGridview();
+				                    	Toast.makeText(getApplicationContext(), "Xóa thành công!",
+				                                        Toast.LENGTH_SHORT).show();
+				                    	}else Toast.makeText(getApplicationContext(), "Xóa thất bại!",
+		                                        Toast.LENGTH_SHORT).show();
+								}
+							})
+	                    	.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+								}
+							})
+	                    	.create();
+	                    	dialogConfirm.show();
+		                    }
+	                });
+	 
+	                // Showing Alert Message
+	                alertDialog.show();
+					return false;
+				}
+			});
 			
 			ImageView image = new ImageView(Manager.this);
 			image.setBackgroundResource(R.drawable.man_brown);
@@ -134,6 +342,177 @@ public class Manager extends Activity implements OnClickListener{
 		}
 		
 	}
+	public void viewEmployee(final Employee e_item){
+
+    	final Dialog dialogView = new Dialog(Manager.this);
+		dialogView.setContentView(R.layout.e_info_action);
+		dialogView.setTitle("Xem nhân viên");
+		
+		EditText e_name = (EditText) dialogView.findViewById(R.id.e_name_tb);
+		e_name.setText(e_item.getE_name());
+		e_name.setFocusable(false);
+		
+		RadioGroup radio_position = (RadioGroup) dialogView.findViewById(R.id.radio_position);
+		RadioButton r_manager = (RadioButton) dialogView.findViewById(R.id.radio_manager);
+		RadioButton r_waiter = (RadioButton) dialogView.findViewById(R.id.radio_waiter);
+		RadioButton r_chef = (RadioButton) dialogView.findViewById(R.id.radio_chef);
+		if(e_item.getPOSITION_p_id() == 1){
+			radio_position.check(r_manager.getId());
+		}else if(e_item.getPOSITION_p_id() == 2){
+			radio_position.check(r_waiter.getId());
+		}else if(e_item.getPOSITION_p_id() == 3){
+			radio_position.check(r_chef.getId());
+		}
+		
+		r_manager.setEnabled(false);
+		r_waiter.setEnabled(false);
+		r_chef.setEnabled(false);
+		
+		EditText e_email = (EditText) dialogView.findViewById(R.id.e_email_tb);
+		e_email.setText(e_item.getE_email());
+		e_email.setFocusable(false);
+		
+		EditText e_phone = (EditText) dialogView.findViewById(R.id.e_phoneNumber_tb);
+		e_phone.setText(""+e_item.getE_phone_number());
+		e_phone.setFocusable(false);
+		
+		EditText e_pass = (EditText) dialogView.findViewById(R.id.e_pass_tb);
+		e_pass.setText(""+e_item.getE_pass());
+		e_pass.setFocusable(false);
+		
+		Button cancelButton = (Button)dialogView.findViewById(R.id.m_e_cancel_button);
+		cancelButton.setText("Xong");
+		cancelButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialogView.dismiss();
+			}
+		});
+		Button doneButton = (Button)dialogView.findViewById(R.id.m_e_done_button);
+		doneButton.setText("Chỉnh sửa");
+		doneButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialogView.dismiss();
+				editEmployee(e_item);
+			}
+		});
+		
+		ImageView profile = (ImageView)dialogView.findViewById(R.id.picture_profile);
+		profile.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "Chưa xử lí chọn ảnh", Toast.LENGTH_SHORT).show();
+			}
+		});
+		dialogView.show();
+	}
+	
+	public void editEmployee(final Employee e_item){
+
+    	final Dialog dialogEdit = new Dialog(Manager.this);
+    	dialogEdit.setContentView(R.layout.e_info_action);
+    	dialogEdit.setTitle("Chỉnh sửa");
+		
+		final EditText e_name = (EditText) dialogEdit.findViewById(R.id.e_name_tb);
+		e_name.setText(e_item.getE_name());
+		
+		final RadioGroup radio_position = (RadioGroup) dialogEdit.findViewById(R.id.radio_position);
+		final RadioButton r_manager = (RadioButton) dialogEdit.findViewById(R.id.radio_manager);
+		final RadioButton r_waiter = (RadioButton) dialogEdit.findViewById(R.id.radio_waiter);
+		final RadioButton r_chef = (RadioButton) dialogEdit.findViewById(R.id.radio_chef);
+		if(e_item.getPOSITION_p_id() == 1){
+			radio_position.check(r_manager.getId());
+		}else if(e_item.getPOSITION_p_id() == 2){
+			radio_position.check(r_waiter.getId());
+		}else if(e_item.getPOSITION_p_id() == 3){
+			radio_position.check(r_chef.getId());
+		}
+		
+		final EditText e_email = (EditText) dialogEdit.findViewById(R.id.e_email_tb);
+		e_email.setText(e_item.getE_email());
+		
+		final EditText e_phone = (EditText) dialogEdit.findViewById(R.id.e_phoneNumber_tb);
+		e_phone.setText(""+e_item.getE_phone_number());
+		
+		final EditText e_pass = (EditText) dialogEdit.findViewById(R.id.e_pass_tb);
+		e_pass.setText(""+e_item.getE_pass());
+		
+		Button cancelButton = (Button)dialogEdit.findViewById(R.id.m_e_cancel_button);
+		cancelButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialogEdit.dismiss();
+			}
+		});
+		Button doneButton = (Button)dialogEdit.findViewById(R.id.m_e_done_button);
+		doneButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				int position = 1;
+				if(r_manager.isChecked()){
+					position = 1;
+				}else if(r_waiter.isChecked()){
+					position = 2;
+				}else if(r_chef.isChecked()){
+					position = 3;
+				}
+				String name = e_name.getText().toString();
+				String email = e_email.getText().toString();
+				String pass = e_pass.getText().toString();
+				String phone = e_phone.getText().toString();
+				if (!checkNull(name) && !checkNull(email)
+						&& !checkNull(pass) && position != 0
+						&& !checkNull(phone) && email.contains("@")) {
+					e_item.setE_name(name);
+					e_item.setPOSITION_p_id(position);
+					e_item.setE_email(email);
+					
+					e_item.setE_pass(pass);
+					try{
+						e_item.setE_phone_number(Integer.valueOf(phone));
+						boolean ok = db.updateUser(e_item);
+						if(ok){
+							dialogEdit.setTitle("Chỉnh sửa");
+							resetGridview();
+							Toast.makeText(getApplicationContext(), "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+							dialogEdit.dismiss();
+						}
+						resetGridview();
+					}catch(Exception e){
+						dialogEdit.setTitle("Chỉnh sửa. Số điện thoại phải là số!");
+					}
+
+					
+				} else {
+					dialogEdit.setTitle("Chỉnh sửa. Chưa điền đầy đủ thông tin hoặc Email sai!");
+					Toast.makeText(getApplicationContext(),
+							"Hãy chắc chắn đã điền đầy đủ thông tin!",
+							Toast.LENGTH_SHORT).show();
+				}
+				
+				
+				
+				
+			}
+		});
+		
+		ImageView profile = (ImageView)dialogEdit.findViewById(R.id.picture_profile);
+		profile.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "Chưa xử lí chọn ảnh", Toast.LENGTH_SHORT).show();
+			}
+		});
+		dialogEdit.show();
+	}
+	
 	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -144,43 +523,6 @@ public class Manager extends Activity implements OnClickListener{
 	}
 	
 	
-
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		final Dialog dialogView = new Dialog(Manager.this);
-		dialogView.setContentView(R.layout.e_info_action);
-		dialogView.setTitle("Xem nhân viên");
-		
-		final Dialog dialogEdit = new Dialog(Manager.this);
-		dialogEdit.setContentView(R.layout.e_info_action);
-		dialogEdit.setTitle("Chỉnh sửa nhân viên");
-		
-		switch(item.getItemId()){
-			case R.id.m_e_view:
-//				Intent i = new Intent(Manager.this, DialogInfoEmployee.class);
-//				i.putExtra(name, value)
-				dialogView.show();
-				break;
-			case R.id.m_e_edit:
-				Button cancelButton = (Button) dialogEdit.findViewById(R.id.m_e_cancel_button);
-				cancelButton.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						dialogEdit.dismiss();
-						
-					}
-				});
-				
-				dialogEdit.show();
-				break;
-			case R.id.m_e_delete:
-				
-				break;
-		}
-		
-		return super.onContextItemSelected(item);	
-	}
 
 
 	public void loadTab(){
@@ -217,13 +559,6 @@ public class Manager extends Activity implements OnClickListener{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.manager, menu);
 		return true;
-	}
-
-	@Override
-	public void onClick(View v) {
-		switch(v.getId()){
-		}
-		
 	}
 	//-------------------------------------------------------------------------------------------
 

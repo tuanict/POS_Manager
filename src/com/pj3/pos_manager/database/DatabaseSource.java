@@ -25,6 +25,7 @@ import com.pj3.pos_manager.res_obj.Food;
 import com.pj3.pos_manager.res_obj.FoodStatistic;
 import com.pj3.pos_manager.res_obj.FoodTemprary;
 import com.pj3.pos_manager.res_obj.Order;
+import com.pj3.pos_manager.res_obj.Position;
 
 import android.R.integer;
 import android.content.ContentValues;
@@ -88,6 +89,7 @@ public class DatabaseSource implements SqliteAPIs{
 		
 		//insert row
 		int userId = (int) db.insert(dHelper.TABLE_EMPLOYEE, null, values);
+		db.close();
 		return userId;
 	}
 
@@ -112,7 +114,7 @@ public class DatabaseSource implements SqliteAPIs{
 		user.setE_image(c.getString(c.getColumnIndex(dHelper.COLUMN_E_IMAGE)));
 		user.setE_phone_number(c.getInt(c.getColumnIndex(dHelper.COLUMN_E_PHONE)));
 		user.setPOSITION_p_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_E_POSITION)));
-		
+		db.close();
 		return user;
 	}
 
@@ -141,6 +143,7 @@ public class DatabaseSource implements SqliteAPIs{
 				employees.add(user);
 			}while(c.moveToNext());
 		}
+		db.close();
 		return employees;
 	}
 
@@ -148,7 +151,7 @@ public class DatabaseSource implements SqliteAPIs{
 	public List<Employee> getUserByPosition(int postionId) {
 		List<Employee> employees = new ArrayList<Employee>();
 		String query = "SELECT * FROM " + dHelper.TABLE_EMPLOYEE 
-				+ "WHERE" + dHelper.COLUMN_E_POSITION + " = " +postionId;
+				+ " WHERE " + dHelper.COLUMN_E_POSITION + " = " +postionId;
 		Log.e(dHelper.LOG, query);
 		
 		SQLiteDatabase db = dHelper.getReadableDatabase();
@@ -170,6 +173,7 @@ public class DatabaseSource implements SqliteAPIs{
 				employees.add(user);
 			}while(c.moveToNext());
 		}
+		db.close();
 		return employees;
 	}
 
@@ -199,6 +203,7 @@ public class DatabaseSource implements SqliteAPIs{
 		}catch(Exception e){
 			ok = false;
 		}
+		db.close();
 		return ok;
 	}
 
@@ -223,10 +228,12 @@ public class DatabaseSource implements SqliteAPIs{
 		try{
 			db.delete(dHelper.TABLE_EMPLOYEE, dHelper.COLUMN_E_ID + " = ?",
 					new String[] { String.valueOf(userId) });
+			
 			ok = true;
 		}catch(Exception e){
 			ok = false;
 		}
+		db.close();
 		return ok;
 	}
 
@@ -250,6 +257,7 @@ public class DatabaseSource implements SqliteAPIs{
 		
 		//insert row
 		int menuId = (int) db.insert(dHelper.TABLE_MENU, null, values);
+		db.close();
 		return menuId;
 	}
 
@@ -267,8 +275,10 @@ public class DatabaseSource implements SqliteAPIs{
 			db.update(dHelper.TABLE_MENU, values,
 					dHelper.COLUMN_M_ID + " = ? ",
 					new String[] { String.valueOf(menu.getM_food_id()) });
+			db.close();
 			return true;
 		}catch(Exception e){
+			db.close();
 			return false;
 		}
 	}
@@ -299,7 +309,7 @@ public class DatabaseSource implements SqliteAPIs{
 		menu.setM_name(c.getString(c.getColumnIndex(dHelper.COLUMN_M_NAME)));
 		menu.setM_price(c.getInt(c.getColumnIndex(dHelper.COLUMN_M_PRICE)));
 		menu.setM_status(c.getInt(c.getColumnIndex(dHelper.COLUMN_M_STATUS)) == 1);
-		
+		db.close();
 		return menu;
 	}
 
@@ -325,6 +335,7 @@ public class DatabaseSource implements SqliteAPIs{
 				menus.add(menu);
 			}while(c.moveToNext());
 		}
+		db.close();
 		return menus;
 	}
 	
@@ -344,6 +355,7 @@ public class DatabaseSource implements SqliteAPIs{
 		values.put(dHelper.COLUMN_B_TIME_STAMP, this.getDateTime());
 		
 		int billId = (int) db.insert(dHelper.TABLE_BILL, null, values);
+		db.close();
 		return billId;
 	}
 	
@@ -379,7 +391,7 @@ public class DatabaseSource implements SqliteAPIs{
 		bill.setB_count(c.getInt(c.getColumnIndex(dHelper.COLUMN_B_COUNT)));
 		String time = c.getString(c.getColumnIndexOrThrow(dHelper.COLUMN_B_TIME_STAMP));
 		bill.setB_time_stamp(this.convertTime(time));
-		
+		db.close();
 		return bill;
 	}
 	
@@ -404,6 +416,7 @@ public class DatabaseSource implements SqliteAPIs{
 				bills.add(bill);
 			}while(c.moveToNext());
 		}
+		db.close();
 		return bills;
 	}
 	
@@ -418,6 +431,7 @@ public class DatabaseSource implements SqliteAPIs{
 		}catch(Exception e){
 			ok = false;
 		}
+		db.close();
 		return ok;
 	}
 
@@ -585,6 +599,7 @@ public class DatabaseSource implements SqliteAPIs{
 		
 		//insert row
 		int fId = (int) db.insert(dHelper.TABLE_MENU, null, values);
+		db.close();
 		return fId;
 	}
 	@Override
@@ -609,6 +624,7 @@ public class DatabaseSource implements SqliteAPIs{
 				foods.add(foodStatistic);
 			}while(c.moveToNext());
 		}
+		db.close();
 		return foods;
 	}
 	@Override
@@ -625,9 +641,47 @@ public class DatabaseSource implements SqliteAPIs{
 			db.update(dHelper.TABLE_FOODSTATISTIC, values,
 					dHelper.COLUMN_F_ID + " = ? ",
 					new String[] { String.valueOf(fStatistic.getF_id()) });
+			db.close();
 			return true;
 		}catch(Exception e){
+			db.close();
 			return false;
 		}
+	}
+	@Override
+	public int createPosition(Position position) {
+		SQLiteDatabase db = dHelper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		
+		values.put(dHelper.COLUMN_P_ID, position.getP_id());
+		values.put(dHelper.COLUMN_P_NAME, position.getP_name());
+		values.put(dHelper.COLUMN_P_SALARY, position.getP_salary());
+		
+		db.insert(dHelper.TABLE_POSITION, null, values);
+		db.close();
+		return position.getP_id();
+	}
+	@Override
+	public List<Position> getPositions() {
+		List<Position> positions = new ArrayList<Position>();
+		String query = "SELECT * FROM " + dHelper.TABLE_POSITION;
+		Log.e(dHelper.LOG,query);
+		
+		SQLiteDatabase db = dHelper.getReadableDatabase();
+		Cursor c = db.rawQuery(query, null);
+		
+		// looping through all rows and adding to list
+		if(c.moveToFirst()){
+			do{
+				Position position = new Position();
+				position.setP_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_P_ID)));
+				position.setP_name(c.getString(c.getColumnIndex(dHelper.COLUMN_P_NAME)));
+				position.setP_salary(c.getInt(c.getColumnIndex(dHelper.COLUMN_P_SALARY)));
+				
+				positions.add(position);
+			}while(c.moveToNext());
+		}
+		db.close();
+		return positions;
 	}
 }

@@ -10,6 +10,7 @@ import com.pj3.pos_manager.res_obj.Employee;
 import com.pj3.pos_manager.res_obj.Food;
 import com.pj3.pos_manager.res_obj.FoodStatistic;
 import com.pj3.pos_manager.res_obj.Order;
+import com.pj3.pos_manager.res_obj.Position;
 
 /**
  * @author LÍCÙng
@@ -186,4 +187,17 @@ public interface SqliteAPIs {
 	 * @return true if success or false if fail
 	 */
 	public boolean updateFoodStatus( FoodStatistic fStatistic);
+	
+	/**
+	 * Create position
+	 * @param position
+	 * @return
+	 */
+	public int createPosition(Position position);
+	
+	/**
+	 * Get all position
+	 * @return
+	 */
+	public List<Position> getPositions();
 }

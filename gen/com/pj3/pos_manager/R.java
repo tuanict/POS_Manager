@@ -30,27 +30,28 @@ public final class R {
         public static final int man_brown=0x7f020006;
     }
     public static final class id {
-        public static final int action_settings=0x7f080013;
+        public static final int action_settings=0x7f080014;
         public static final int addUserAction=0x7f080005;
         public static final int contentEmployee=0x7f080003;
-        public static final int e_CMND_tb=0x7f08000a;
-        public static final int e_email_tb=0x7f08000b;
+        public static final int e_email_tb=0x7f08000d;
         public static final int e_name_tb=0x7f080008;
-        public static final int e_pass_tb=0x7f08000e;
-        public static final int e_phoneNumber_tb=0x7f08000c;
-        public static final int e_position_tb=0x7f080009;
-        public static final int e_username_tb=0x7f08000d;
+        public static final int e_pass_tb=0x7f08000f;
+        public static final int e_phoneNumber_tb=0x7f08000e;
         public static final int employee=0x7f080002;
         public static final int gridEmployee=0x7f080006;
-        public static final int m_e_cancel_button=0x7f080011;
-        public static final int m_e_delete=0x7f080016;
-        public static final int m_e_done_button=0x7f080010;
-        public static final int m_e_edit=0x7f080015;
-        public static final int m_e_view=0x7f080014;
+        public static final int m_e_cancel_button=0x7f080012;
+        public static final int m_e_delete=0x7f080017;
+        public static final int m_e_done_button=0x7f080011;
+        public static final int m_e_edit=0x7f080016;
+        public static final int m_e_view=0x7f080015;
         public static final int menu=0x7f080001;
         public static final int payment=0x7f080000;
-        public static final int picture_profile=0x7f08000f;
-        public static final int section_label=0x7f080012;
+        public static final int picture_profile=0x7f080010;
+        public static final int radio_chef=0x7f08000c;
+        public static final int radio_manager=0x7f08000a;
+        public static final int radio_position=0x7f080009;
+        public static final int radio_waiter=0x7f08000b;
+        public static final int section_label=0x7f080013;
         public static final int spPosition=0x7f080004;
         public static final int statistic=0x7f080007;
     }

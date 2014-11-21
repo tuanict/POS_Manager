@@ -64,60 +64,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	// Table Create Statements
 	//Employee table create statement
-	public static final String DATABASE_E_CREATE = "create table"
+	public static final String DATABASE_E_CREATE = "create table "
 			+ TABLE_EMPLOYEE
-			+ "("
+			+ " ( "
 			+ COLUMN_E_ID
-			+ " INT PRIMARY KEY AUTOINCREMENT, "
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ COLUMN_E_NAME
-			+ "VARCHAR(45) NOT NULL, "
+			+ " VARCHAR(45) NOT NULL, "
 			+ COLUMN_E_EMAIL
-			+ "VARCHAR(20) NOT NULL, "
+			+ " VARCHAR(20) NOT NULL, "
 			+ COLUMN_E_PASS
-			+ "VARCHAR(45) NOT NULL, "
+			+ " VARCHAR(45) NOT NULL, "
 			+ COLUMN_E_IMAGE
-			+ "VARCHAR(45) NOT NULL, "
+			+ " VARCHAR(45) NOT NULL, "
 			+ COLUMN_E_PHONE
-			+ "INT NOTNULL, "
+			+ " INT NOT NULL, "
 			+ COLUMN_E_POSITION
-			+ "INT NOT NULL "
-			+ "CONSTRAINT e_POSITION_p_id FOREIGN KEY (e_POSITION_p_id) REFERENCES POSITION(p_id)";
+			+ " INT NOT NULL ,"
+			+ " CONSTRAINT e_POSITION_p_id FOREIGN KEY (e_POSITION_p_id) REFERENCES POSITION(p_id)"
+			+ " ) ";
 	
 	//POSITION table create statement
-	public static final String DATABASE_P_CREATE = "create table"
-			+ TABLE_POSITION + "(" 
-			+ COLUMN_P_ID + "INT NOT NULL, "
-			+ COLUMN_P_NAME + "VARCHAR(45) NOT NULL, "
-			+ COLUMN_P_SALARY + "INT NOT NULL, "
-			+ "PRIMARY KEY (p_id)";
+	public static final String DATABASE_P_CREATE = "create table "
+			+ TABLE_POSITION + " ( " 
+			+ COLUMN_P_ID + " INT NOT NULL, "
+			+ COLUMN_P_NAME + " VARCHAR(45) NOT NULL, "
+			+ COLUMN_P_SALARY + " INT NOT NULL, "
+			+ "PRIMARY KEY (p_id)"
+			+ ")";
 	
 	//FoodStatis table create statement
-	public static final String DATABASE_F_CREATE = "create table"
-			+ TABLE_FOODSTATISTIC + "("
-			+ COLUMN_F_ID + "INT AUTO INCREAMENT NOT NULL, "
-			+ COLUMN_F_COUNT + "INT NOT NULL, "
-			+ COLUMN_F_B_ID + "INT NOT NULL, "
-			+ COLUMN_F_M_ID + "INT NOT NULL,"
-			+ COLUMN_F_M_ID + "INT NOT NULL, "
+	public static final String DATABASE_F_CREATE = "create table "
+			+ TABLE_FOODSTATISTIC + " ( "
+			+ COLUMN_F_ID + " INTEGER AUTO INCREAMENT NOT NULL, "
+			+ COLUMN_F_COUNT + " INT NOT NULL, "
+			+ COLUMN_F_B_ID + " INT NOT NULL, "
+			+ COLUMN_F_M_ID + " INT NOT NULL,"
 			+ "PRIMARY KEY (f_id), "
 			+ "CONSTRAINT f_b_id FOREIGN KEY (f_b_id) REFERENCES BILL(b_id), "
-			+ "CONSTRAINT f_m_id FOREIGN KEY (f_m_id) REFERENCES MENU(m_id)";
+			+ "CONSTRAINT f_m_id FOREIGN KEY (f_m_id) REFERENCES MENU(m_id)"
+			+ ")";
 	
 	// Bill table create statement
-	public static final String DATABASE_B_CREATE = "create table"
-			+ TABLE_BILL + "("
-			+ COLUMN_B_ID + "INT AUTO INCREMENT NOT NULL, "
-			+ COLUMN_B_COUNT + "INT NOT NULL, "
-			+ COLUMN_B_TIME_STAMP + "VARCHAR(30) NOT NULL, "
-			+ "PRIMARY KEY (b_id)";
+	public static final String DATABASE_B_CREATE = "create table "
+			+ TABLE_BILL + " ( "
+			+ COLUMN_B_ID + " INTEGER AUTO INCREMENT NOT NULL, "
+			+ COLUMN_B_COUNT + " INT NOT NULL, "
+			+ COLUMN_B_TIME_STAMP + " VARCHAR(30) NOT NULL, "
+			+ "PRIMARY KEY (b_id)"
+			+ ")";
 	
 	//MENU table create statement
-	public static final String DATABASE_M_CREATE = "create table"
-			+ COLUMN_M_ID + "INT AUTO INCREMENT NOT NULL, "
-			+ COLUMN_M_NAME + "VARCHAR(45) NOT NULL"
-			+ COLUMN_M_PRICE + "INT NOT NULL, "
-			+ COLUMN_M_IMAGE + "VARCHAR(45) NOTNULL"
-			+ COLUMN_M_STATUS + "BOOL NOT NULL";
+	public static final String DATABASE_M_CREATE = "create table "
+			+ TABLE_MENU + "("
+			+ COLUMN_M_ID + " INTEGER AUTO INCREMENT NOT NULL, "
+			+ COLUMN_M_NAME + " VARCHAR(45) NOT NULL,"
+			+ COLUMN_M_PRICE + " INT NOT NULL, "
+			+ COLUMN_M_IMAGE + " VARCHAR(45) NOT NULL,"
+			+ COLUMN_M_STATUS + " BOOL NOT NULL"
+			+ ")";
 	
 	//Construct
 	public DatabaseHelper(Context context) {

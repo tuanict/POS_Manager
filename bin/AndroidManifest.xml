@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="18" />
 
     <application
@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name="com.pj3.pos_manager.Manager"
-            android:label="@string/title_activity_manager" >
+            android:label="@string/title_activity_manager" 
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
