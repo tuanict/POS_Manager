@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_manager">Manager</string>
     <string name="title_activity_payment">Payment</string>
-
+    <string name="menu_settings">Option menus</string>
+    <string name="menu_button_edit">Chỉnh sửa</string>
+	<string name="menu_button_delete">Xóa</string>
 </resources>

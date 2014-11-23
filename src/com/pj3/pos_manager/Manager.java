@@ -77,9 +77,10 @@ public class Manager extends Activity{
 		setContentView(R.layout.activity_manager);
 		db = new DatabaseSource(this);
 		main_employee();
+		menu_view();
 	}
 	
-	//Phan nay cua Le Cong Tuan------------------------------------------------------
+	//Phan nay cua Employee------------------------------------------------------
 	public void main_employee(){
 		employees = new ArrayList<Employee>();
 		itemEmployee = new HashMap<LinearLayout, Employee>();
@@ -127,13 +128,16 @@ public class Manager extends Activity{
 	}
 	
 	public void loadSpPosition(){
-		List<Position> positions = db.getPositions();
+//		List<Position> positions = db.getPositions();
 		List<String> sList = new ArrayList<String>();
 		sList.add("Tất cả");
-		int size = positions.size();
-		for(int i = 0; i < size; i++){
-			sList.add(positions.get(i).getP_name());
-		}
+		sList.add("Quản lí");
+		sList.add("Bồi bàn");
+		sList.add("Đầu bếp");
+//		int size = positions.size();
+//		for(int i = 0; i < size; i++){
+//			sList.add(positions.get(i).getP_name());
+//		}
 		
 		ArrayAdapter<String> adapterPostion = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, sList);
 		
@@ -527,9 +531,6 @@ public class Manager extends Activity{
 		super.onCreateContextMenu(menu, v, menuInfo);
 		getMenuInflater().inflate(R.menu.manager_employee_context_button, menu);
 	}
-	
-	
-
 
 	public void loadTab(){
 		tabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -571,8 +572,6 @@ public class Manager extends Activity{
 		startActivityForResult(Intent.createChooser(intent_image, "Select picture"), PICK_IMAGE);
 		
 	}
-	
-	
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -600,6 +599,37 @@ public class Manager extends Activity{
 		getMenuInflater().inflate(R.menu.manager, menu);
 		return true;
 	}
-	//-------------------------------------------------------------------------------------------
+	//----------------Hết phần employee----------------------------------------
+	
+	//-------------phan nay cua menu---------------------
+	public void menu_view(){
+		loadSpSort();
+		loadSpHideOrDisplay();
+	}
+	public void loadSpSort(){
+		Spinner spSort = (Spinner) findViewById(R.id.spSort);
+		String[] arr = {"Tăng dần", "Giảm dần"};
+		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arr);
+		
+		spSort.setAdapter(adapterSort);
+	}
+	public void loadSpHideOrDisplay(){
+		Spinner spHideOrDisplay = (Spinner) findViewById(R.id.spHideOrDisplay);
+		String[] arr = {"Tất cả", "Hiện","Ẩn"};
+		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arr);
+		
+		spHideOrDisplay.setAdapter(adapterSort);
+	}
+	public void option(){
+//		ImageView option_pic = (ImageView) findViewById(R.id.option_menu);
+//		option_pic.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//			}
+//		});
+	}
+	
+	//--------------Hết phần menu----------------------------
 
 }
