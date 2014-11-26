@@ -31,129 +31,264 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/payment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" 
-                    android:orientation="vertical">
-                </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:columnCount="1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="200dip"
+                        android:layout_height="50dip"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center"
+                        android:text="THANH TOÁN"
+                        android:textSize="20sp" />
+
+                    <TableRow
+                        android:id="@+id/title2"
+                        android:layout_width="800dp"
+                        android:layout_height="0dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/title22"
+                        android:layout_toRightOf="@+id/lvbill"
+                        android:orientation="vertical" >
+                    </TableRow>
+
+                    <TextView
+                        android:id="@+id/titlebill"
+                        android:layout_width="600dip"
+                        android:layout_height="50dip"
+                        android:layout_above="@+id/title22"
+                        android:layout_alignLeft="@+id/title22"
+                        android:gravity="center"
+                        android:text="THANH TOÁN HÓA ĐƠN"
+                        android:textSize="20sp" />
+
+                    <ListView
+                        android:id="@+id/tbfoods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/tableRow2"
+                        android:layout_alignTop="@+id/title2"
+                        android:layout_toRightOf="@+id/textView1" >
+                    </ListView>
+
+                    <LinearLayout
+                        android:id="@+id/title22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_alignTop="@+id/lvbill"
+                        android:layout_toRightOf="@+id/textView1" >
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:text="Item"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:text="Price"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:text="Number"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:text="Total"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/lvbill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/textView1"
+                        android:layout_below="@+id/textView1" >
+                    </ListView>
+
+                    <TableRow
+                        android:id="@+id/tableRow2"
+                        android:layout_width="600dip"
+                        android:layout_height="50dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/tbfoods"
+                        android:layout_marginTop="22dp" >
+
+                        <TextView
+                            android:layout_width="300dp"
+                            android:layout_height="50dip"
+                            android:gravity="center"
+                            android:text="Total:"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/tvtotal"
+                            android:layout_width="300dp"
+                            android:layout_height="50dip"
+                            android:gravity="center"
+                            android:text="0 VNĐ"
+                            android:textSize="22sp" />
+                    </TableRow>
+
+                    <Button
+                        android:id="@+id/button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/tbfoods"
+                        android:layout_below="@+id/tableRow2"
+                        android:layout_marginLeft="104dp"
+                        android:layout_marginTop="61dp"
+                        android:text="Thanh toán" />
+
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/button1"
+                        android:layout_alignRight="@+id/tableRow2"
+                        android:layout_marginRight="145dp"
+                        android:text="In hóa đơn" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/menu"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" 
-                    android:orientation="vertical">
-                    <LinearLayout 
-                    	android:layout_width="match_parent"
-                    	android:layout_height="match_parent" 
-                    	android:orientation="vertical">
-                        <LinearLayout 
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                    		android:layout_height="wrap_content" 
-                    		android:orientation="horizontal">
-                            <TextView 
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Sắp xếp theo"
-                                android:textSize="15dp"/>
-                            <Spinner 
+                                android:textSize="15dp" />
+
+                            <Spinner
                                 android:id="@+id/spSort"
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
-                                android:layout_weight="1"/>
-                            <ImageView 
+                                android:layout_weight="1" />
+
+                            <ImageView
                                 android:id="@+id/search_quick_image"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/search"
                                 android:layout_marginLeft="30dp"
-                                android:layout_marginTop="5dp"/>
-                            <AutoCompleteTextView android:id="@+id/auto_text_quick_search"
-								 android:layout_width="150dp"
-								 android:layout_height="wrap_content"
-								 android:completionThreshold="1"
-								 android:ems="10"
-								 android:layout_marginLeft="5dp">
-                                
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/search" />
+
+                            <AutoCompleteTextView
+                                android:id="@+id/auto_text_quick_search"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:completionThreshold="1"
+                                android:ems="10" >
                             </AutoCompleteTextView>
-                            <TextView 
+
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Category"
                                 android:layout_marginLeft="20dp"
-                                android:textSize="15dp"/>
-                            <Spinner 
+                                android:text="Category"
+                                android:textSize="15dp" />
+
+                            <Spinner
                                 android:id="@+id/spHideOrDisplay"
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
-                                android:layout_weight="1"/>
-				            <ImageView 
-				                android:id="@+id/picture_add_food"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:id="@+id/picture_add_food"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/add_food"
                                 android:layout_marginLeft="50dp"
-                                android:layout_marginTop="5dp"/>                
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/add_food" />
                         </LinearLayout>
-                        <GridLayout android:id="@+id/gridMenu"
-		                    android:layout_width="match_parent"
-		                    android:layout_height="match_parent"
-		                    android:columnCount="6"
-						    android:orientation="horizontal"
-						    tools:context=".GridXMLActivity"
-						    android:background="@drawable/backgroud_e_manager">
-                        
-                    </GridLayout>
+
+                        <GridLayout
+                            android:id="@+id/gridMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/backgroud_e_manager"
+                            android:columnCount="6"
+                            android:orientation="horizontal"
+                            tools:context=".GridXMLActivity" >
+                        </GridLayout>
                     </LinearLayout>
-                </LinearLayout>    
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/employee"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" 
-                    android:orientation="vertical">
-                    
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
                     <LinearLayout
                         android:id="@+id/contentEmployee"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content" 
-	                    android:orientation="horizontal"
-	                    android:weightSum="2"
-	                    >
-                            <TextView 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2" >
+
+                        <TextView
                             android:layout_width="wrap_content"
-	                    	android:layout_height="wrap_content"
-	                    	android:layout_weight="1" 
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="Chức vụ"
-                            android:textSize="15dp"/>
-                            <Spinner 
-                                android:id="@+id/spPosition"
-                                android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"/>
-                        	<ImageView 
-                        	    android:id="@+id/addUserAction"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/list_add_user"
-                                android:layout_marginLeft="50dp"/>
+                            android:textSize="15dp" />
+
+                        <Spinner
+                            android:id="@+id/spPosition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/addUserAction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:src="@drawable/list_add_user" />
                     </LinearLayout>
-                    <GridLayout 
+
+                    <GridLayout
                         android:id="@+id/gridEmployee"
-	                    android:layout_width="match_parent"
-	                    android:layout_height="match_parent"
-	                    android:columnCount="5"
-					    android:orientation="horizontal"
-					    tools:context=".GridXMLActivity" 
-					    android:background="@drawable/backgroud_e_manager">
-                        
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/backgroud_e_manager"
+                        android:columnCount="5"
+                        android:orientation="horizontal"
+                        tools:context=".GridXMLActivity" >
                     </GridLayout>
                 </LinearLayout>
-                
-                 <LinearLayout
+
+                <LinearLayout
                     android:id="@+id/statistic"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" 
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
