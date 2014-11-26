@@ -11,6 +11,7 @@ import com.pj3.pos_manager.MainActivity;
 import com.pj3.pos_manager.R;
 import com.pj3.pos_manager.database.DatabaseSource;
 import com.pj3.pos_manager.res_obj.Employee;
+import com.pj3.pos_manager.res_obj.Food;
 import com.pj3.pos_manager.res_obj.Position;
 
 //android dependencies
@@ -32,6 +33,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -668,9 +670,13 @@ public class Manager extends Activity{
 	//----------------Hết phần employee----------------------------------------
 	
 	//-------------phan nay cua menu---------------------
+	GridLayout gridMenu;
 	public void menu_view(){
+		gridMenu = (GridLayout) findViewById(R.id.gridMenu);
+		resetGridview();
 		loadSpSort();
 		loadSpHideOrDisplay();
+		pictureAddHandler();
 	}
 	public void loadSpSort(){
 		Spinner spSort = (Spinner) findViewById(R.id.spSort);
@@ -685,6 +691,99 @@ public class Manager extends Activity{
 		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arr);
 		
 		spHideOrDisplay.setAdapter(adapterSort);
+	}
+	
+	public void pictureAddHandler(){
+		ImageView pictutreAdd = (ImageView) findViewById(R.id.picture_add_food);
+		String[] statusList = {"Hiện","Ẩn"};
+		final ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(
+				this, android.R.layout.simple_list_item_1, statusList);
+		pictutreAdd.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Dialog dialog = new Dialog(Manager.this);
+				dialog.setTitle("Thêm món ăn");
+				dialog.setContentView(R.layout.activity_menu_info_action);
+				Button doneButton = (Button) dialog.findViewById(R.id.m_action1);
+				Button cancelButton = (Button) dialog.findViewById(R.id.m_action2);
+				final Spinner spStatus = (Spinner) dialog.findViewById(R.id.m_status_food);
+				spStatus.setAdapter(adapterStatus);
+				final EditText edNameFood = (EditText) dialog.findViewById(R.id.m_name_food);
+				final EditText edPprice = (EditText) dialog.findViewById(R.id.m_price_food);
+				
+				doneButton.setText("Hoàn thành");
+				cancelButton.setText("Hủy");
+				
+				doneButton.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						String name = edNameFood.getText().toString();
+						String price = edPprice.getText().toString();
+						if(!checkNull(name) && !checkNull(price)){
+							Food food = new Food();
+							try{
+							int iPrice = Integer.valueOf(price);
+							int selectStatus = spStatus.getSelectedItemPosition();
+							if(selectStatus == 0){
+								food.setM_status(true);
+							}else food.setM_status(false);
+							food.setM_name(name);
+							food.setM_price(iPrice);
+							food.setM_image("Anh");
+							
+							db.createFood(food);
+							Toast.makeText(getApplicationContext(),
+									"Thêm món ăn thành công!",
+									Toast.LENGTH_SHORT).show();
+							resetGridMenu();
+							}catch(Exception e){
+								Toast.makeText(getApplicationContext(),
+										"Chưa điền giá món ăn!",
+										Toast.LENGTH_SHORT).show();
+							}
+						}else Toast.makeText(getApplicationContext(),
+								"Hãy chắc chắn đã điền đầy đủ thông tin!",
+								Toast.LENGTH_SHORT).show();
+						
+					}
+				});
+				dialog.show();
+			}
+		});
+	}
+	
+	public void resetGridMenu(){
+		gridMenu.removeAllViews();
+		loadGridFood(getFoods());
+	}
+	
+	public List<Food> getFoods(){
+		return db.getAllFood();
+	}
+	
+	public void loadGridFood(List<Food> foods){
+		int size = foods.size();
+		for(int i = 0; i < size; i++){
+			LinearLayout itemMenu = new LinearLayout(Manager.this);
+			itemMenu.setOrientation(LinearLayout.VERTICAL);
+			ImageView profileFood = new ImageView(Manager.this);
+			profileFood.setBackgroundResource(R.drawable.add_food);
+			
+			TextView name = new TextView(Manager.this);
+			name.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			name.setText(foods.get(i).getM_name());
+			
+			TextView price = new TextView(Manager.this);
+			price.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			price.setText(foods.get(i).getM_price());
+			
+			itemMenu.setWeightSum(3);
+			itemMenu.addView(profileFood);
+			itemMenu.addView(name);
+			itemMenu.addView(price);
+		}
 	}
 	public void option(){
 //		ImageView option_pic = (ImageView) findViewById(R.id.option_menu);

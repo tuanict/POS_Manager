@@ -96,7 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	//FoodStatis table create statement
 	public static final String DATABASE_F_CREATE = "create table "
 			+ TABLE_FOODSTATISTIC + " ( "
-			+ COLUMN_F_ID + " INTEGER AUTO INCREAMENT NOT NULL, "
+			+ COLUMN_F_ID + " INTEGER AUTOINCREAMENT, "
 			+ COLUMN_F_COUNT + " INT NOT NULL, "
 			+ COLUMN_F_B_ID + " INT NOT NULL, "
 			+ COLUMN_F_M_ID + " INT NOT NULL,"
@@ -108,16 +108,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Bill table create statement
 	public static final String DATABASE_B_CREATE = "create table "
 			+ TABLE_BILL + " ( "
-			+ COLUMN_B_ID + " INTEGER AUTO INCREMENT NOT NULL, "
+			+ COLUMN_B_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ COLUMN_B_COUNT + " INT NOT NULL, "
-			+ COLUMN_B_TIME_STAMP + " VARCHAR(30) NOT NULL, "
-			+ "PRIMARY KEY (b_id)"
+			+ COLUMN_B_TIME_STAMP + " VARCHAR(30) NOT NULL"
 			+ ")";
 	
 	//MENU table create statement
 	public static final String DATABASE_M_CREATE = "create table "
 			+ TABLE_MENU + "("
-			+ COLUMN_M_ID + " INTEGER AUTO INCREMENT NOT NULL, "
+			+ COLUMN_M_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ COLUMN_M_NAME + " VARCHAR(45) NOT NULL,"
 			+ COLUMN_M_PRICE + " INT NOT NULL, "
 			+ COLUMN_M_IMAGE + " VARCHAR(45) NOT NULL,"
