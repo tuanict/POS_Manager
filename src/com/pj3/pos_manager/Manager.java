@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.pj3.pos_manager.router.RESTResource;
+import com.pj3.pos_manager.router.UserRouter;
 //local dependencies
 import com.pj3.pos_manager.MainActivity;
 import com.pj3.pos_manager.R;
@@ -65,6 +67,7 @@ import org.restlet.routing.Router;
 import org.restlet.routing.VirtualHost;
 import org.restlet.Component;
 
+
 public class Manager extends Activity{
 	TabHost tabHost;
 	List<Employee> employees;
@@ -78,6 +81,23 @@ public class Manager extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manager);
 		db = new DatabaseSource(this);
+		
+		Component serverComponent = new Component();
+		serverComponent.getServers().add(Protocol.HTTP, 8182);  
+		final Router router = new Router(serverComponent.getContext().createChildContext());
+		
+		RESTResource r = new RESTResource();
+		
+		router.attach("/",r.getClass());
+		router.attach("/{user}",r.getClass());
+		
+		VirtualHost server = serverComponent.getDefaultHost();
+		server.attach(router); 
+		
+		
+		try {
+			serverComponent.start();
+		} catch (Exception e) {e.printStackTrace();};
 		main_employee();
 		menu_view();
 	}
