@@ -51,7 +51,6 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -80,72 +79,7 @@ public class Manager extends Activity{
 		setContentView(R.layout.activity_manager);
 		db = new DatabaseSource(this);
 		main_employee();
-		main_payment();
 		menu_view();
-	}
-	
-	//Phan cua Payment
-	public void main_payment(){
-		ListView lv;
-		food[] foods = new food[] { new food("Cafe", 2, 20000),
-				new food("Pepsi", 3, 7000), };
-
-		food[] food1s = new food[] { new food("Cafe", 2, 20000),
-				new food("Pepsi", 3, 7000), new food("Coca", 3, 7000), };
-
-		final bill[] bills = new bill[] { new bill("Bàn 1.1", foods),
-				new bill("Bàn 2.3", food1s), };
-		food[] atbfoods = bills[0].getFoods();
-		List<String> bill_arr = new ArrayList<String>();
-		for (bill abill : bills) {
-			bill_arr.add(abill.getTable());
-		}
-
-		lv = (ListView) findViewById(R.id.lvbill);
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, bill_arr);
-		lv.setAdapter(arrayAdapter);
-		final Activity a = this;
-		ListView lvfoods = (ListView) findViewById(R.id.tbfoods);
-		ArrayList<food> food_arr = new ArrayList<food>();
-		int totalpayment = 0;
-		for (food afood : atbfoods) {
-			totalpayment = totalpayment + afood.getNumberOf()
-					* afood.getPrice();
-			food_arr.add(afood);
-		}
-		ItemPaymentAdapter adapter = null;
-		adapter = new ItemPaymentAdapter(this, R.layout.payment_item_layout,
-				food_arr);
-		lvfoods.setAdapter(adapter);
-		TextView tvtpayment = (TextView) findViewById(R.id.tvtotal);
-		tvtpayment.setTextSize(20);
-		tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
-		
-		lv.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				food[] atbfoods = bills[position].getFoods();
-				ListView lvfoods = (ListView) findViewById(R.id.tbfoods);
-				ArrayList<food> food_arr = new ArrayList<food>();
-				int totalpayment = 0;
-				for (food afood : atbfoods) {
-					totalpayment = totalpayment + afood.getNumberOf()
-							* afood.getPrice();
-					food_arr.add(afood);
-				}
-				ItemPaymentAdapter adapter = null;
-				adapter = new ItemPaymentAdapter(a, R.layout.payment_item_layout,
-						food_arr);
-				lvfoods.setAdapter(adapter);
-				TextView tvtpayment = (TextView) findViewById(R.id.tvtotal);
-				tvtpayment.setTextSize(20);
-				tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
-				
-				}
-		});
 	}
 	
 	//Phan nay cua Employee------------------------------------------------------
