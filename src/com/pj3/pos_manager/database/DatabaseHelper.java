@@ -61,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_M_PRICE = "m_price";
 	public static final String COLUMN_M_IMAGE = "m_image";
 	public static final String COLUMN_M_STATUS = "m_status";
+	public static final String COLUMN_M_OPTION = "m_option";
 	
 	// Table Create Statements
 	//Employee table create statement
@@ -120,7 +121,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ COLUMN_M_NAME + " VARCHAR(45) NOT NULL,"
 			+ COLUMN_M_PRICE + " INT NOT NULL, "
 			+ COLUMN_M_IMAGE + " VARCHAR(45) NOT NULL,"
-			+ COLUMN_M_STATUS + " BOOL NOT NULL"
+			+ COLUMN_M_STATUS + " BOOL NOT NULL,"
+			+ COLUMN_M_OPTION + " VARCHAR(100)"
 			+ ")";
 	
 	//Construct

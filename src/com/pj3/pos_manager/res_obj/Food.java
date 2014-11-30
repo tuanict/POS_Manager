@@ -13,6 +13,7 @@ public class Food {
 	private int m_price;
 	private String m_image;
 	private Boolean m_status;
+	private String m_option;
 	
 	public Food(){
 		
@@ -67,5 +68,13 @@ public class Food {
 	}
 	public void setM_status(Boolean m_status) {
 		this.m_status = m_status;
+	}
+
+	public String getM_option() {
+		return m_option;
+	}
+
+	public void setM_option(String m_option) {
+		this.m_option = m_option;
 	}
 }

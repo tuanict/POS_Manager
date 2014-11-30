@@ -245,6 +245,7 @@ public class DatabaseSource implements SqliteAPIs{
 		while(count < size){
 			if(menus.get(count).getM_name().equals(menu.getM_name()))
 				return -1;
+			else count ++;
 		}
 		
 		SQLiteDatabase db = dHelper.getWritableDatabase();
@@ -254,6 +255,7 @@ public class DatabaseSource implements SqliteAPIs{
 		values.put(dHelper.COLUMN_M_NAME, menu.getM_name());
 		values.put(dHelper.COLUMN_M_PRICE, menu.getM_price());
 		values.put(dHelper.COLUMN_M_STATUS, menu.getM_status());
+		values.put(dHelper.COLUMN_M_OPTION, menu.getM_option());
 		
 		//insert row
 		int menuId = (int) db.insert(dHelper.TABLE_MENU, null, values);
@@ -270,6 +272,7 @@ public class DatabaseSource implements SqliteAPIs{
 		values.put(dHelper.COLUMN_M_NAME, menu.getM_name());
 		values.put(dHelper.COLUMN_M_PRICE, menu.getM_price());
 		values.put(dHelper.COLUMN_M_STATUS, menu.getM_status());
+		values.put(dHelper.COLUMN_M_OPTION, menu.getM_option());
 		
 		try{
 			db.update(dHelper.TABLE_MENU, values,
@@ -309,6 +312,7 @@ public class DatabaseSource implements SqliteAPIs{
 		menu.setM_name(c.getString(c.getColumnIndex(dHelper.COLUMN_M_NAME)));
 		menu.setM_price(c.getInt(c.getColumnIndex(dHelper.COLUMN_M_PRICE)));
 		menu.setM_status(c.getInt(c.getColumnIndex(dHelper.COLUMN_M_STATUS)) == 1);
+		menu.setM_option(c.getString(c.getColumnIndex(dHelper.COLUMN_M_OPTION)));
 		db.close();
 		return menu;
 	}
@@ -331,6 +335,7 @@ public class DatabaseSource implements SqliteAPIs{
 				menu.setM_name(c.getString(c.getColumnIndex(dHelper.COLUMN_M_NAME)));
 				menu.setM_price(c.getInt(c.getColumnIndex(dHelper.COLUMN_M_PRICE)));
 				menu.setM_status(c.getInt(c.getColumnIndex(dHelper.COLUMN_M_STATUS)) == 1);
+				menu.setM_option(c.getString(c.getColumnIndex(dHelper.COLUMN_M_OPTION)));
 				
 				menus.add(menu);
 			}while(c.moveToNext());
