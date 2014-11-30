@@ -22,7 +22,11 @@ public class UserRouter extends ServerResource {
 		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
-		Employee emp = db.getUser(Integer.parseInt(uidString));
+		Employee  emp = null;
+		try {
+			emp = db.getUser(Integer.parseInt(uidString));
+		} catch(Exception e){return new JsonRepresentation("{\"message\":\"error\"}");}
+		if(emp == null) return new JsonRepresentation("{\"message\":\"user not found\"}");
 		JSONObject ret  = new JSONObject();
 		ret.put("e_id", emp.getE_id());
 		ret.put("e_name", emp.getE_name());
@@ -49,7 +53,7 @@ public class UserRouter extends ServerResource {
 			return new JsonRepresentation("{\"message\":\"done\"}");
 		} catch(Exception e){
 			e.printStackTrace();
-			return new JsonRepresentation("{\"message\":\"error\"}");
+			return new JsonRepresentation("{\"message\":\"internal error\"}");
 		}
 		
 	}
@@ -66,13 +70,13 @@ public class UserRouter extends ServerResource {
 			String username = jsonObj.getString("e_name");
 			String email	= jsonObj.getString("e_email");
 			String password	= jsonObj.getString("e_password");
-			String phone_num = jsonObj.getString("e_phone_number");
+			String phone_num = jsonObj.getString("e_phone");
 			String position	= jsonObj.getString("e_position");
 			db.updateUser(new Employee(Integer.parseInt(uidString),username,email,password,"",Integer.parseInt(phone_num),Integer.parseInt(position)));
 			return new JsonRepresentation("{\"message\":\"done\"}");
 		} catch(Exception e){
 			e.printStackTrace();
-			return new JsonRepresentation("{\"message\":\"error\"}");
+			return new JsonRepresentation("{\"message\":\"internal error\"}");
 		}
 	
 	}
