@@ -2,18 +2,24 @@ package com.pj3.pos_manager;
 
 
 //general dependencies
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.pj3.pos_manager.router.BillRouter;
+import com.pj3.pos_manager.router.FoodStatusRouter;
+import com.pj3.pos_manager.router.MenuRouter;
+import com.pj3.pos_manager.router.OrderRouter;
+import com.pj3.pos_manager.router.RESTResource;
+import com.pj3.pos_manager.router.UserRouter;
 //local dependencies
 import com.pj3.pos_manager.MainActivity;
 import com.pj3.pos_manager.R;
 import com.pj3.pos_manager.database.DatabaseSource;
 import com.pj3.pos_manager.res_obj.Employee;
 import com.pj3.pos_manager.res_obj.Food;
-import com.pj3.pos_manager.res_obj.FoodTemprary;
-import com.pj3.pos_manager.res_obj.Order;
 import com.pj3.pos_manager.res_obj.Position;
 
 //android dependencies
@@ -36,6 +42,7 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -48,7 +55,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -68,6 +74,7 @@ import org.restlet.routing.Router;
 import org.restlet.routing.VirtualHost;
 import org.restlet.Component;
 
+
 public class Manager extends Activity{
 	TabHost tabHost;
 	List<Employee> employees;
@@ -81,6 +88,29 @@ public class Manager extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manager);
 		db = new DatabaseSource(this);
+		
+		
+		Component serverComponent = new Component();
+		serverComponent.getServers().add(Protocol.HTTP, 8182);  
+		final Router router = new Router(serverComponent.getContext().createChildContext());
+		
+		//test router
+		RESTResource r = new RESTResource();
+		router.attach("/",r.getClass());
+		
+		router.attach("/api/users", UserRouter.class);
+		router.attach("/api/menus", MenuRouter.class);
+		router.attach("/api/bills", BillRouter.class);
+		router.attach("/api/orders", OrderRouter.class);
+		router.attach("/api/foodstatus", FoodStatusRouter.class);
+		
+		VirtualHost server = serverComponent.getDefaultHost();
+		server.attach(router); 
+		
+		
+		try {
+			serverComponent.start();
+		} catch (Exception e) {e.printStackTrace();};
 		main_employee();
 		menu_view();
 	}
@@ -274,8 +304,7 @@ public class Manager extends Activity{
 			LinearLayout item = new LinearLayout(Manager.this);
 			item.setOrientation(LinearLayout.VERTICAL);
 			item.setPadding(50, 50, 50, 50);
-			item.setBackgroundResource(R.drawable.frame_item_in_grid);
-			item.setLayoutParams(new LayoutParams(300, 350));
+			
 			item.setWeightSum(3);
 			final int k = i;
 			itemEmployee.put(item, employees.get(i));
@@ -611,11 +640,10 @@ public class Manager extends Activity{
 	GridLayout gridMenu;
 	public void menu_view(){
 		gridMenu = (GridLayout) findViewById(R.id.gridMenu);
+		resetGridview();
 		loadSpSort();
 		loadSpHideOrDisplay();
 		pictureAddHandler();
-		loadGridFood(getFoods());
-		searchFood();
 	}
 	public void loadSpSort(){
 		Spinner spSort = (Spinner) findViewById(R.id.spSort);
@@ -641,7 +669,7 @@ public class Manager extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				final Dialog dialog = new Dialog(Manager.this);
+				Dialog dialog = new Dialog(Manager.this);
 				dialog.setTitle("Thêm món ăn");
 				dialog.setContentView(R.layout.activity_menu_info_action);
 				Button doneButton = (Button) dialog.findViewById(R.id.m_action1);
@@ -650,7 +678,6 @@ public class Manager extends Activity{
 				spStatus.setAdapter(adapterStatus);
 				final EditText edNameFood = (EditText) dialog.findViewById(R.id.m_name_food);
 				final EditText edPprice = (EditText) dialog.findViewById(R.id.m_price_food);
-				final EditText eOption = (EditText) dialog.findViewById(R.id.m_option_food);
 				
 				doneButton.setText("Hoàn thành");
 				cancelButton.setText("Hủy");
@@ -661,7 +688,6 @@ public class Manager extends Activity{
 					public void onClick(View v) {
 						String name = edNameFood.getText().toString();
 						String price = edPprice.getText().toString();
-						String option = eOption.getText().toString();
 						if(!checkNull(name) && !checkNull(price)){
 							Food food = new Food();
 							try{
@@ -673,13 +699,11 @@ public class Manager extends Activity{
 							food.setM_name(name);
 							food.setM_price(iPrice);
 							food.setM_image("Anh");
-							food.setM_option(option);
 							
 							db.createFood(food);
 							Toast.makeText(getApplicationContext(),
 									"Thêm món ăn thành công!",
 									Toast.LENGTH_SHORT).show();
-							dialog.dismiss();
 							resetGridMenu();
 							}catch(Exception e){
 								Toast.makeText(getApplicationContext(),
@@ -703,37 +727,7 @@ public class Manager extends Activity{
 	}
 	
 	public List<Food> getFoods(){
-		
 		return db.getAllFood();
-	}
-	
-	public void searchFood(){
-		AutoCompleteTextView autoSearch = (AutoCompleteTextView) findViewById(R.id.auto_text_quick_search);
-		List<Food> foods = db.getAllFood();
-		List<String> list_name_food = new ArrayList<String>();
-		int size = foods.size();
-		for(int i = 0; i < size; i++){
-			list_name_food.add(foods.get(i).getM_name());
-		}
-		
-		ArrayAdapter adapter = new ArrayAdapter
-				   (this,android.R.layout.simple_list_item_1,list_name_food);
-		autoSearch.setAdapter(adapter);
-		
-		autoSearch.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 	}
 	
 	public void loadGridFood(List<Food> foods){
@@ -741,9 +735,6 @@ public class Manager extends Activity{
 		for(int i = 0; i < size; i++){
 			LinearLayout itemMenu = new LinearLayout(Manager.this);
 			itemMenu.setOrientation(LinearLayout.VERTICAL);
-			itemMenu.setBackgroundResource(R.drawable.frame_item_in_grid);
-			itemMenu.setPadding(50, 50, 50, 50);
-			itemMenu.setLayoutParams(new LayoutParams(250, 300));
 			ImageView profileFood = new ImageView(Manager.this);
 			profileFood.setBackgroundResource(R.drawable.add_food);
 			
@@ -753,13 +744,12 @@ public class Manager extends Activity{
 			
 			TextView price = new TextView(Manager.this);
 			price.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			price.setText(String.valueOf(foods.get(i).getM_price()));
+			price.setText(foods.get(i).getM_price());
 			
 			itemMenu.setWeightSum(3);
 			itemMenu.addView(profileFood);
 			itemMenu.addView(name);
 			itemMenu.addView(price);
-			gridMenu.addView(itemMenu);
 		}
 	}
 	public void option(){

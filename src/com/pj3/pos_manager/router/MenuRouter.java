@@ -25,11 +25,11 @@ public class MenuRouter extends ServerResource {
 		Food ret  = db.getFood(Integer.parseInt(uidString));
 		JSONObject jo = new JSONObject();
 		try{	
-			jo.put("food_id", ret.getM_food_id());
-			jo.put("food_name", ret.getM_name());
-			jo.put("food_price", ret.getM_price());
-			jo.put("food_image", ret.getM_price());
-			jo.put("food_status", ret.getM_status());
+			jo.put("f_id", ret.getM_food_id());
+			jo.put("f_name", ret.getM_name());
+			jo.put("f_price", ret.getM_price());
+			jo.put("f_image", ret.getM_price());
+			jo.put("f_status", ret.getM_status());
 		} catch(Exception e){
 			e.printStackTrace();
 			return new JsonRepresentation("{\"message\":\"error\"}");
@@ -44,20 +44,21 @@ public class MenuRouter extends ServerResource {
 		String price  	= "";
 		String image	= "";
 		String status	= "";
-		
+		String fid = "";
 		try{
 		JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 		JSONObject 			jsonObj  = jsonRep.getJsonObject();
-		foodname  	= jsonObj.getString("food_name");
-		price 		= jsonObj.getString("food_price");
+		foodname  	= jsonObj.getString("f_name");
+		price 		= jsonObj.getString("f_price");
 		//image 		= jsonObj.getString("image");
-		status  	= jsonObj.getString("food_status");
-		db.createFood(new Food(foodname,Integer.parseInt(price),image,Boolean.parseBoolean(status)));
+		status  	= jsonObj.getString("f_status");
+		int menuid = db.createFood(new Food(foodname,Integer.parseInt(price),image,Boolean.parseBoolean(status)));
+		fid = Integer.toString(menuid);
 		} catch(Exception e){
 			e.printStackTrace();
-			return new JsonRepresentation("{\"message\":\"error\"}");
+			return new JsonRepresentation("{\"message\":\"internal error\"}");
 		}
-		return new JsonRepresentation("{\"message\":\"done\"}");
+		return new JsonRepresentation("{\"message\":\"done\","+"\"f_id\":\""+fid+"\"}");
 	}
 	
 	@Put("json")
@@ -68,20 +69,20 @@ public class MenuRouter extends ServerResource {
 		String image	= "";
 		String status	= "";
 		String id		= "";
-		
+		String fid = "";
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		try{
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
-			foodname  	= jsonObj.getString("food_name");
-			price 		= jsonObj.getString("food_price");
+			foodname  	= jsonObj.getString("f_name");
+			price 		= jsonObj.getString("f_price");
 			//image 		= jsonObj.getString("image");
-			status  	= jsonObj.getString("food_status");
+			status  	= jsonObj.getString("f_status");
 			db.updateMenu(new Food(Integer.parseInt(uidString),foodname,Integer.parseInt(price),image,Boolean.parseBoolean(status)));
 		} catch(Exception e){
 			e.printStackTrace();
-			return new JsonRepresentation("{\"message\":\"error\"}");
+			return new JsonRepresentation("{\"message\":\"internal error\"}");
 		}
 		return new JsonRepresentation("{\"message\":\"done\"}");
 	}

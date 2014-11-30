@@ -45,11 +45,14 @@ public class DatabaseSource implements SqliteAPIs{
 	File billTem;
 	public static int billTempId = 0;
 	public static final String FILENAME = "BillTemp.json";
-	
+	private Context context;
 	JSONParser parser;
 	public DatabaseSource(Context context){
-		dHelper = new DatabaseHelper(context);
 		
+		//important
+		//context.deleteDatabase("POS");
+		dHelper = new DatabaseHelper(context);
+		this.context = context;
 		//Init json object
 		parser = new JSONParser();
 		
@@ -62,7 +65,15 @@ public class DatabaseSource implements SqliteAPIs{
 				break;
 			}
 		}
-		if(ok) billTem = new File(context.getFilesDir(), FILENAME);
+		if(ok) {
+			billTem = new File(context.getFilesDir(), FILENAME);
+			try {
+				billTem.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	@Override
@@ -97,7 +108,7 @@ public class DatabaseSource implements SqliteAPIs{
 	public Employee getUser(int userId) {
 		SQLiteDatabase db = dHelper.getReadableDatabase();
 		String query = "SELECT * FROM " + dHelper.TABLE_EMPLOYEE
-				+ "WHERE" + dHelper.COLUMN_E_ID + " = " + userId;
+				+ " WHERE " + dHelper.COLUMN_E_ID + " = " + userId;
 		
 		Log.e(dHelper.LOG, query);
 		Cursor c = db.rawQuery(query, null);
@@ -298,7 +309,7 @@ public class DatabaseSource implements SqliteAPIs{
 	@Override
 	public Food getFood(int foodId) {
 		SQLiteDatabase db = dHelper.getReadableDatabase();
-		String query = "SELECT * FROM " + dHelper.TABLE_MENU + "WHERE "
+		String query = "SELECT * FROM " + dHelper.TABLE_MENU + " WHERE "
 				+ dHelper.COLUMN_M_ID + " = " + foodId;
 		Log.e(dHelper.LOG, query);
 		
@@ -386,7 +397,7 @@ public class DatabaseSource implements SqliteAPIs{
 	public Bill getBill(int billId) {
 		Bill bill = new Bill();
 		SQLiteDatabase db = dHelper.getReadableDatabase();
-		String query = "SELECT * FROM " + dHelper.TABLE_BILL + "WHERE "
+		String query = "SELECT * FROM " + dHelper.TABLE_BILL + " WHERE "
 				+ dHelper.COLUMN_B_ID + " = " + billId;
 		Log.e(dHelper.LOG, query);
 		Cursor c = db.rawQuery(query, null);
@@ -443,6 +454,8 @@ public class DatabaseSource implements SqliteAPIs{
 	@Override
 	public int createBillTemp(Order order) {
 		order.setOrderId(billTempId);
+		String orderFileName = "o_"+ Integer.toString(billTempId) + ".json";
+		File orderFile = new File(context.getFilesDir(), orderFileName);
 		JSONObject root = new JSONObject();
 		try {
 			root = (JSONObject) parser.parse(new FileReader(billTem));
@@ -610,7 +623,7 @@ public class DatabaseSource implements SqliteAPIs{
 	@Override
 	public List<FoodStatistic> getCookingOrder(int billId) {
 		List<FoodStatistic> foods = new ArrayList<FoodStatistic>();
-		String query = "SELECT * FROM " + dHelper.TABLE_FOODSTATISTIC + "WHERE " + dHelper.COLUMN_F_B_ID  + "= " + Integer.toString(billId);
+		String query = "SELECT * FROM " + dHelper.TABLE_FOODSTATISTIC + " WHERE " + dHelper.COLUMN_F_B_ID  + "= " + Integer.toString(billId);
 		Log.e(dHelper.LOG,query);
 		
 		SQLiteDatabase db = dHelper.getReadableDatabase();
