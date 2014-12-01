@@ -36,6 +36,134 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" 
                     android:orientation="vertical">
+                    
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="200dip"
+                            android:layout_height="50dip"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center"
+                            android:text=" "
+                            android:textSize="20sp" />
+
+                        <TableRow
+                            android:id="@+id/title2"
+                            android:layout_width="800dp"
+                            android:layout_height="0dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/title22"
+                            android:layout_toRightOf="@+id/lvbill"
+                            android:orientation="vertical" >
+                        </TableRow>
+
+                        <TextView
+                            android:id="@+id/titlebill"
+                            android:layout_width="600dip"
+                            android:layout_height="50dip"
+                            android:layout_above="@+id/title22"
+                            android:layout_alignLeft="@+id/title22"
+                            android:gravity="center"
+                            android:text="THANH TOÁN HÓA ĐƠN"
+                            android:textSize="20sp" />
+
+                        <ListView
+                            android:id="@+id/tbfoods"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@+id/tableRow2"
+                            android:layout_alignTop="@+id/title2"
+                            android:layout_marginLeft="40dp"
+                            android:layout_toRightOf="@+id/textView1" >
+                        </ListView>
+
+                        <LinearLayout
+                            android:id="@+id/title22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_alignTop="@+id/lvbill"
+                            android:layout_marginLeft="40dp"
+                            android:layout_toRightOf="@+id/textView1" >
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="50dp"
+                                android:text="Item"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="50dp"
+                                android:text="Price"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="50dp"
+                                android:text="Number"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="50dp"
+                                android:text="Total"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+
+                        <ListView
+                            android:id="@+id/lvbill"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@+id/textView1"
+                            android:layout_below="@+id/textView1" >
+                        </ListView>
+
+                        <TableRow
+                            android:id="@+id/tableRow2"
+                            android:layout_width="750dip"
+                            android:layout_height="50dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/tbfoods"
+                            android:layout_marginTop="22dp" >
+
+                            <TextView
+                                android:layout_width="200dp"
+                                android:layout_height="50dip"
+                                android:gravity="center"
+                                android:text="Total:"
+                                android:textSize="22sp" />
+
+                            <TextView
+                                android:id="@+id/tvtotal"
+                                android:layout_width="400dp"
+                                android:layout_height="50dip"
+                                android:gravity="center"
+                                android:text="0 VNĐ"
+                                android:textSize="22sp" />
+                        </TableRow>
+
+                        <Button
+                            android:id="@+id/button1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/tbfoods"
+                            android:layout_below="@+id/tableRow2"
+                            android:layout_marginLeft="104dp"
+                            android:layout_marginTop="61dp"
+                            android:text="Thanh toán" />
+
+                        <Button
+                            android:id="@+id/button2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/button1"
+                            android:layout_alignRight="@+id/tableRow2"
+                            android:layout_marginRight="145dp"
+                            android:text="In hóa đơn" />
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -154,6 +282,149 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" 
                     android:orientation="vertical">
+                     <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                        <Spinner
+                            android:id="@+id/sptype"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="20dp" />
+
+                        <TextView
+                            android:id="@+id/tvmonth"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/sptype"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:text="Quý: "
+                            android:textSize="18dp" />
+
+                        <Spinner
+                            android:id="@+id/spmonth"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_alignRight="@+id/sptype"
+                            android:layout_alignTop="@+id/tvmonth"
+                            android:layout_marginTop="20dp"
+                            android:layout_toRightOf="@+id/tvmonth" />
+
+                        <TextView
+                            android:id="@+id/tvyear"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/spmonth"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:text="Năm: "
+                            android:textSize="18dp" />
+
+                        <Spinner
+                            android:id="@+id/spyear"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_alignLeft="@+id/spmonth"
+                            android:layout_alignTop="@+id/tvyear"
+                            android:layout_marginTop="20dp" />
+
+                        <Button
+                            android:id="@+id/btsttic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/spyear"
+                            android:layout_marginLeft="55dp"
+                            android:layout_marginTop="20dp"
+                            android:text="Thống kê" />
+
+                        <TextView
+                            android:id="@+id/tvtitle"
+                            android:layout_width="700dp"
+                            android:layout_height="50dp"
+                            android:layout_alignTop="@+id/sptype"
+                            android:layout_toRightOf="@+id/sptype"
+                            android:gravity="center"
+                            android:text="THỐNG KÊ SẢN PHẨM"
+                            android:textSize="20dp" />
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout1"
+                            android:layout_width="600dp"
+                            android:layout_height="50dp"
+                            android:layout_alignLeft="@+id/tvtitle"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/tvtitle"
+                            android:layout_marginTop="10dp" >
+
+                            <TextView
+                                android:id="@+id/textView11"
+                                android:layout_width="300dp"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:text="Tổng doanh thu: "
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:id="@+id/tvbtotal"
+                                android:layout_width="300dp"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:text="0 VNĐ"
+                                android:textSize="20dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_above="@+id/btsttic"
+                            android:layout_alignLeft="@+id/linearLayout1"
+                            android:layout_alignRight="@+id/tvtitle"
+                            android:layout_below="@+id/linearLayout1"
+                            android:layout_marginLeft="40dp" >
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="200dp"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:text="Tên sản phẩm"
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="200dp"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:text="Số lượng"
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:id="@+id/textView4"
+                                android:layout_width="200dp"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:text="Thành tiền"
+                                android:textSize="20dp" />
+                        </LinearLayout>
+
+                        <ListView
+                            android:id="@+id/lvfoodstt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/linearLayout2"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/tvyear"
+                            android:layout_marginLeft="40dp" >
+                        </ListView>
+                    </RelativeLayout>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

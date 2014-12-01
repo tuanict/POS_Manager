@@ -25,7 +25,7 @@ public class FoodStatusRouter extends ServerResource {
 		JSONObject jo1 = new JSONObject();
 		JSONArray ja1 = new JSONArray();
 		
-		
+/*		
 		List<Order> orderList = db.getOrderList();
 		try{
 	
@@ -67,10 +67,10 @@ public class FoodStatusRouter extends ServerResource {
 		}catch(JSONException e){
 				e.printStackTrace();
 				return new JsonRepresentation("{\"message\":\"error\"}");
-		}
+		}*/	
 		return new JsonRepresentation(jo1);
 			
-		
+	
 	}
 	
 	

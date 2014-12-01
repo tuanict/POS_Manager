@@ -12,7 +12,7 @@ import com.pj3.pos_manager.router.BillRouter;
 import com.pj3.pos_manager.router.FoodStatusRouter;
 import com.pj3.pos_manager.router.MenuRouter;
 import com.pj3.pos_manager.router.OrderRouter;
-import com.pj3.pos_manager.router.RESTResource;
+//import com.pj3.pos_manager.router.RESTResource;
 import com.pj3.pos_manager.router.UserRouter;
 //local dependencies
 import com.pj3.pos_manager.MainActivity;
@@ -60,6 +60,7 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -95,8 +96,8 @@ public class Manager extends Activity{
 		final Router router = new Router(serverComponent.getContext().createChildContext());
 		
 		//test router
-		RESTResource r = new RESTResource();
-		router.attach("/",r.getClass());
+		//RESTResource r = new RESTResource();
+		//router.attach("/",r.getClass());
 		
 		router.attach("/api/users", UserRouter.class);
 		router.attach("/api/menus", MenuRouter.class);
@@ -113,6 +114,8 @@ public class Manager extends Activity{
 		} catch (Exception e) {e.printStackTrace();};
 		main_employee();
 		menu_view();
+		payment_main();
+		main_statistic();
 	}
 	
 	//Phan nay cua Employee------------------------------------------------------
@@ -763,5 +766,188 @@ public class Manager extends Activity{
 	}
 	
 	//--------------Hết phần menu----------------------------
+	// --------------Payment----------------------------------
+	//@SuppressWarnings("null")
+	public void payment_main() {
+		ListView lv;
+		Food newfood = new Food();
+		newfood.setM_name("Cocacola");
+		newfood.setM_price(5000);
+		newfood.setM_image("anh");
+		newfood.setM_status(true);
+		//db.createFood(newfood);
+		
+		/*
+		List<Order> allOrder = db.getOrderList();
+		if (allOrder.size() > 0) {
+			final bill[] bills = null;
+			int i = 0;
+			for (Order aOrder : allOrder) {
+				String table = "Bàn " + String.valueOf(aOrder.getTableId())
+						+ "." + String.valueOf(aOrder.getCount());
+				food[] foods = null;
+				int j = 0;
+				for (FoodTemprary aFood : aOrder.getFoodTemp()) {
+					Food tempFood = db.getFood(aFood.getFoodId());
+					String nameFood = tempFood.getM_name();
+					int numberofFood = aFood.getCount();
+					int priceFood = tempFood.getM_price();
+					food afood = new food(nameFood, numberofFood, priceFood);
+					foods[j] = afood;
+					j++;
+				}
+				bill abill = new bill(table, foods);
+				bills[i] = abill;
+			} */
+
+			
+			  food[] foods = new food[] { new food("Cafe", 2, 20000), new
+			 food("Pepsi", 3, 7000), };
+			 
+			  food[] food1s = new food[] { new food("Cafe", 2, 20000), new
+			  food("Sting", 3, 7000), new food("Pepsi", 3, 7000), };
+			  
+			  final bill[] bills = new bill[] { new bill("Bàn 1.1", foods), new
+			  bill("Bàn 2.3", food1s), };
+			 
+			food[] atbfoods = bills[0].getFoods();
+
+			List<String> bill_arr = new ArrayList<String>();
+			for (bill abill : bills) {
+				bill_arr.add(abill.getTable());
+			}
+
+			lv = (ListView) findViewById(R.id.lvbill);
+			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, bill_arr);
+			lv.setAdapter(arrayAdapter);
+			final Activity a = this;
+			ListView lvfoods = (ListView) findViewById(R.id.tbfoods);
+			ArrayList<food> food_arr = new ArrayList<food>();
+			int totalpayment = 0;
+			for (food afood : atbfoods) {
+				totalpayment = totalpayment + afood.getNumberOf()
+						* afood.getPrice();
+				food_arr.add(afood);
+			}
+			ItemPaymentAdapter adapter = null;
+			adapter = new ItemPaymentAdapter(this,
+					R.layout.payment_item_layout, food_arr);
+			lvfoods.setAdapter(adapter);
+			TextView tvtpayment = (TextView) findViewById(R.id.tvtotal);
+			tvtpayment.setTextSize(20);
+			tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
+
+			lv.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					food[] atbfoods = bills[position].getFoods();
+					ListView lvfoods = (ListView) findViewById(R.id.tbfoods);
+					ArrayList<food> food_arr = new ArrayList<food>();
+					int totalpayment = 0;
+					for (food afood : atbfoods) {
+						totalpayment = totalpayment + afood.getNumberOf()
+								* afood.getPrice();
+						food_arr.add(afood);
+					}
+					ItemPaymentAdapter adapter = null;
+					adapter = new ItemPaymentAdapter(a,
+							R.layout.payment_item_layout, food_arr);
+					lvfoods.setAdapter(adapter);
+					TextView tvtpayment = (TextView) findViewById(R.id.tvtotal);
+					tvtpayment.setTextSize(20);
+					tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
+
+				}
+			});
+		}
+
+	//}
+
+	// -----------------------------------Statistic---------------------------------
+	public void main_statistic() {
+		set_spin_type();
+		set_spin_year();
+		set_spin_month();
+		set_lv_foodstt();
+		Spinner spSort = (Spinner) findViewById(R.id.sptype);
+		spSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+				change_type(pos);
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
+
+	}
+
+	public void set_spin_type() {
+		Spinner spSort = (Spinner) findViewById(R.id.sptype);
+		String[] arr = { "Theo Quý", "Theo Tháng" };
+		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, arr);
+		spSort.setAdapter(adapterSort);
+	}
+
+	public void change_type(int type) {
+		TextView tvmonths = (TextView) findViewById(R.id.tvmonth);
+		if (type == 0) {
+			tvmonths.setText("Quý: ");
+			set_spin_month();
+		}
+		if (type == 1) {
+			tvmonths.setText("Tháng : ");
+			set_spin_month2();
+		}
+	}
+
+	public void set_spin_year() {
+		Spinner spSort = (Spinner) findViewById(R.id.spyear);
+		String[] arr = { "2014", "2013" };
+		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, arr);
+		spSort.setAdapter(adapterSort);
+	}
+
+	public void set_spin_month() {
+		Spinner spSort = (Spinner) findViewById(R.id.spmonth);
+		String[] arr = { "1", "2", "3", "4" };
+		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, arr);
+		spSort.setAdapter(adapterSort);
+	}
+
+	public void set_spin_month2() {
+		Spinner spSort = (Spinner) findViewById(R.id.spmonth);
+		String[] arr = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+				"11", "12" };
+		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, arr);
+		spSort.setAdapter(adapterSort);
+	}
+
+	public void set_lv_foodstt() {
+		food[] foods = new food[] { new food("Cafe", 2, 20000),
+				new food("Pepsi", 3, 7000), new food("Coca", 3, 7000), };
+		ArrayList<food> food_arr = new ArrayList<food>();
+		int totalpayment = 0;
+		for (food afood : foods) {
+			totalpayment = totalpayment + afood.getNumberOf()
+					* afood.getPrice();
+			food_arr.add(afood);
+		}
+		ItemStatisticAdapter adapter = null;
+		adapter = new ItemStatisticAdapter(this,
+				R.layout.statistic_item_layout, food_arr);
+		ListView lvfoodstt = (ListView) findViewById(R.id.lvfoodstt);
+		lvfoodstt.setAdapter(adapter);
+		TextView tvtpayment = (TextView) findViewById(R.id.tvbtotal);
+		tvtpayment.setTextSize(20);
+		tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
+	}
 
 }
