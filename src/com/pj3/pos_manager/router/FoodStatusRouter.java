@@ -34,6 +34,22 @@ public class FoodStatusRouter extends ServerResource {
 			for( Order z : orderList){
 				List<FoodTemprary> t = z.getFoodTemp();
 				for (FoodTemprary q: t){
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+					
+					if((q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("cook")) ||
+						(q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("waiter"))	){
+						JSONObject jo2 = new JSONObject();
+						jo2.put("f_id", Integer.toString(q.getFoodId()));
+						jo2.put("f_count", Integer.toString(q.getCount()));
+						jo2.put("f_note", q.getNote());						
+						ja1.put(jo2);
+=======
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
 					for(int i=0; i<q.getCount(); i ++){
 						if((q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("cook")) ||
 							(q.getStatus() == FoodTemprary.FOOD_STATUS_SERVE && uidString.equalsIgnoreCase("waiter"))	){
@@ -50,6 +66,13 @@ public class FoodStatusRouter extends ServerResource {
 						}
 						
 						
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> Stashed changes
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
 					}
 					
 				}

@@ -99,6 +99,13 @@ public interface SqliteAPIs {
 	public Food getFood(int foodId);
 	
 	/**
+	 * Get list foods by status
+	 * @param type true when food was displayed or false when food hide
+	 * @return
+	 */
+	public List<Food> getFoodsByStatus(boolean type);
+	
+	/**
 	 * Get all food in menu
 	 * @return list food
 	 */

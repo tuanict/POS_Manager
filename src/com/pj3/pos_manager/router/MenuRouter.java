@@ -82,7 +82,7 @@ public class MenuRouter extends ServerResource {
 			db.updateMenu(new Food(Integer.parseInt(uidString),foodname,Integer.parseInt(price),image,Boolean.parseBoolean(status)));
 		} catch(Exception e){
 			e.printStackTrace();
-			return new JsonRepresentation("{\"message\":\"internal erorr\"}");
+			return new JsonRepresentation("{\"message\":\"internal error\"}");
 		}
 		return new JsonRepresentation("{\"message\":\"done\"}");
 	}

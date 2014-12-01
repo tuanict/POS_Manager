@@ -37,7 +37,7 @@ import android.util.Log;
 
 
 /**
- * @author LêCông
+ * @author Lï¿½Cï¿½ng
  *
  */
 public class DatabaseSource implements SqliteAPIs{
@@ -65,14 +65,9 @@ public class DatabaseSource implements SqliteAPIs{
 				break;
 			}
 		}
-		if(ok) {
+		if(ok){
 			billTem = new File(context.getFilesDir(), FILENAME);
-			try {
-				billTem.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Log.e("Create File", ""+context.getFilesDir().list().length);   
 		}
 		
 	}
@@ -353,6 +348,19 @@ public class DatabaseSource implements SqliteAPIs{
 		}
 		db.close();
 		return menus;
+	}
+	
+	public List<Food> getFoodsByStatus(boolean type){
+		List<Food> allFood = getAllFood();
+		List<Food> foodStatus = new ArrayList<Food>();
+		int sie = allFood.size();
+		for(int i = 0; i < sie; i++){
+			if(allFood.get(i).getM_status() == type){
+				foodStatus.add(allFood.get(i));
+			}
+		}
+		return foodStatus;
+		
 	}
 	
 	private String getDateTime() {

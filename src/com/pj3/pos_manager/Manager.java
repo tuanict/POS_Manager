@@ -55,6 +55,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -631,18 +632,19 @@ public class Manager extends Activity{
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.manager, menu);
-		return true;
-	}
 	//----------------Hết phần employee----------------------------------------
 	
 	//-------------phan nay cua menu---------------------
 	GridLayout gridMenu;
+	Spinner spHideOrDisplay;
+	Spinner spinerSort;
+	Map<LinearLayout, Food> map_item_food;
 	public void menu_view(){
 		gridMenu = (GridLayout) findViewById(R.id.gridMenu);
+		spHideOrDisplay = (Spinner) findViewById(R.id.spHideOrDisplay);
+		spinerSort = (Spinner) findViewById(R.id.spSort);
+		map_item_food = new HashMap<LinearLayout, Food>();
+
 		resetGridview();
 		loadSpSort();
 		loadSpHideOrDisplay();
@@ -652,16 +654,43 @@ public class Manager extends Activity{
 		Spinner spSort = (Spinner) findViewById(R.id.spSort);
 		String[] arr = {"Tăng dần", "Giảm dần"};
 		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arr);
-		
 		spSort.setAdapter(adapterSort);
+		spSort.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				resetGridMenu();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	public void loadSpHideOrDisplay(){
-		Spinner spHideOrDisplay = (Spinner) findViewById(R.id.spHideOrDisplay);
 		String[] arr = {"Tất cả", "Hiện","Ẩn"};
 		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arr);
 		
 		spHideOrDisplay.setAdapter(adapterSort);
+		
+		spHideOrDisplay.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				resetGridMenu();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				
+			}
+		});
 	}
+	
 	
 	public void pictureAddHandler(){
 		ImageView pictutreAdd = (ImageView) findViewById(R.id.picture_add_food);
@@ -672,7 +701,7 @@ public class Manager extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				Dialog dialog = new Dialog(Manager.this);
+				final Dialog dialog = new Dialog(Manager.this);
 				dialog.setTitle("Thêm món ăn");
 				dialog.setContentView(R.layout.activity_menu_info_action);
 				Button doneButton = (Button) dialog.findViewById(R.id.m_action1);
@@ -719,6 +748,14 @@ public class Manager extends Activity{
 						
 					}
 				});
+				cancelButton.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
+						dialog.hide();
+					}
+				});
 				dialog.show();
 			}
 		});
@@ -730,7 +767,102 @@ public class Manager extends Activity{
 	}
 	
 	public List<Food> getFoods(){
-		return db.getAllFood();
+		int selectHide = spHideOrDisplay.getSelectedItemPosition();
+		int selectSort = spinerSort.getSelectedItemPosition();
+		if(selectHide == 0){
+			if(selectSort == 0)
+				return sort(db.getAllFood(), true);
+			else return sort(db.getAllFood(), false);
+		}else if(selectHide == 1){
+			if(selectSort == 0)
+				return sort(db.getFoodsByStatus(true), true);
+			else return sort(db.getFoodsByStatus(true), false);
+		}else {
+			if(selectSort == 0)
+				return sort(db.getFoodsByStatus(false), true);
+			else return sort(db.getFoodsByStatus(false), false);
+		}
+		
+	}
+	
+	/**
+	 * Sort list foods
+	 * @param foods
+	 * @param type true when A-> Z or false when Z->A
+	 * @return
+	 */
+	public List<Food> sort(List<Food> foods, boolean type){
+		int size =  foods.size();
+		if(type){
+			for(int i = 0; i < size - 1; i++){
+				for(int j = i+1; j < size; j++){
+					if(foods.get(i).getM_price() > foods.get(j).getM_price()){
+						swapFood(foods.get(i), foods.get(j));
+					}
+				}
+			}
+		}else{
+			for(int i = 0; i < size - 1; i++){
+				for(int j = i+1; j < size; j++){
+					if(foods.get(i).getM_price() < foods.get(j).getM_price()){
+						swapFood(foods.get(i), foods.get(j));
+					}
+				}
+			}
+		}
+		return foods;
+	}
+	
+	public void swapFood(Food f1, Food f2){
+		Food fTmp = new Food();
+		fTmp.setM_food_id(f1.getM_food_id());
+		fTmp.setM_image(f1.getM_image());
+		fTmp.setM_name(f1.getM_name());
+		fTmp.setM_option(f1.getM_option());
+		fTmp.setM_price(f1.getM_price());
+		fTmp.setM_status(f1.getM_status());
+		
+		f1.setM_food_id(f2.getM_food_id());
+		f1.setM_image(f2.getM_image());
+		f1.setM_name(f2.getM_name());
+		f1.setM_option(f2.getM_option());
+		f1.setM_price(f2.getM_price());
+		f1.setM_status(f2.getM_status());
+		
+		f2.setM_food_id(fTmp.getM_food_id());
+		f2.setM_image(fTmp.getM_image());
+		f2.setM_name(fTmp.getM_name());
+		f2.setM_option(fTmp.getM_option());
+		f2.setM_price(fTmp.getM_price());
+		f2.setM_status(fTmp.getM_status());
+	}
+	
+	public void searchFood(){
+		AutoCompleteTextView autoSearch = (AutoCompleteTextView) findViewById(R.id.auto_text_quick_search);
+		List<Food> foods = db.getAllFood();
+		List<String> list_name_food = new ArrayList<String>();
+		int size = foods.size();
+		for(int i = 0; i < size; i++){
+			list_name_food.add(foods.get(i).getM_name());
+		}
+		
+		ArrayAdapter adapter = new ArrayAdapter
+				   (this,android.R.layout.simple_list_item_1,list_name_food);
+		autoSearch.setAdapter(adapter);
+		
+		autoSearch.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	
 	public void loadGridFood(List<Food> foods){
@@ -747,14 +879,20 @@ public class Manager extends Activity{
 			
 			TextView price = new TextView(Manager.this);
 			price.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			price.setText(foods.get(i).getM_price());
+			price.setText(foods.get(i).getM_price()+" ");
+			price.setText(foods.get(i).getM_price()+"");
 			
 			itemMenu.setWeightSum(3);
 			itemMenu.addView(profileFood);
 			itemMenu.addView(name);
 			itemMenu.addView(price);
+			gridMenu.addView(itemMenu);
+			
+			map_item_food.put(itemMenu, foods.get(i));
 		}
 	}
+	
+	
 	public void option(){
 //		ImageView option_pic = (ImageView) findViewById(R.id.option_menu);
 //		option_pic.setOnClickListener(new OnClickListener() {
@@ -766,6 +904,19 @@ public class Manager extends Activity{
 	}
 	
 	//--------------Hết phần menu----------------------------
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.manager, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+//		for()
+		return super.onPrepareOptionsMenu(menu);
+	}
 	// --------------Payment----------------------------------
 	//@SuppressWarnings("null")
 	public void payment_main() {

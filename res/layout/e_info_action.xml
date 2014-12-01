@@ -3,17 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#dddddd">
-    
-    <!-- <TextView 
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Title"
-        android:background="#000000"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:textSize="30dp"/> -->
+    android:background="#8DEEEE">
     <LinearLayout 
          android:layout_width="match_parent"
 	     android:layout_height="wrap_content"
@@ -82,14 +72,6 @@
 			        android:text="Đầu bếp"/>
 			</RadioGroup>
 
-	        <!-- <EditText 
-            android:id="@+id/e_position_tb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/> -->
-	        <!-- <EditText 
-            android:id="@+id/e_CMND_tb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>   -->
             <EditText 
             android:id="@+id/e_email_tb"
             android:layout_width="match_parent"
