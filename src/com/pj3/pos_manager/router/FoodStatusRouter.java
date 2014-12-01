@@ -22,26 +22,18 @@ public class FoodStatusRouter extends ServerResource {
 	public Representation doGet (Representation entity){
 		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
+		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		JSONObject jo1 = new JSONObject();
 		JSONArray ja1 = new JSONArray();
 		
 /*		
 		List<Order> orderList = db.getOrderList();
+		if (orderList == null) return new JsonRepresentation("{\"message\":\"nothing to cook\"}");
 		try{
 	
 			for( Order z : orderList){
 				List<FoodTemprary> t = z.getFoodTemp();
 				for (FoodTemprary q: t){
-<<<<<<< Updated upstream
-					
-					if((q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("cook")) ||
-						(q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("waiter"))	){
-						JSONObject jo2 = new JSONObject();
-						jo2.put("f_id", Integer.toString(q.getFoodId()));
-						jo2.put("f_count", Integer.toString(q.getCount()));
-						jo2.put("f_note", q.getNote());						
-						ja1.put(jo2);
-=======
 					for(int i=0; i<q.getCount(); i ++){
 						if((q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("cook")) ||
 							(q.getStatus() == FoodTemprary.FOOD_STATUS_SERVE && uidString.equalsIgnoreCase("waiter"))	){
@@ -58,7 +50,6 @@ public class FoodStatusRouter extends ServerResource {
 						}
 						
 						
->>>>>>> Stashed changes
 					}
 					
 				}
@@ -83,6 +74,7 @@ public class FoodStatusRouter extends ServerResource {
 		DatabaseSource db = Manager.db;
 		try{
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
+			
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
 			orderId = Integer.parseInt(jsonObj.getString("o_id"));
 			fid = Integer.parseInt(jsonObj.getString("f_id"));

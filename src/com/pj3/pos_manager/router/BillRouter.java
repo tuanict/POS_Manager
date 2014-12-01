@@ -64,6 +64,7 @@ public class BillRouter extends ServerResource {
 			for(int i=0; i < foodarray.length(); i ++){
 				JSONObject jo = foodarray.getJSONObject(i);
 				Food f = db.getFood(Integer.parseInt(jo.getString("f_id")));
+				if (f == null) return new JsonRepresentation("{\"message\":\"error\"}");
 				int price = f.getM_price();
 				int count = Integer.parseInt(jo.getString("f_count"));
 				total += price*count;

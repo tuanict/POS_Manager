@@ -26,28 +26,67 @@ public class OrderRouter extends ServerResource {
 		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
-		
-		Order ret = db.getBillTemp(Integer.parseInt(uidString));
-		JSONObject jo1 = new JSONObject();
-		JSONObject jo2 = new JSONObject();
-		try {
-			
-			jo1.put("o_id", ret.getOrderId());
-			jo1.put("t_id", ret.getTableId());
-			JSONArray foodArray = new JSONArray();
-			for (FoodTemprary t : ret.getFoodTemp()){
-				jo2.put("f_id", t.getFoodId());
-				jo2.put("f_count", t.getCount());
-				jo2.put("f_note", t.getNote());
-				foodArray.put(jo2.toString());
+		else if (uidString.equals("all")){
+			try {
+			//get all order
+				List<Order> lo = db.getOrderList();
+				
+				JSONObject jo1 = new JSONObject();
+				JSONArray orderArray = new JSONArray();
+				JSONObject jo2 = new JSONObject();
+				for(Order ret : lo){
+					
+						
+						jo1.put("o_id", ret.getOrderId());
+						jo1.put("t_id", ret.getTableId());
+						jo1.put("t_count",ret.getCount());
+						JSONArray foodArray = new JSONArray();
+						for (FoodTemprary t : ret.getFoodTemp()){
+							jo2.put("f_id", t.getFoodId());
+							jo2.put("f_count", t.getCount());
+							jo2.put("f_note", t.getNote());
+							
+							foodArray.put(jo2.toString());
+							jo2 = new JSONObject();
+						}
+						jo1.put("f_array", jo2);
+					
+					orderArray.put(jo1);
+				}
+				return new JsonRepresentation(new JSONObject().put("o_array", orderArray));
+			} catch(Exception e){
+				e.printStackTrace();
+				String temp  = "{ \"o_array\": [{\"o_id\": \"0001\", \"t_id\": \"002\", \"t_count\": \"001\",\"f_array\":[{\"f_id\": \"002\",\"f_count\":\"3\",\"f_note\": \"error happen, this is test response\"}]}]}";
+				return new JsonRepresentation(temp);
 			}
-			jo1.put("f_array", jo2);
-		} catch(Exception e){
-			e.printStackTrace();
-			return new JsonRepresentation("{\"message\":\"error\"}");
 		}
-		return new JsonRepresentation(jo1);
-		
+		else{
+			//get order with specific id
+			Order ret = db.getBillTemp(Integer.parseInt(uidString));
+			JSONObject jo1 = new JSONObject();
+			JSONObject jo2 = new JSONObject();
+			
+			try {
+				
+				jo1.put("o_id", ret.getOrderId());
+				jo1.put("t_id", ret.getTableId());
+				jo1.put("t_count",ret.getCount());
+				JSONArray foodArray = new JSONArray();
+				for (FoodTemprary t : ret.getFoodTemp()){
+					jo2.put("f_id", t.getFoodId());
+					jo2.put("f_count", t.getCount());
+					jo2.put("f_note", t.getNote());
+					foodArray.put(jo2.toString());
+					jo2 = new JSONObject();
+				}
+				jo1.put("f_array", jo2);
+			} catch(Exception e){
+				e.printStackTrace();
+				String temp  = "{ \"o_array\": [{\"o_id\": \"0001\", \"t_id\": \"002\", \"t_count\": \"001\",\"f_array\":[{\"f_id\": \"002\",\"f_count\":\"3\",\"f_note\": \"this is sparta\"}]}]}";
+				return new JsonRepresentation(temp);
+			}
+			return new JsonRepresentation(jo1);
+		}
 	}
 	
 	
@@ -76,6 +115,7 @@ public class OrderRouter extends ServerResource {
 		}
 		catch(Exception e){
 			e.printStackTrace();
+			//String temp  = "{ \"o_array\": [{\"o_id\": \"0001\", \"t_id\": \"002\", \"t_count\": \"001\",\"f_array\":[{\"f_id\": \"002\",\"f_count\":\"3\",\"f_note\": \"this is sparta\"}]}]}";
 			return new JsonRepresentation("{\"message\":\"error\"}");
 		}
 		return new JsonRepresentation("{\"message\":\"done\"}");
