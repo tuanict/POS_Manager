@@ -307,7 +307,10 @@ public class Manager extends Activity{
 		for(int i = 0; i < numberEmployee_current; i++){
 			LinearLayout item = new LinearLayout(Manager.this);
 			item.setOrientation(LinearLayout.VERTICAL);
+			item.setBackgroundResource(R.drawable.frame_item_in_grid);
+			item.setLayoutParams(new LayoutParams(300, 350));
 			item.setPadding(50, 50, 50, 50);
+			item.setGravity(1);
 			
 			item.setWeightSum(3);
 			final int k = i;
@@ -886,6 +889,10 @@ public class Manager extends Activity{
 			itemMenu.addView(profileFood);
 			itemMenu.addView(name);
 			itemMenu.addView(price);
+			itemMenu.setBackgroundResource(R.drawable.frame_item_in_grid);
+			itemMenu.setLayoutParams(new LayoutParams(250, 300));
+			itemMenu.setPadding(50, 50, 50, 50);
+			itemMenu.setGravity(1);
 			gridMenu.addView(itemMenu);
 			
 			map_item_food.put(itemMenu, foods.get(i));

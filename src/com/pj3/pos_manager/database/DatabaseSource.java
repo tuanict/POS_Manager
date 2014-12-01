@@ -67,8 +67,15 @@ public class DatabaseSource implements SqliteAPIs{
 		}
 		if(ok){
 			billTem = new File(context.getFilesDir(), FILENAME);
-			Log.e("Create File", ""+context.getFilesDir().list().length);   
+			try {
+				billTem.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
+		Log.e("Create File", ""+context.getFilesDir().list()[0].toString());   
 		
 	}
 	@Override
