@@ -3,16 +3,25 @@
  */
 package com.pj3.pos_manager.database;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -45,7 +54,7 @@ public class DatabaseSource implements SqliteAPIs{
 	File billTem;
 	public static int billTempId = 0;
 	public static final String FILENAME = "BillTemp.json";
-	private Context context;
+	private static Context context;
 	JSONParser parser;
 	public DatabaseSource(Context context){
 		
@@ -65,16 +74,19 @@ public class DatabaseSource implements SqliteAPIs{
 				break;
 			}
 		}
+		
+		billTem = new File(context.getFilesDir(), FILENAME);
+		
 		if(ok){
-			billTem = new File(context.getFilesDir(), FILENAME);
 			try {
+				
 				billTem.createNewFile();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
+			
 		Log.e("Create File", ""+context.getFilesDir().list()[0].toString());   
 		
 	}
@@ -468,12 +480,17 @@ public class DatabaseSource implements SqliteAPIs{
 
 	@Override
 	public int createBillTemp(Order order) {
-		order.setOrderId(billTempId);
-		String orderFileName = "o_"+ Integer.toString(billTempId) + ".json";
-		File orderFile = new File(context.getFilesDir(), orderFileName);
+		Date idDate = new Date();
+		String stringId = "" + idDate.getDay() + idDate.getHours() + idDate.getMinutes()
+				+ idDate.getSeconds();
+		order.setOrderId(Integer.parseInt(stringId));
 		JSONObject root = new JSONObject();
+		
 		try {
-			root = (JSONObject) parser.parse(new FileReader(billTem));
+			String readFile = readFileAsString(FILENAME);
+			
+			if(!readFile.equals(""))
+				root = (JSONObject) parser.parse(readFile);
 			JSONObject newBill = new JSONObject();
 			newBill.put("orderId", order.getOrderId());
 			newBill.put("tableId", order.getTableId());
@@ -490,13 +507,34 @@ public class DatabaseSource implements SqliteAPIs{
 				foods.add(food);
 			}
 			newBill.put("foods", foods);
-			root.put(""+order.getOrderId(), newBill);
+			root.put(order.getOrderId(), newBill);
 			
+			writeStringAsFile(root.toJSONString(), FILENAME);
+			
+			
+			billTempId++;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return order.getOrderId();
+	}
+	
+	public boolean clearFileTemp(){
+		JSONObject root = new JSONObject();
+		try {
+			String readFile = readFileAsString(FILENAME);
+			if(readFile.equals("")){
+				return true;
+			}
+			if(!readFile.equals(""))
+				root = (JSONObject) parser.parse(readFile);
+			root.clear();
 			FileWriter file = new FileWriter(billTem);
 			file.write(root.toJSONString());
 			file.flush();
 			file.close();
-			billTempId++;
+			return true;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -507,14 +545,17 @@ public class DatabaseSource implements SqliteAPIs{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return order.getOrderId();
+		return false;
 	}
 
 	@Override
 	public boolean updateBillTemp(Order order) {
 		JSONObject root = new JSONObject();
 		try {
-			root = (JSONObject) parser.parse(new FileReader(billTem));
+			String readFile = readFileAsString(FILENAME);
+			
+			if(!readFile.equals(""))
+				root = (JSONObject) parser.parse(readFile);
 			JSONObject update = (JSONObject) root.get(""+order.getOrderId());
 			update.put("orderId", order.getOrderId());
 			update.put("tableId", order.getTableId());
@@ -554,7 +595,12 @@ public class DatabaseSource implements SqliteAPIs{
 	public boolean deleteBillTemp(int billId) {
 		JSONObject root = new JSONObject();
 		try {
-			root = (JSONObject) parser.parse(new FileReader(billTem));
+			String readFile = readFileAsString(FILENAME);
+			if(readFile.equals("")){
+				return false;
+			}
+			if(!readFile.equals(""))
+				root = (JSONObject) parser.parse(readFile);
 			root.remove(""+billId);
 			FileWriter file = new FileWriter(billTem);
 			file.write(root.toJSONString());
@@ -573,17 +619,51 @@ public class DatabaseSource implements SqliteAPIs{
 		}
 		return false;
 	}
+	
+	public static String readFileAsString(String fileName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        BufferedReader in = null;
+
+        try {
+            in = new BufferedReader(new FileReader(new File(context.getFilesDir(), fileName)));
+            while ((line = in.readLine()) != null) stringBuilder.append(line);
+
+        } catch (FileNotFoundException e) {
+            Log.e("Error read file",""+ e);
+        } catch (IOException e) {
+        	Log.e("Error read file",""+ e);
+        } 
+
+        return stringBuilder.toString();
+    }
+	
+	public static void writeStringAsFile(final String fileContents, String fileName) {
+        try {
+            FileWriter out = new FileWriter(new File(context.getFilesDir(), fileName));
+            out.write(fileContents);
+            out.close();
+        } catch (IOException e) {
+        	Log.e("Error write file",""+ e);
+        }
+    }
 
 	@Override
 	public Order getBillTemp(int billId) {
 		JSONObject root = new JSONObject();
 		try {
-			root = (JSONObject) parser.parse(new FileReader(billTem));
+			String readFile = readFileAsString(FILENAME);
+			if(readFile.equals("")){
+				return null;
+			}
+			
+			if(!readFile.equals(""))
+				root = (JSONObject) parser.parse(readFile);
 			Order order = new Order();
 			JSONObject object = (JSONObject) root.get("" + billId);
 			order.setOrderId(billId);
-			order.setTableId((Integer) object.get("tableId"));
-			order.setCount((Integer) object.get("count"));
+			order.setTableId(Integer.parseInt(object.get("tableId").toString()));
+			order.setCount(Integer.parseInt(object.get("count").toString()));
 			JSONArray foods = (JSONArray) object.get("foods");
 			int size = foods.size();
 			
@@ -592,22 +672,16 @@ public class DatabaseSource implements SqliteAPIs{
 				FoodTemprary fo = new FoodTemprary();
 				JSONObject foodTemp = new JSONObject();
 				foodTemp = (JSONObject) foods.get(i);
-				fo.setFoodId((Integer) foodTemp.get("foodId"));
-				fo.setCount((Integer) foodTemp.get("foodCount"));
+				fo.setFoodId(Integer.parseInt(foodTemp.get("foodId").toString()));
+				fo.setCount(Integer.parseInt(foodTemp.get("foodCount").toString()));
 				fo.setNote((String) foodTemp.get("note"));
-				fo.setStatus((Integer) foodTemp.get("status"));
+				fo.setStatus(Integer.parseInt(foodTemp.get("status").toString()));
 				foList.add(fo);
 			}
 			
 			order.setFoodTemp(foList);
 			return order;
 			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -617,7 +691,47 @@ public class DatabaseSource implements SqliteAPIs{
 	
 	@Override
 	public List<Order> getOrderList(){
-		return null;
+		List<Order> orders = new ArrayList<Order>();
+		JSONObject root = new JSONObject();
+		try {
+			String readFile = readFileAsString(FILENAME);
+			if(readFile.equals("")){
+				return orders;
+			}
+			
+			if(!readFile.equals(""))
+				root = (JSONObject) parser.parse(readFile);
+			
+			Set<Entry<String, JSONObject>> myset = root.entrySet();
+			for(Entry<String, JSONObject> entry:myset){
+				JSONObject object = (JSONObject) root.get(entry.getKey());
+				
+				Order order = new Order();
+				order.setOrderId(Integer.parseInt(entry.getKey()));
+				order.setTableId(Integer.parseInt(object.get("tableId").toString()));
+				order.setCount(Integer.parseInt(object.get("count").toString()));
+				JSONArray foods = (JSONArray) object.get("foods");
+				int size = foods.size();
+				
+				List<FoodTemprary> foList = new ArrayList<FoodTemprary>();
+				for(int j = 0; j < size; j++){
+					FoodTemprary fo = new FoodTemprary();
+					JSONObject foodTemp = new JSONObject();
+					foodTemp = (JSONObject) foods.get(j);
+					fo.setFoodId(Integer.parseInt(foodTemp.get("foodId").toString()));
+					fo.setCount(Integer.parseInt(foodTemp.get("foodCount").toString()));
+					fo.setNote((String) foodTemp.get("note"));
+					fo.setStatus(Integer.parseInt(foodTemp.get("status").toString()));
+					foList.add(fo);
+				}
+				
+				order.setFoodTemp(foList);
+				orders.add(order);
+			}
+		}catch(ParseException e){
+			Log.e("Get Order List",e.toString());
+		}
+		return orders;
 	}
 	@Override
 	public int createFoodStatistic(FoodStatistic foodStatistic) {

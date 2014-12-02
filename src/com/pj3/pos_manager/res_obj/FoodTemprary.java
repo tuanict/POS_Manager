@@ -4,7 +4,7 @@
 package com.pj3.pos_manager.res_obj;
 
 /**
- * @author LêCông
+ * @author Lï¿½Cï¿½ng
  *
  */
 public class FoodTemprary {

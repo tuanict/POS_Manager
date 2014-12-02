@@ -6,7 +6,7 @@ package com.pj3.pos_manager.res_obj;
 import java.util.List;
 
 /**
- * @author LêCông
+ * @author Lï¿½Cï¿½ng
  *
  */
 public class Order {

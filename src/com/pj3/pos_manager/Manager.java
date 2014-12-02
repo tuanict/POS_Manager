@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.pj3.pos_manager.router.BillRouter;
 import com.pj3.pos_manager.router.FoodStatusRouter;
@@ -20,7 +21,12 @@ import com.pj3.pos_manager.R;
 import com.pj3.pos_manager.database.DatabaseSource;
 import com.pj3.pos_manager.res_obj.Employee;
 import com.pj3.pos_manager.res_obj.Food;
+import com.pj3.pos_manager.res_obj.FoodTemprary;
+import com.pj3.pos_manager.res_obj.Order;
 import com.pj3.pos_manager.res_obj.Position;
+
+
+
 
 //android dependencies
 import android.media.Image;
@@ -70,6 +76,9 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+
 //restlet dependencies
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
@@ -117,7 +126,9 @@ public class Manager extends Activity{
 		menu_view();
 		payment_main();
 		main_statistic();
+		db.clearFileTemp();
 	}
+	
 	
 	//Phan nay cua Employee------------------------------------------------------
 	public void main_employee(){
@@ -920,8 +931,20 @@ public class Manager extends Activity{
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-//		for()
+	public boolean onPrepareOptionsMenu(final Menu menu) {
+		for(Entry<LinearLayout, Food> entry : map_item_food.entrySet()){
+			LinearLayout item = entry.getKey();
+			item.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					menu.clear();
+					getMenuInflater().inflate(R.menu.option_manager_menu, menu);
+				}
+			});
+			
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 	// --------------Payment----------------------------------

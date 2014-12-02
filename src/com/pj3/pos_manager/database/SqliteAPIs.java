@@ -13,7 +13,7 @@ import com.pj3.pos_manager.res_obj.Order;
 import com.pj3.pos_manager.res_obj.Position;
 
 /**
- * @author LêCông
+ * @author Lï¿½Cï¿½ng
  *
  */
 public interface SqliteAPIs {
@@ -153,6 +153,12 @@ public interface SqliteAPIs {
 	 * @return true if success or false if fail
 	 */
 	public boolean updateBillTemp(Order order);
+	
+	/**
+	 * Clear file temporary
+	 * @return true if success or false if fail
+	 */
+	public boolean clearFileTemp();
 	
 	/**
 	 * Delete bill temporary
