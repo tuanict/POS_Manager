@@ -58,7 +58,7 @@ public interface SqliteAPIs {
 	 * @param password
 	 * @return true if success or false if fail
 	 */
-	public boolean checkUser(String username, String password);
+	public Employee checkUser(String username, String password);
 	
 	/**
 	 * Delete user by userId

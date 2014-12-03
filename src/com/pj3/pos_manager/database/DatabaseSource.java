@@ -233,17 +233,17 @@ public class DatabaseSource implements SqliteAPIs{
 	}
 
 	@Override
-	public boolean checkUser(String username, String password) {
+	public Employee checkUser(String username, String password) {
 		List<Employee> employees = this.getAllUsers();
 		int size = employees.size();
 		int count = 0;
 		while(count < size){
 			if (employees.get(count).getE_email().equals(username)
 					&& employees.get(count).getE_pass().equals(password))
-				return true;
+				return employees.get(count);
 			else count++;
 		}
-		return false;
+		return null;
 	}
 
 	@Override
