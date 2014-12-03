@@ -2,7 +2,9 @@ package com.pj3.pos_manager.router;
 
 
 import java.io.IOException;
+import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.restlet.data.Form;
 import org.restlet.representation.Representation;
@@ -21,21 +23,52 @@ public class MenuRouter extends ServerResource {
 		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
-		
-		Food ret  = db.getFood(Integer.parseInt(uidString));
-		JSONObject jo = new JSONObject();
-		try{	
-			jo.put("f_id", ret.getM_food_id());
-			jo.put("f_name", ret.getM_name());
-			jo.put("f_price", ret.getM_price());
-			jo.put("f_image", ret.getM_price());
-			jo.put("f_status", ret.getM_status());
-			jo.put("f_options", ret.getM_option());
-		} catch(Exception e){
-			e.printStackTrace();
-			return new JsonRepresentation("{\"message\":\"error\"}");
+		if(uidString.equals("all")){
+			List<Food> listOfFood = db.getAllFood();
+			JSONObject ret = new JSONObject();
+			JSONArray ja = new JSONArray();
+			JSONObject element = new JSONObject();
+			if (listOfFood == null){
+				return new JsonRepresentation("{\"message\":\"error2\"}");
+			}
+			try{
+				for(Food f: listOfFood){
+					element = new JSONObject();
+					element.put("f_id", f.getM_food_id());
+					element.put("f_name", f.getM_name());
+					element.put("f_price", f.getM_price());
+					element.put("f_image", f.getM_price());
+					element.put("f_status", f.getM_status());
+					element.put("f_options", f.getM_option());
+					ja.put(element);
+					
+					
+				}
+				ret.put("m_array", ja);
+				return new JsonRepresentation(ret);
+				
+			} catch(Exception e){
+				e.printStackTrace();
+				return new JsonRepresentation("{\"message\":\"error2\"}");
+			}
+			
 		}
-		return new JsonRepresentation(jo);
+		else{
+			Food ret  = db.getFood(Integer.parseInt(uidString));
+			JSONObject jo = new JSONObject();
+			try{	
+				jo.put("f_id", ret.getM_food_id());
+				jo.put("f_name", ret.getM_name());
+				jo.put("f_price", ret.getM_price());
+				jo.put("f_image", ret.getM_price());
+				jo.put("f_status", ret.getM_status());
+				jo.put("f_options", ret.getM_option());
+			} catch(Exception e){
+				e.printStackTrace();
+				return new JsonRepresentation("{\"message\":\"error\"}");
+			}
+			return new JsonRepresentation(jo);
+		}
 	}
 	
 	@Post("json")
