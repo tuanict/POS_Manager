@@ -28,6 +28,8 @@ import com.pj3.pos_manager.res_obj.Position;
 
 
 
+
+
 //android dependencies
 import android.media.Image;
 import android.net.Uri;
@@ -51,6 +53,7 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -71,11 +74,14 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 
 
@@ -126,7 +132,6 @@ public class Manager extends Activity{
 		menu_view();
 		payment_main();
 		main_statistic();
-		db.clearFileTemp();
 	}
 	
 	
@@ -652,12 +657,10 @@ public class Manager extends Activity{
 	GridLayout gridMenu;
 	Spinner spHideOrDisplay;
 	Spinner spinerSort;
-	Map<LinearLayout, Food> map_item_food;
 	public void menu_view(){
 		gridMenu = (GridLayout) findViewById(R.id.gridMenu);
 		spHideOrDisplay = (Spinner) findViewById(R.id.spHideOrDisplay);
 		spinerSort = (Spinner) findViewById(R.id.spSort);
-		map_item_food = new HashMap<LinearLayout, Food>();
 
 		resetGridview();
 		loadSpSort();
@@ -724,6 +727,7 @@ public class Manager extends Activity{
 				spStatus.setAdapter(adapterStatus);
 				final EditText edNameFood = (EditText) dialog.findViewById(R.id.m_name_food);
 				final EditText edPprice = (EditText) dialog.findViewById(R.id.m_price_food);
+				final EditText edOption = (EditText) dialog.findViewById(R.id.m_option_food);
 				
 				doneButton.setText("Hoàn thành");
 				cancelButton.setText("Hủy");
@@ -734,6 +738,7 @@ public class Manager extends Activity{
 					public void onClick(View v) {
 						String name = edNameFood.getText().toString();
 						String price = edPprice.getText().toString();
+						String option = edOption.getText().toString();
 						if(!checkNull(name) && !checkNull(price)){
 							Food food = new Food();
 							try{
@@ -745,6 +750,7 @@ public class Manager extends Activity{
 							food.setM_name(name);
 							food.setM_price(iPrice);
 							food.setM_image("Anh");
+							food.setM_option(option);
 							
 							db.createFood(food);
 							Toast.makeText(getApplicationContext(),
@@ -869,6 +875,7 @@ public class Manager extends Activity{
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
+					
 			}
 
 			@Override
@@ -904,9 +911,119 @@ public class Manager extends Activity{
 			itemMenu.setLayoutParams(new LayoutParams(250, 300));
 			itemMenu.setPadding(50, 50, 50, 50);
 			itemMenu.setGravity(1);
+			
+			final Food food = foods.get(i);
+			String[] statusList = {"Hiện","Ẩn"};
+			final ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(
+					this, android.R.layout.simple_list_item_1, statusList);
+			
+			itemMenu.setOnLongClickListener(new OnLongClickListener() {
+				
+				@Override
+				public boolean onLongClick(View v) {
+					AlertDialog.Builder dialogMenu = new AlertDialog.Builder(Manager.this);
+					dialogMenu.setIcon(R.drawable.ic_launcher);
+					dialogMenu.setTitle("" + food.getM_name());
+					LayoutInflater inflater= getLayoutInflater();
+					
+//					final View dialogView = inflater.inflate(R.layout., root)
+					dialogMenu.setPositiveButton("Chỉnh sửa", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							final Dialog editDialog = new Dialog(Manager.this);
+							editDialog.setContentView(R.layout.activity_menu_info_action);
+							Button doneButton = (Button) editDialog.findViewById(R.id.m_action1);
+							Button cancel = (Button) editDialog.findViewById(R.id.m_action2);
+							doneButton.setText("Hoàn tất");
+							cancel.setText("Hủy");
+							
+							final Spinner spStatus = (Spinner) editDialog.findViewById(R.id.m_status_food);
+							final EditText edNameFood = (EditText) editDialog.findViewById(R.id.m_name_food);
+							final EditText edPprice = (EditText) editDialog.findViewById(R.id.m_price_food);
+							final EditText edNote = (EditText) editDialog.findViewById(R.id.m_option_food);
+							spStatus.setAdapter(adapterStatus);
+							
+							boolean status = food.getM_status();
+							if(status){
+								spStatus.setSelection(0);
+							}else spStatus.setSelection(1);
+							
+							edNameFood.setText(food.getM_name());
+							edPprice.setText(""+food.getM_price());
+							edNote.setText(food.getM_option());
+							
+							cancel.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									editDialog.dismiss();
+								}
+							});
+							
+							doneButton.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									String name = edNameFood.getText().toString();
+									String price = edPprice.getText().toString();
+									String option = edNote.getText().toString();
+									if(!checkNull(name) && !checkNull(price)){
+										try{
+										int iPrice = Integer.valueOf(price);
+										int selectStatus = spStatus.getSelectedItemPosition();
+										if(selectStatus == 0){
+											food.setM_status(true);
+										}else food.setM_status(false);
+										food.setM_name(name);
+										food.setM_price(iPrice);
+										food.setM_image("Anh");
+										food.setM_option(option);
+										
+										db.updateMenu(food);
+										Toast.makeText(getApplicationContext(),
+												"Cập nhật món ăn thành công!",
+												Toast.LENGTH_SHORT).show();
+										resetGridMenu();
+										}catch(Exception e){
+											Toast.makeText(getApplicationContext(),
+													"Chưa điền giá món ăn!",
+													Toast.LENGTH_SHORT).show();
+										}
+									}else Toast.makeText(getApplicationContext(),
+											"Hãy chắc chắn đã điền đầy đủ thông tin!",
+											Toast.LENGTH_SHORT).show();
+								}
+							});
+							
+							editDialog.show();
+						}
+					});
+					
+					dialogMenu.setNegativeButton("Ẩn/Hiện", new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							boolean status = food.getM_status();
+							String flag = "";
+							if(status)
+								flag += "ẩn";
+							else flag += "hiện";
+							
+							db.changeStatusFood(food.getM_food_id(), !status);
+							Toast.makeText(getApplicationContext(),
+									"Đã "+ flag + " " + food.getM_name(),
+									Toast.LENGTH_SHORT).show();
+							resetGridMenu();
+						}
+					});
+					dialogMenu.show();
+					return false;
+				}
+			});
+			
 			gridMenu.addView(itemMenu);
 			
-			map_item_food.put(itemMenu, foods.get(i));
 		}
 	}
 	
@@ -930,23 +1047,6 @@ public class Manager extends Activity{
 		return true;
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(final Menu menu) {
-		for(Entry<LinearLayout, Food> entry : map_item_food.entrySet()){
-			LinearLayout item = entry.getKey();
-			item.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					menu.clear();
-					getMenuInflater().inflate(R.menu.option_manager_menu, menu);
-				}
-			});
-			
-		}
-		return super.onPrepareOptionsMenu(menu);
-	}
 	// --------------Payment----------------------------------
 	//@SuppressWarnings("null")
 	public void payment_main() {

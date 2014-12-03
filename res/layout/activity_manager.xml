@@ -170,15 +170,7 @@
                     android:id="@+id/menu"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" 
-                    android:orientation="horizontal">
-                    <LinearLayout 
-                        android:layout_width="match_parent"
-	                    android:layout_height="match_parent" 
-	                    android:orientation="vertical">
-                    <LinearLayout 
-                    	android:layout_width="match_parent"
-                    	android:layout_height="match_parent" 
-                    	android:orientation="vertical">
+                    android:orientation="vertical">
                         <LinearLayout 
                             android:layout_width="wrap_content"
                     		android:layout_height="wrap_content" 
@@ -225,8 +217,9 @@
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/add_food"
                                 android:layout_marginLeft="50dp"
-                                android:layout_marginTop="5dp"/>                
-                        </LinearLayout>
+                                android:layout_marginTop="5dp"/>
+ 
+	                    </LinearLayout>         
                         <GridLayout android:id="@+id/gridMenu"
 		                    android:layout_width="match_parent"
 		                    android:layout_height="match_parent"
@@ -236,16 +229,6 @@
 						    android:background="@drawable/backgroud_e_manager">
                         
                     </GridLayout>
-                    </LinearLayout>
-                    </LinearLayout>
-                    <ListView android:id="@+id/left_drawer"
-				        android:layout_width="240dp"
-				        android:layout_height="match_parent"
-				        android:layout_gravity="start"
-				        android:choiceMode="singleChoice"
-				        android:divider="@android:color/transparent"
-				        android:dividerHeight="0dp"
-				        android:background="#111"/>
                 </LinearLayout>    
                 <LinearLayout
                     android:id="@+id/employee"
