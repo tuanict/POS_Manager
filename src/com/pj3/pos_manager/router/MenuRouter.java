@@ -30,6 +30,7 @@ public class MenuRouter extends ServerResource {
 			jo.put("f_price", ret.getM_price());
 			jo.put("f_image", ret.getM_price());
 			jo.put("f_status", ret.getM_status());
+			jo.put("f_options", ret.getM_option());
 		} catch(Exception e){
 			e.printStackTrace();
 			return new JsonRepresentation("{\"message\":\"error\"}");
@@ -44,7 +45,9 @@ public class MenuRouter extends ServerResource {
 		String price  	= "";
 		String image	= "";
 		String status	= "";
+		String options = "";
 		String fid = "";
+		
 		try{
 		JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 		JSONObject 			jsonObj  = jsonRep.getJsonObject();
@@ -52,7 +55,10 @@ public class MenuRouter extends ServerResource {
 		price 		= jsonObj.getString("f_price");
 		//image 		= jsonObj.getString("image");
 		status  	= jsonObj.getString("f_status");
-		int menuid = db.createFood(new Food(foodname,Integer.parseInt(price),image,Boolean.parseBoolean(status)));
+		options  =	jsonObj.getString("f_options");
+		Food tf = new Food(foodname,Integer.parseInt(price),image,Boolean.parseBoolean(status));
+		tf.setM_option(options);
+		int menuid = db.createFood(tf);
 		fid = Integer.toString(menuid);
 		} catch(Exception e){
 			e.printStackTrace();
@@ -69,6 +75,7 @@ public class MenuRouter extends ServerResource {
 		String image	= "";
 		String status	= "";
 		String id		= "";
+		String options = "";
 		String fid = "";
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
@@ -79,10 +86,14 @@ public class MenuRouter extends ServerResource {
 			price 		= jsonObj.getString("f_price");
 			//image 		= jsonObj.getString("image");
 			status  	= jsonObj.getString("f_status");
-			db.updateMenu(new Food(Integer.parseInt(uidString),foodname,Integer.parseInt(price),image,Boolean.parseBoolean(status)));
+			
+			options  =	jsonObj.getString("f_options");
+			Food tf = new Food(foodname,Integer.parseInt(price),image,Boolean.parseBoolean(status));
+			tf.setM_option(options);
+			db.updateMenu(tf);
 		} catch(Exception e){
 			e.printStackTrace();
-			return new JsonRepresentation("{\"message\":\"internal error\"}");
+			return new JsonRepresentation("{\"message\":\"internal erorr\"}");
 		}
 		return new JsonRepresentation("{\"message\":\"done\"}");
 	}
