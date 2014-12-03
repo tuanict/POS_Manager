@@ -756,6 +756,7 @@ public class Manager extends Activity{
 							Toast.makeText(getApplicationContext(),
 									"Thêm món ăn thành công!",
 									Toast.LENGTH_SHORT).show();
+							dialog.dismiss();
 							resetGridMenu();
 							}catch(Exception e){
 								Toast.makeText(getApplicationContext(),
@@ -984,6 +985,7 @@ public class Manager extends Activity{
 										Toast.makeText(getApplicationContext(),
 												"Cập nhật món ăn thành công!",
 												Toast.LENGTH_SHORT).show();
+										editDialog.dismiss();
 										resetGridMenu();
 										}catch(Exception e){
 											Toast.makeText(getApplicationContext(),
