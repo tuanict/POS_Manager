@@ -120,7 +120,7 @@ public class Manager extends Activity{
 		router.attach("/api/bills", BillRouter.class);
 		router.attach("/api/orders", OrderRouter.class);
 		router.attach("/api/foodstatus", FoodStatusRouter.class);
-		
+		router.attach("/login",LoginRouter.class);
 		VirtualHost server = serverComponent.getDefaultHost();
 		server.attach(router); 
 		
