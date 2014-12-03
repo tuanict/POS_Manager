@@ -749,6 +749,32 @@ public class DatabaseSource implements SqliteAPIs{
 		db.close();
 		return fId;
 	}
+	
+	public List<FoodStatistic> getStatisticByFoodId(int f_m_id){
+		List<FoodStatistic> foods = new ArrayList<FoodStatistic>();
+		String query = "SELECT * FROM " + dHelper.TABLE_FOODSTATISTIC + " WHERE " + dHelper.COLUMN_F_M_ID  + "= " + Integer.toString(f_m_id);
+		Log.e(dHelper.LOG,query);
+		
+		SQLiteDatabase db = dHelper.getReadableDatabase();
+		Cursor c = db.rawQuery(query, null);
+		
+		// looping through all rows and adding to list
+		if(c.moveToFirst()){
+			do{
+				FoodStatistic foodStatistic = new FoodStatistic();
+				foodStatistic.setF_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_F_ID)));
+				foodStatistic.setF_count(c.getInt(c.getColumnIndex(dHelper.COLUMN_F_COUNT)));
+				foodStatistic.setF_b_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_F_B_ID)));
+				foodStatistic.setF_m_id(c.getInt(c.getColumnIndex(dHelper.COLUMN_F_M_ID)));
+				foodStatistic.setFpu(c.getInt(c.getColumnIndex(dHelper.COLUMN_FBU)));
+				
+				foods.add(foodStatistic);
+			}while(c.moveToNext());
+		}
+		db.close();
+		return foods;
+	}
+	
 	@Override
 	public List<FoodStatistic> getCookingOrder(int billId) {
 		List<FoodStatistic> foods = new ArrayList<FoodStatistic>();

@@ -188,6 +188,13 @@ public interface SqliteAPIs {
 	public int createFoodStatistic(FoodStatistic foodStatistic);
 	
 	/**
+	 * Get food statistic by food id
+	 * @param f_m_id food id
+	 * @return list foodstatistic
+	 */
+	public List<FoodStatistic> getStatisticByFoodId(int f_m_id);
+	
+	/**
 	 * get all cooking order
 	 * @return list food statistic
 	 */
