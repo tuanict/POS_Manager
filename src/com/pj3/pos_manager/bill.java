@@ -1,10 +1,12 @@
 package com.pj3.pos_manager;
 
+import java.util.List;
+
 public class bill {
 	private String table;
-	private food[] foods;
-	
-	public bill(String table, food[] foods ){
+	private List<food> foods;
+
+	public bill(String table, List<food> foods) {
 		this.foods = foods;
 		this.table = table;
 	}
@@ -17,11 +19,11 @@ public class bill {
 		this.table = table;
 	}
 
-	public food[] getFoods() {
+	public List<food> getFoods() {
 		return foods;
 	}
 
-	public void setFoods(food[] foods) {
+	public void setFoods(List<food> foods) {
 		this.foods = foods;
-	}	
+	}
 }

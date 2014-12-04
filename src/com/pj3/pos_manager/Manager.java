@@ -3,11 +3,13 @@ package com.pj3.pos_manager;
 
 //general dependencies
 import java.io.File;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import com.pj3.pos_manager.router.BillRouter;
 import com.pj3.pos_manager.router.FoodStatusRouter;
@@ -19,8 +21,10 @@ import com.pj3.pos_manager.router.UserRouter;
 import com.pj3.pos_manager.MainActivity;
 import com.pj3.pos_manager.R;
 import com.pj3.pos_manager.database.DatabaseSource;
+import com.pj3.pos_manager.res_obj.Bill;
 import com.pj3.pos_manager.res_obj.Employee;
 import com.pj3.pos_manager.res_obj.Food;
+import com.pj3.pos_manager.res_obj.FoodStatistic;
 import com.pj3.pos_manager.res_obj.FoodTemprary;
 import com.pj3.pos_manager.res_obj.Order;
 import com.pj3.pos_manager.res_obj.Position;
@@ -120,7 +124,7 @@ public class Manager extends Activity{
 		router.attach("/api/bills", BillRouter.class);
 		router.attach("/api/orders", OrderRouter.class);
 		router.attach("/api/foodstatus", FoodStatusRouter.class);
-		router.attach("/login",LoginRouter.class);
+		//router.attach("/login",LoginRouter.class);
 		VirtualHost server = serverComponent.getDefaultHost();
 		server.attach(router); 
 		
@@ -1050,187 +1054,321 @@ public class Manager extends Activity{
 	}
 
 	// --------------Payment----------------------------------
-	//@SuppressWarnings("null")
-	public void payment_main() {
-		ListView lv;
-		Food newfood = new Food();
-		newfood.setM_name("Cocacola");
-		newfood.setM_price(5000);
-		newfood.setM_image("anh");
-		newfood.setM_status(true);
-		//db.createFood(newfood);
+		// @SuppressWarnings("null")
+		public void payment_main() {
+			ListView lv;
+	try {
+		 Food newfood = new Food();
+		 newfood.setM_name("Cocacalo");
+		 newfood.setM_price(7000);
+		 newfood.setM_image("anh");
+		 newfood.setM_status(true);
+		 db.createFood(newfood);
 		
-		/*
-		List<Order> allOrder = db.getOrderList();
-		if (allOrder.size() > 0) {
-			final bill[] bills = null;
-			int i = 0;
-			for (Order aOrder : allOrder) {
-				String table = "Bàn " + String.valueOf(aOrder.getTableId())
-						+ "." + String.valueOf(aOrder.getCount());
-				food[] foods = null;
-				int j = 0;
-				for (FoodTemprary aFood : aOrder.getFoodTemp()) {
-					Food tempFood = db.getFood(aFood.getFoodId());
-					String nameFood = tempFood.getM_name();
-					int numberofFood = aFood.getCount();
-					int priceFood = tempFood.getM_price();
-					food afood = new food(nameFood, numberofFood, priceFood);
-					foods[j] = afood;
-					j++;
+		 Food newfood1 = new Food();
+		 newfood1.setM_name("Sting");
+		 newfood1.setM_price(8000);
+		 newfood1.setM_image("anh");
+		 newfood1.setM_status(true);
+		 db.createFood(newfood1);
+	} catch (Exception e) {
+	}
+			Random rand = new Random();
+			int randomNum1 = rand.nextInt(10) + 1;
+			int randomNum2 = rand.nextInt(10) + 1;
+			FoodTemprary newtempfood = new FoodTemprary();
+			newtempfood.setFoodId(1);
+			newtempfood.setCount(10);
+			List<FoodTemprary> newlisttempfood = new ArrayList<FoodTemprary>();
+			newlisttempfood.add(newtempfood);
+			Order neworder = new Order();
+			neworder.setTableId(randomNum1);
+			neworder.setCount(randomNum2);
+			neworder.setFoodTemp(newlisttempfood);
+			db.createBillTemp(neworder);
+			//
+			// FoodTemprary newtempfood1 = new FoodTemprary();
+			// newtempfood1.setFoodId(2);
+			// newtempfood1.setCount(10);
+			// List<FoodTemprary> newlisttempfood1 = new ArrayList<FoodTemprary>();
+			// newlisttempfood1.add(newtempfood1);
+			// Order neworder1 = new Order();
+			// neworder1.setTableId(2);
+			// neworder1.setCount(1);
+			// neworder1.setFoodTemp(newlisttempfood1);
+			// db.createBillTemp(neworder1);
+
+			final List<Order> allOrder = db.getOrderList();
+			final List<bill> bills = new ArrayList<bill>();
+			if (allOrder != null) {
+				for (Order aOrder : allOrder) {
+					String table = "Bàn " + String.valueOf(aOrder.getTableId())
+							+ "." + String.valueOf(aOrder.getCount());
+					List<food> food_arr = new ArrayList<food>();
+					if (aOrder.getFoodTemp() != null) {
+						for (FoodTemprary aFood : aOrder.getFoodTemp()) {
+							Food tempFood = db.getFood(aFood.getFoodId());
+							String nameFood = tempFood.getM_name();
+							int numberofFood = aFood.getCount();
+							int priceFood = tempFood.getM_price();
+							food afood = new food(nameFood, numberofFood, priceFood);
+							food_arr.add(afood);
+						}
+						bill abill = new bill(table, food_arr);
+						bills.add(abill);
+					}
 				}
-				bill abill = new bill(table, foods);
-				bills[i] = abill;
-			} */
 
-			
-			  food[] foods = new food[] { new food("Cafe", 2, 20000), new
-			 food("Pepsi", 3, 7000), };
-			 
-			  food[] food1s = new food[] { new food("Cafe", 2, 20000), new
-			  food("Sting", 3, 7000), new food("Pepsi", 3, 7000), };
-			  
-			  final bill[] bills = new bill[] { new bill("Bàn 1.1", foods), new
-			  bill("Bàn 2.3", food1s), };
-			 
-			food[] atbfoods = bills[0].getFoods();
+				// final List<bill> bills = new ArrayList<bill>();
+				// List<food> food_arr1 = new ArrayList<food>();
+				// food food1 = new food("Cafe", 2, 20000);
+				// food_arr1.add(food1);
+				// food food2 = new food("Pepsi", 3, 7000);
+				// food_arr1.add(food2);
+				// bill bill1 = new bill("Bàn 1.1", food_arr1);
+				// bills.add(bill1);
+				// List<food> food_arr2 = new ArrayList<food>();
+				// food food3 = new food("Lemonate", 3, 40000);
+				// food_arr2.add(food3);
+				// food food4 = new food("Sting", 5, 8000);
+				// food_arr2.add(food4);
+				// food food5 = new food("Orange Juice", 1, 30000);
+				// food_arr2.add(food5);
+				// bill bill2 = new bill("Bàn 2.2", food_arr2);
+				// bills.add(bill2);
 
-			List<String> bill_arr = new ArrayList<String>();
-			for (bill abill : bills) {
-				bill_arr.add(abill.getTable());
+				final List<String> bill_arr = new ArrayList<String>();
+				for (bill abill : bills) {
+					bill_arr.add(abill.getTable());
+				}
+				final Activity a = this;
+				TextView tvtpayment = (TextView) findViewById(R.id.tvtotal);
+				tvtpayment.setTextSize(20);
+				tvtpayment.setText(" 0 VNĐ");
+				TextView tv1 = (TextView) findViewById(R.id.textView1);
+				tv1.setText(" ");
+				ListView lvfoods = (ListView) findViewById(R.id.tbfoods);
+				ItemPaymentAdapter adapter = null;
+				ArrayList<food> food_arr = new ArrayList<food>();
+				adapter = new ItemPaymentAdapter(a, R.layout.payment_item_layout,
+						food_arr);
+				lvfoods.setAdapter(adapter);
+				lv = (ListView) findViewById(R.id.lvbill);
+				ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+						android.R.layout.simple_list_item_1, bill_arr);
+				lv.setAdapter(arrayAdapter);
+				lv.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						TextView tv1 = (TextView) findViewById(R.id.textView1);
+						tv1.setText(bill_arr.get(position));
+						final int billtemopos = position;
+						ListView lvfoods = (ListView) findViewById(R.id.tbfoods);
+						ArrayList<food> food_arr = new ArrayList<food>();
+						int totalpayment = 0;
+						for (food afood : bills.get(position).getFoods()) {
+							totalpayment = totalpayment + afood.getNumberOf()
+									* afood.getPrice();
+							food_arr.add(afood);
+						}
+						ItemPaymentAdapter adapter = null;
+						adapter = new ItemPaymentAdapter(a,
+								R.layout.payment_item_layout, food_arr);
+						lvfoods.setAdapter(adapter);
+						TextView tvtpayment = (TextView) findViewById(R.id.tvtotal);
+						tvtpayment.setTextSize(20);
+						tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
+						Button btn_payment = (Button) findViewById(R.id.button1);
+						btn_payment.setOnClickListener(new OnClickListener() {
+							public void onClick(View v) {
+								Bill newBill = new Bill();
+								int billid = db.createBill(newBill);
+								List<FoodTemprary> newlistFoodTempraries = allOrder
+										.get(billtemopos).getFoodTemp();
+								for (FoodTemprary aFood : newlistFoodTempraries) {
+									FoodStatistic newFoodStatistic = new FoodStatistic();
+									newFoodStatistic.setF_b_id(billid);
+									newFoodStatistic.setF_count(aFood.getCount());
+									newFoodStatistic.setF_m_id(aFood.getFoodId());
+									int c = db
+											.createFoodStatistic(newFoodStatistic);
+								}
+								db.deleteBillTemp(allOrder.get(billtemopos)
+										.getOrderId());
+								payment_main();
+							}
+						});
+
+					}
+				});
 			}
 
-			lv = (ListView) findViewById(R.id.lvbill);
-			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1, bill_arr);
-			lv.setAdapter(arrayAdapter);
-			final Activity a = this;
-			ListView lvfoods = (ListView) findViewById(R.id.tbfoods);
+		}
+
+		// -----------------------------------Statistic---------------------------------
+		public void main_statistic() {
+			set_spin_type();
+			set_spin_year();
+			set_spin_month();
+			Spinner spSort = (Spinner) findViewById(R.id.sptype);
+			spSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int pos, long id) {
+					change_type(pos);
+				}
+
+				public void onNothingSelected(AdapterView<?> parent) {
+				}
+			});
+
+			Button bt_sttt = (Button) findViewById(R.id.btsttic);
+			bt_sttt.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					try {
+						List<food> food_arr = new ArrayList<food>();
+						for (Food aFood : db.getAllFood()) {
+							int count = 0;
+							List<FoodStatistic> alistFoodStatistics = db
+									.getStatisticByFoodId(aFood.getM_food_id());
+							if (alistFoodStatistics != null) {
+								for (FoodStatistic aFoodStatistic : alistFoodStatistics) {
+									Bill abill = db.getBill(aFoodStatistic.getF_b_id());
+									Date adate = (Date) abill.getB_time_stamp();
+									if (adate.compareTo(get_minium_day()) >= 0
+											&& adate.compareTo(get_maxium_day()) < 0) {
+										count = count + aFoodStatistic.getF_count();
+									}
+								}
+							}
+							
+							String name_food = aFood.getM_name();
+							int price_food = aFood.getM_price();
+							food newfood = new food(name_food, count, price_food);
+							food_arr.add(newfood);
+							
+						}
+						set_lv_foodstt(food_arr);
+					} catch (Exception e) {
+						Toast.makeText(getApplicationContext(), "Đếu được",
+								Toast.LENGTH_SHORT).show();
+					}
+
+				}
+			});
+
+		}
+
+		public void set_spin_type() {
+			Spinner spSort = (Spinner) findViewById(R.id.sptype);
+			String[] arr = { "Theo Quý", "Theo Tháng" };
+			ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, arr);
+			spSort.setAdapter(adapterSort);
+		}
+
+		public void change_type(int type) {
+			TextView tvmonths = (TextView) findViewById(R.id.tvmonth);
+			if (type == 0) {
+				tvmonths.setText("Quý: ");
+				set_spin_month();
+			}
+			if (type == 1) {
+				tvmonths.setText("Tháng : ");
+				set_spin_month2();
+			}
+		}
+
+		public void set_spin_year() {
+			Spinner spSort = (Spinner) findViewById(R.id.spyear);
+			String[] arr = { "2014", "2015", "2016", "2017" };
+			ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, arr);
+			spSort.setAdapter(adapterSort);
+		}
+
+		public void set_spin_month() {
+			Spinner spSort = (Spinner) findViewById(R.id.spmonth);
+			String[] arr = { "1", "2", "3", "4" };
+			ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, arr);
+			spSort.setAdapter(adapterSort);
+		}
+
+		public void set_spin_month2() {
+			Spinner spSort = (Spinner) findViewById(R.id.spmonth);
+			String[] arr = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+					"11", "12" };
+			ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, arr);
+			spSort.setAdapter(adapterSort);
+		}
+
+		public void set_lv_foodstt(List<food> foods ) {
 			ArrayList<food> food_arr = new ArrayList<food>();
 			int totalpayment = 0;
-			for (food afood : atbfoods) {
+			for (food afood : foods) {
 				totalpayment = totalpayment + afood.getNumberOf()
 						* afood.getPrice();
 				food_arr.add(afood);
 			}
-			ItemPaymentAdapter adapter = null;
-			adapter = new ItemPaymentAdapter(this,
-					R.layout.payment_item_layout, food_arr);
-			lvfoods.setAdapter(adapter);
-			TextView tvtpayment = (TextView) findViewById(R.id.tvtotal);
+			ItemStatisticAdapter adapter = null;
+			adapter = new ItemStatisticAdapter(this,
+					R.layout.statistic_item_layout, food_arr);
+			ListView lvfoodstt = (ListView) findViewById(R.id.lvfoodstt);
+			lvfoodstt.setAdapter(adapter);
+			TextView tvtpayment = (TextView) findViewById(R.id.tvbtotal);
 			tvtpayment.setTextSize(20);
 			tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
-
-			lv.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					food[] atbfoods = bills[position].getFoods();
-					ListView lvfoods = (ListView) findViewById(R.id.tbfoods);
-					ArrayList<food> food_arr = new ArrayList<food>();
-					int totalpayment = 0;
-					for (food afood : atbfoods) {
-						totalpayment = totalpayment + afood.getNumberOf()
-								* afood.getPrice();
-						food_arr.add(afood);
-					}
-					ItemPaymentAdapter adapter = null;
-					adapter = new ItemPaymentAdapter(a,
-							R.layout.payment_item_layout, food_arr);
-					lvfoods.setAdapter(adapter);
-					TextView tvtpayment = (TextView) findViewById(R.id.tvtotal);
-					tvtpayment.setTextSize(20);
-					tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
-
-				}
-			});
 		}
 
-	//}
-
-	// -----------------------------------Statistic---------------------------------
-	public void main_statistic() {
-		set_spin_type();
-		set_spin_year();
-		set_spin_month();
-		set_lv_foodstt();
-		Spinner spSort = (Spinner) findViewById(R.id.sptype);
-		spSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int pos, long id) {
-				change_type(pos);
+		public Date get_minium_day() {
+			Spinner sptype = (Spinner) findViewById(R.id.sptype);
+			int type = sptype.getSelectedItemPosition();
+			Spinner spmonth = (Spinner) findViewById(R.id.spmonth);
+			int month = spmonth.getSelectedItemPosition();
+			Spinner spyear = (Spinner) findViewById(R.id.spyear);
+			int year = spyear.getSelectedItemPosition() + 2014;
+			if (type == 0) {
+				month = month * 3 + 1;
+			} else {
+				month = month + 1;
 			}
-
-			public void onNothingSelected(AdapterView<?> parent) {
+			if (month > 12) {
+				month = month - 12;
+				year = year + 1;
 			}
-		});
+			Date newdate = new Date(1, month, year);
+			newdate.setYear(year);
+			newdate.setMonth(month);
+			newdate.setDate(1);
+			return newdate;
 
-	}
-
-	public void set_spin_type() {
-		Spinner spSort = (Spinner) findViewById(R.id.sptype);
-		String[] arr = { "Theo Quý", "Theo Tháng" };
-		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, arr);
-		spSort.setAdapter(adapterSort);
-	}
-
-	public void change_type(int type) {
-		TextView tvmonths = (TextView) findViewById(R.id.tvmonth);
-		if (type == 0) {
-			tvmonths.setText("Quý: ");
-			set_spin_month();
 		}
-		if (type == 1) {
-			tvmonths.setText("Tháng : ");
-			set_spin_month2();
+
+		public Date get_maxium_day() {
+			Spinner sptype = (Spinner) findViewById(R.id.sptype);
+			int type = sptype.getSelectedItemPosition();
+			Spinner spmonth = (Spinner) findViewById(R.id.spmonth);
+			int month = spmonth.getSelectedItemPosition();
+			Spinner spyear = (Spinner) findViewById(R.id.spyear);
+			int year = spyear.getSelectedItemPosition() + 2014;
+			if (type == 0) {
+				month = month * 3 + 4;
+			} else {
+				month = month + 2;
+			}
+			if (month > 12) {
+				month = month - 12;
+				year = year + 1;
+			}
+			Date newdate = new Date(1, month, year);
+			newdate.setYear(year);
+			newdate.setMonth(month);
+			newdate.setDate(1);
+			return newdate;
+
 		}
-	}
 
-	public void set_spin_year() {
-		Spinner spSort = (Spinner) findViewById(R.id.spyear);
-		String[] arr = { "2014", "2013" };
-		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, arr);
-		spSort.setAdapter(adapterSort);
 	}
-
-	public void set_spin_month() {
-		Spinner spSort = (Spinner) findViewById(R.id.spmonth);
-		String[] arr = { "1", "2", "3", "4" };
-		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, arr);
-		spSort.setAdapter(adapterSort);
-	}
-
-	public void set_spin_month2() {
-		Spinner spSort = (Spinner) findViewById(R.id.spmonth);
-		String[] arr = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-				"11", "12" };
-		ArrayAdapter<String> adapterSort = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, arr);
-		spSort.setAdapter(adapterSort);
-	}
-
-	public void set_lv_foodstt() {
-		food[] foods = new food[] { new food("Cafe", 2, 20000),
-				new food("Pepsi", 3, 7000), new food("Coca", 3, 7000), };
-		ArrayList<food> food_arr = new ArrayList<food>();
-		int totalpayment = 0;
-		for (food afood : foods) {
-			totalpayment = totalpayment + afood.getNumberOf()
-					* afood.getPrice();
-			food_arr.add(afood);
-		}
-		ItemStatisticAdapter adapter = null;
-		adapter = new ItemStatisticAdapter(this,
-				R.layout.statistic_item_layout, food_arr);
-		ListView lvfoodstt = (ListView) findViewById(R.id.lvfoodstt);
-		lvfoodstt.setAdapter(adapter);
-		TextView tvtpayment = (TextView) findViewById(R.id.tvbtotal);
-		tvtpayment.setTextSize(20);
-		tvtpayment.setText(String.valueOf(totalpayment) + " VNĐ");
-	}
-
-}

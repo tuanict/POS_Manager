@@ -41,7 +41,7 @@ public final class R {
         public static final int action_settings=0x7f080040;
         public static final int addUserAction=0x7f080015;
         public static final int auto_text_quick_search=0x7f08000e;
-        public static final int btsttic=0x7f08001d;
+        public static final int btsttic=0x7f08001c;
         public static final int button1=0x7f080009;
         public static final int button2=0x7f08000a;
         public static final int contentEmployee=0x7f080013;
@@ -61,7 +61,7 @@ public final class R {
         public static final int linearLayout1=0x7f08001f;
         public static final int linearLayout2=0x7f080022;
         public static final int lvbill=0x7f080004;
-        public static final int lvfoodstt=0x7f080026;
+        public static final int lvfoodstt=0x7f080023;
         public static final int m_action1=0x7f08002b;
         public static final int m_action2=0x7f08002c;
         public static final int m_e_cancel_button=0x7f080037;
@@ -77,6 +77,8 @@ public final class R {
         public static final int menu_settings=0x7f080044;
         public static final int name=0x7f080039;
         public static final int numberof=0x7f08003b;
+        public static final int option_menu_f_edit=0x7f08004b;
+        public static final int option_menu_f_hideOrDisplay=0x7f08004c;
         public static final int payment=0x7f080000;
         public static final int picture_add_food=0x7f080010;
         public static final int picture_profile=0x7f080035;
@@ -90,17 +92,17 @@ public final class R {
         public static final int spHideOrDisplay=0x7f08000f;
         public static final int spPosition=0x7f080014;
         public static final int spSort=0x7f08000c;
-        public static final int spmonth=0x7f08001a;
+        public static final int spmonth=0x7f08001b;
         public static final int sptype=0x7f080018;
-        public static final int spyear=0x7f08001c;
+        public static final int spyear=0x7f08001d;
         public static final int statistic=0x7f080017;
         public static final int tableRow2=0x7f080007;
         public static final int tbfoods=0x7f080006;
         public static final int textView1=0x7f080001;
         public static final int textView11=0x7f080020;
-        public static final int textView2=0x7f080023;
-        public static final int textView3=0x7f080024;
-        public static final int textView4=0x7f080025;
+        public static final int textView2=0x7f080024;
+        public static final int textView3=0x7f080025;
+        public static final int textView4=0x7f080026;
         public static final int title2=0x7f080002;
         public static final int title22=0x7f080003;
         public static final int titlebill=0x7f080005;
@@ -112,7 +114,7 @@ public final class R {
         public static final int tvtitle=0x7f08001e;
         public static final int tvtotal=0x7f080008;
         public static final int tvtotalstt=0x7f08003f;
-        public static final int tvyear=0x7f08001b;
+        public static final int tvyear=0x7f08001a;
     }
     public static final class layout {
         public static final int activity_employee_manager=0x7f030000;
@@ -137,8 +139,9 @@ public final class R {
         public static final int menu=0x7f070006;
         public static final int menu_manager=0x7f070007;
         public static final int option_manager_menu=0x7f070008;
-        public static final int payment=0x7f070009;
-        public static final int statistic_manager=0x7f07000a;
+        public static final int option_menu_food_item=0x7f070009;
+        public static final int payment=0x7f07000a;
+        public static final int statistic_manager=0x7f07000b;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
