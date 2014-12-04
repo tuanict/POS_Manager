@@ -30,7 +30,7 @@ public class OrderRouter extends ServerResource {
 			try {
 			//get all order
 				List<Order> lo = db.getOrderList();
-				
+				if(lo == null ) return new JsonRepresentation("{\"message\":\"no order\"}"); 
 				JSONObject jo1 = new JSONObject();
 				JSONArray orderArray = new JSONArray();
 				JSONObject jo2 = new JSONObject();
@@ -42,14 +42,15 @@ public class OrderRouter extends ServerResource {
 						jo1.put("t_count",ret.getCount());
 						JSONArray foodArray = new JSONArray();
 						for (FoodTemprary t : ret.getFoodTemp()){
+							jo2 = new JSONObject();
 							jo2.put("f_id", t.getFoodId());
 							jo2.put("f_count", t.getCount());
 							jo2.put("f_note", t.getNote());
 							
 							foodArray.put(jo2.toString());
-							jo2 = new JSONObject();
+							
 						}
-						jo1.put("f_array", jo2);
+						jo1.put("f_array", foodArray);
 					
 					orderArray.put(jo1);
 				}
@@ -73,13 +74,15 @@ public class OrderRouter extends ServerResource {
 				jo1.put("t_count",ret.getCount());
 				JSONArray foodArray = new JSONArray();
 				for (FoodTemprary t : ret.getFoodTemp()){
+					jo2 = new JSONObject();
+					
 					jo2.put("f_id", t.getFoodId());
 					jo2.put("f_count", t.getCount());
 					jo2.put("f_note", t.getNote());
 					foodArray.put(jo2.toString());
-					jo2 = new JSONObject();
+					
 				}
-				jo1.put("f_array", jo2);
+				jo1.put("f_array", foodArray);
 			} catch(Exception e){
 				e.printStackTrace();
 				String temp  = "{ \"o_array\": [{\"o_id\": \"0001\", \"t_id\": \"002\", \"t_count\": \"001\",\"f_array\":[{\"f_id\": \"002\",\"f_count\":\"3\",\"f_note\": \"this is sparta\"}]}]}";
@@ -101,16 +104,19 @@ public class OrderRouter extends ServerResource {
 			
 			Order order = new Order();
 			order.setTableId(Integer.parseInt(tableId));
-			
+			FoodTemprary x = new FoodTemprary();
+			List<FoodTemprary> listOfFood = new ArrayList<FoodTemprary>();
 			for (int i = 0 ; i < foodArray.length(); i ++){
-				FoodTemprary x = new FoodTemprary();
+				x = new FoodTemprary();
 				String fid = foodArray.getJSONObject(i).getString("f_id");
 				x.setFoodId(Integer.parseInt(fid));
 				String count = foodArray.getJSONObject(i).getString("f_count");
 				x.setCount(Integer.parseInt(count));
 				String note = foodArray.getJSONObject(i).getString("f_note");
-				x.setNote(note);			
+				x.setNote(note);	
+				listOfFood.add(x);
 			}
+			order.setFoodTemp(listOfFood);
 			db.createBillTemp(order);
 		}
 		catch(Exception e){

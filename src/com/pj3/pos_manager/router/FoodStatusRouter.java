@@ -26,53 +26,31 @@ public class FoodStatusRouter extends ServerResource {
 		JSONObject jo1 = new JSONObject();
 		JSONArray ja1 = new JSONArray();
 		
-/*		
+		
 		List<Order> orderList = db.getOrderList();
-		if (orderList == null) return new JsonRepresentation("{\"message\":\"nothing to cook\"}");
+		System.out.println("tadaa"+ orderList.size());
+		if (orderList.size() == 0) return new JsonRepresentation("{\"message\":\"nothing to cook\"}");
 		try{
 	
 			for( Order z : orderList){
 				List<FoodTemprary> t = z.getFoodTemp();
 				for (FoodTemprary q: t){
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-					
-					if((q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("cook")) ||
-						(q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("waiter"))	){
-						JSONObject jo2 = new JSONObject();
-						jo2.put("f_id", Integer.toString(q.getFoodId()));
-						jo2.put("f_count", Integer.toString(q.getCount()));
-						jo2.put("f_note", q.getNote());						
-						ja1.put(jo2);
-=======
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
 					for(int i=0; i<q.getCount(); i ++){
 						if((q.getStatus() == FoodTemprary.FOOD_STATUS_WAIT && uidString.equalsIgnoreCase("cook")) ||
-							(q.getStatus() == FoodTemprary.FOOD_STATUS_SERVE && uidString.equalsIgnoreCase("waiter"))	){
+							(q.getStatus() == FoodTemprary.FOOD_STATUS_DONE && uidString.equalsIgnoreCase("waiter"))	){
 							JSONObject jo2 = new JSONObject();
 							jo2.put("f_id", Integer.toString(q.getFoodId()));
 							Food f = db.getFood(q.getFoodId());
 							String f_name = f.getM_name();
 							jo2.put("f_name", f_name);
 							jo2.put("o_id", Integer.toString(z.getOrderId()));
-							
+							jo2.put("status", q.getStatus());
 							
 							jo2.put("f_note", q.getNote());
 							ja1.put(jo2);
 						}
 						
 						
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
 					}
 					
 				}
@@ -81,11 +59,26 @@ public class FoodStatusRouter extends ServerResource {
 		}catch(JSONException e){
 				e.printStackTrace();
 				return new JsonRepresentation("{\"message\":\"error\"}");
-		}*/	
+		}
 		return new JsonRepresentation(jo1);
 			
-	
+		
 	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -104,9 +97,13 @@ public class FoodStatusRouter extends ServerResource {
 			status = Integer.parseInt(jsonObj.getString("status"));
 			Order order = db.getBillTemp(orderId);
 			List<FoodTemprary> foodList = order.getFoodTemp();
+			
 			for( FoodTemprary t : foodList){
 				if(t.getFoodId() == fid){
 					t.setStatus(status);
+					System.out.println("tadada" + t.getStatus());
+					
+					break;
 				}
 			}
 			order.setFoodTemp(foodList);
