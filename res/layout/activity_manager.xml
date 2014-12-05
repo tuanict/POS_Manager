@@ -162,7 +162,7 @@
                             android:layout_alignBottom="@+id/button1"
                             android:layout_alignRight="@+id/tableRow2"
                             android:layout_marginRight="145dp"
-                            android:text="In hóa đơn" />
+                            android:text="Cập nhật" />
                     </RelativeLayout>
                 </LinearLayout>
 
