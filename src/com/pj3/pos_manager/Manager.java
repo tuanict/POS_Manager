@@ -13,6 +13,7 @@ import java.util.Random;
 
 import com.pj3.pos_manager.router.BillRouter;
 import com.pj3.pos_manager.router.FoodStatusRouter;
+import com.pj3.pos_manager.router.LoginRouter;
 import com.pj3.pos_manager.router.MenuRouter;
 import com.pj3.pos_manager.router.OrderRouter;
 //import com.pj3.pos_manager.router.RESTResource;
@@ -28,6 +29,7 @@ import com.pj3.pos_manager.res_obj.FoodStatistic;
 import com.pj3.pos_manager.res_obj.FoodTemprary;
 import com.pj3.pos_manager.res_obj.Order;
 import com.pj3.pos_manager.res_obj.Position;
+
 
 
 
@@ -89,6 +91,7 @@ import android.widget.Toast;
 
 
 
+
 //restlet dependencies
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
@@ -136,6 +139,7 @@ public class Manager extends Activity{
 		menu_view();
 		payment_main();
 		main_statistic();
+		
 	}
 	
 	
@@ -150,25 +154,29 @@ public class Manager extends Activity{
 		loadSpPosition();
 		loadGridEmployees(loadEmploy());
 		handlerSpinerPos();
+		initTable_Position();
 	}
 	
 	public void initTable_Position(){
-		Position position = new Position();
-		position.setP_id(1);
-		position.setP_name("Quản lí");
-		position.setP_salary(5000000);
+		List<Position> pList = db.getPositions();
+		if(pList.size() !=0){
+			Position position = new Position();
+			position.setP_id(1);
+			position.setP_name("Quản lí");
+			position.setP_salary(5000000);
 
-		db.createPosition(position);
-		position.setP_id(2);
-		position.setP_name("Bồi bàn");
-		position.setP_salary(3000000);
+			db.createPosition(position);
+			position.setP_id(2);
+			position.setP_name("Bồi bàn");
+			position.setP_salary(3000000);
 
-		db.createPosition(position);
-		position.setP_id(3);
-		position.setP_name("Đầu bếp");
-		position.setP_salary(3500000);
+			db.createPosition(position);
+			position.setP_id(3);
+			position.setP_name("Đầu bếp");
+			position.setP_salary(3500000);
 
-		db.createPosition(position);
+			db.createPosition(position);
+		}
 	}
 	
 	public List<Employee> loadEmploy(){
