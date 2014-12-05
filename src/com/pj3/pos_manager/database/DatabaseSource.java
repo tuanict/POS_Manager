@@ -745,14 +745,14 @@ public class DatabaseSource implements SqliteAPIs{
 		
 		
 		//insert row
-		int fId = (int) db.insert(dHelper.TABLE_MENU, null, values);
+		int fId = (int) db.insert(dHelper.TABLE_FOODSTATISTIC, null, values);
 		db.close();
 		return fId;
 	}
 	
 	public List<FoodStatistic> getStatisticByFoodId(int f_m_id){
 		List<FoodStatistic> foods = new ArrayList<FoodStatistic>();
-		String query = "SELECT * FROM " + dHelper.TABLE_FOODSTATISTIC + " WHERE " + dHelper.COLUMN_F_M_ID  + "= " + Integer.toString(f_m_id);
+		String query = "SELECT * FROM " + dHelper.TABLE_FOODSTATISTIC + " WHERE " + dHelper.COLUMN_F_M_ID  + " = " + Integer.toString(f_m_id);
 		Log.e(dHelper.LOG,query);
 		
 		SQLiteDatabase db = dHelper.getReadableDatabase();

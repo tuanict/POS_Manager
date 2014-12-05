@@ -119,8 +119,8 @@ public class Manager extends Activity{
 		final Router router = new Router(serverComponent.getContext().createChildContext());
 		
 		//test router
-		//RESTResource r = new RESTResource();
-		//router.attach("/",r.getClass());
+//		RESTResource r = new RESTResource();
+//		router.attach("/",r.getClass());
 		
 		router.attach("/api/users", UserRouter.class);
 		router.attach("/api/menus", MenuRouter.class);
@@ -139,7 +139,6 @@ public class Manager extends Activity{
 		menu_view();
 		payment_main();
 		main_statistic();
-		
 	}
 	
 	

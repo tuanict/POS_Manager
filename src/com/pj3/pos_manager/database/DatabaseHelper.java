@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * @author LêCông
+ * @author Lï¿½Cï¿½ng
  *
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -101,6 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ COLUMN_F_COUNT + " INT NOT NULL, "
 			+ COLUMN_F_B_ID + " INT NOT NULL, "
 			+ COLUMN_F_M_ID + " INT NOT NULL,"
+			+ COLUMN_FBU + " INT NOT NULL,"
 			+ "PRIMARY KEY (f_id), "
 			+ "CONSTRAINT f_b_id FOREIGN KEY (f_b_id) REFERENCES BILL(b_id), "
 			+ "CONSTRAINT f_m_id FOREIGN KEY (f_m_id) REFERENCES MENU(m_id)"
