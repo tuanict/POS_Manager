@@ -189,7 +189,7 @@
                             android:layout_height="40dp"
                             android:layout_weight="1" />
 
-                        <ImageView
+                        <!-- <ImageView
                             android:id="@+id/search_quick_image"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                             android:layout_marginLeft="5dp"
                             android:completionThreshold="1"
                             android:ems="10" >
-                        </AutoCompleteTextView>
+                        </AutoCompleteTextView> -->
 
                         <TextView
                             android:layout_width="wrap_content"

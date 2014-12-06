@@ -94,6 +94,7 @@ public class Manager extends Activity {
 	PopupWindow popupWindow;
 	Map<LinearLayout, Employee> itemEmployee;
 	public static DatabaseSource db;
+	public static String imagePath = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -280,9 +281,9 @@ public class Manager extends Activity {
 				String phone = e_phone.getText().toString();
 				if (!checkNull(name) && !checkNull(email) && !checkNull(pass)
 						&& position != 0 && !checkNull(phone)
-						&& email.contains("@")) {
+						&& email.contains("@") && !checkNull(imagePath)) {
 					try {
-						Employee e = new Employee(name, email, pass, "Anh",
+						Employee e = new Employee(name, email, pass, imagePath,
 								Integer.valueOf(phone), position);
 						db.createUser(e);
 						resetGridview();
@@ -313,6 +314,7 @@ public class Manager extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				chooseImage();
 				Toast.makeText(getApplicationContext(), "Chưa xử lí chọn ảnh",
 						Toast.LENGTH_SHORT).show();
 			}
@@ -340,7 +342,7 @@ public class Manager extends Activity {
 			item.setOrientation(LinearLayout.VERTICAL);
 			item.setBackgroundResource(R.drawable.frame_item_in_grid);
 			item.setLayoutParams(new LayoutParams(300, 350));
-			item.setPadding(50, 50, 50, 50);
+			item.setPadding(10, 10, 10, 10);
 			item.setGravity(1);
 
 			item.setWeightSum(3);
@@ -434,7 +436,8 @@ public class Manager extends Activity {
 			});
 
 			ImageView image = new ImageView(Manager.this);
-			image.setBackgroundResource(R.drawable.man_brown);
+			image.setImageBitmap(BitmapFactory.decodeFile(employees.get(i).getE_image()));
+			image.setLayoutParams(new LayoutParams(250, 250));
 
 			TextView name = new TextView(Manager.this);
 			name.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
@@ -606,6 +609,8 @@ public class Manager extends Activity {
 					e_item.setE_email(email);
 
 					e_item.setE_pass(pass);
+					
+					e_item.setE_image(imagePath);
 					try {
 						e_item.setE_phone_number(Integer.valueOf(phone));
 						boolean ok = db.updateUser(e_item);
@@ -636,13 +641,12 @@ public class Manager extends Activity {
 
 		final ImageView profile = (ImageView) dialogEdit
 				.findViewById(R.id.picture_profile);
+		profile.setImageBitmap(BitmapFactory.decodeFile(e_item.getE_image()));
 		profile.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				chooseImage();
-				Toast.makeText(getApplicationContext(), "Chưa xử lí chọn ảnh",
-						Toast.LENGTH_SHORT).show();
 			}
 		});
 		dialogEdit.show();
@@ -686,42 +690,43 @@ public class Manager extends Activity {
 	}
 
 	private static final int PICK_IMAGE = 1;
-	private static String url_image = "";
 
-	public void chooseImage() {
-
-		Intent intent_image = new Intent();
-		intent_image.setType("image/*");
-		intent_image.setAction(Intent.ACTION_GET_CONTENT);
-		Bundle bundle = new Bundle();
-		startActivityForResult(
-				Intent.createChooser(intent_image, "Select picture"),
-				PICK_IMAGE);
-
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == PICK_IMAGE && data != null && data.getData() != null) {
-			if (requestCode == PICK_IMAGE && resultCode == RESULT_OK
-					&& null != data) {
-				Uri selectedImage = data.getData();
-				String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-				Cursor cursor = getContentResolver().query(selectedImage,
-						filePathColumn, null, null, null);
-				cursor.moveToFirst();
-
-				int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-				String picturePath = cursor.getString(columnIndex);
-				cursor.close();
-				url_image = picturePath;
-			}
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
+	
 
 	// ----------------Hết phần employee----------------------------------------
+	
+	//-----------------Handler pick image -----------------------------
+	public void chooseImage() {
+		imagePath = "";
+		Intent i = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+         
+        startActivityForResult(i, PICK_IMAGE);
+		
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+ 
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+ 
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            imagePath = picturePath;
+            cursor.close();
+             
+            
+        }
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	//-----------------End handler pick image -------------------------
 
 	// -------------phan nay cua menu---------------------
 	GridLayout gridMenu;
@@ -819,7 +824,7 @@ public class Manager extends Activity {
 						String name = edNameFood.getText().toString();
 						String price = edPprice.getText().toString();
 						String option = edOption.getText().toString();
-						if (!checkNull(name) && !checkNull(price)) {
+						if (!checkNull(name) && !checkNull(price) && !checkNull(imagePath)) {
 							Food food = new Food();
 							try {
 								int iPrice = Integer.valueOf(price);
@@ -833,6 +838,7 @@ public class Manager extends Activity {
 								food.setM_price(iPrice);
 								food.setM_image("Anh");
 								food.setM_option(option);
+								food.setM_image(imagePath);
 
 								db.createFood(food);
 								Toast.makeText(getApplicationContext(),
@@ -860,6 +866,16 @@ public class Manager extends Activity {
 						dialog.hide();
 					}
 				});
+				
+				ImageView imageFood = (ImageView) dialog.findViewById(R.id.m_menu_dialog_pictureFood);
+				imageFood.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						chooseImage();
+					}
+				});
+				
 				dialog.show();
 			}
 		});
@@ -946,53 +962,26 @@ public class Manager extends Activity {
 		f2.setM_status(fTmp.getM_status());
 	}
 
-	public void searchFood() {
-		AutoCompleteTextView autoSearch = (AutoCompleteTextView) findViewById(R.id.auto_text_quick_search);
-		List<Food> foods = db.getAllFood();
-		List<String> list_name_food = new ArrayList<String>();
-		int size = foods.size();
-		for (int i = 0; i < size; i++) {
-			list_name_food.add(foods.get(i).getM_name());
-		}
-
-		ArrayAdapter adapter = new ArrayAdapter(this,
-				android.R.layout.simple_list_item_1, list_name_food);
-		autoSearch.setAdapter(adapter);
-
-		autoSearch.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-	}
 
 	public void loadGridFood(List<Food> foods) {
 		int size = foods.size();
 		for (int i = 0; i < size; i++) {
+			Food food_i = foods.get(i);
 			LinearLayout itemMenu = new LinearLayout(Manager.this);
 			itemMenu.setOrientation(LinearLayout.VERTICAL);
 			ImageView profileFood = new ImageView(Manager.this);
-			profileFood.setBackgroundResource(R.drawable.add_food);
+			profileFood.setImageBitmap(BitmapFactory.decodeFile(food_i.getM_image()));
+			profileFood.setLayoutParams(new LayoutParams(250, 200));
 
 			TextView name = new TextView(Manager.this);
 			name.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
 					LayoutParams.WRAP_CONTENT));
-			name.setText(foods.get(i).getM_name());
+			name.setText(food_i.getM_name());
 
 			TextView price = new TextView(Manager.this);
 			price.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
 					LayoutParams.WRAP_CONTENT));
-			price.setText(foods.get(i).getM_price() + " ");
-			price.setText(foods.get(i).getM_price() + "");
+			price.setText(food_i.getM_price() + "");
 
 			itemMenu.setWeightSum(3);
 			itemMenu.addView(profileFood);
@@ -1000,7 +989,7 @@ public class Manager extends Activity {
 			itemMenu.addView(price);
 			itemMenu.setBackgroundResource(R.drawable.frame_item_in_grid);
 			itemMenu.setLayoutParams(new LayoutParams(250, 300));
-			itemMenu.setPadding(50, 50, 50, 50);
+			itemMenu.setPadding(10, 10,10, 10);
 			itemMenu.setGravity(1);
 
 			final Food food = foods.get(i);
@@ -1044,6 +1033,8 @@ public class Manager extends Activity {
 											.findViewById(R.id.m_price_food);
 									final EditText edNote = (EditText) editDialog
 											.findViewById(R.id.m_option_food);
+									final ImageView pictureFood = (ImageView)editDialog.findViewById(R.id.m_menu_dialog_pictureFood);
+									
 									spStatus.setAdapter(adapterStatus);
 
 									boolean status = food.getM_status();
@@ -1055,6 +1046,7 @@ public class Manager extends Activity {
 									edNameFood.setText(food.getM_name());
 									edPprice.setText("" + food.getM_price());
 									edNote.setText(food.getM_option());
+									pictureFood.setImageBitmap(BitmapFactory.decodeFile(food.getM_image()));
 
 									cancel.setOnClickListener(new OnClickListener() {
 
@@ -1091,7 +1083,7 @@ public class Manager extends Activity {
 																food.setM_status(false);
 															food.setM_name(name);
 															food.setM_price(iPrice);
-															food.setM_image("Anh");
+															food.setM_image(imagePath);
 															food.setM_option(option);
 
 															db.updateMenu(food);
@@ -1118,7 +1110,13 @@ public class Manager extends Activity {
 																.show();
 												}
 											});
-
+									pictureFood.setOnClickListener(new OnClickListener() {
+										
+										@Override
+										public void onClick(View v) {
+											chooseImage();
+										}
+									});
 									editDialog.show();
 								}
 							});
