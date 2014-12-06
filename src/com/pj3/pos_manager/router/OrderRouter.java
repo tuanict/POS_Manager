@@ -11,11 +11,13 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
+
 import android.content.Context;
 
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
 import com.pj3.pos_manager.database.*;
+import com.pj3.pos_manager.POS_M;
 import com.pj3.pos_manager.Manager;
 
 public class OrderRouter extends ServerResource {
@@ -23,7 +25,7 @@ public class OrderRouter extends ServerResource {
 	
 	@Get
 	public Representation doGet (Representation entity) {
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		else if (uidString.equals("all")){
@@ -95,7 +97,7 @@ public class OrderRouter extends ServerResource {
 	
 	@Post("json")
 	public Representation doPost (Representation entity){
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		try {
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
@@ -131,7 +133,7 @@ public class OrderRouter extends ServerResource {
 	
 	@Put("json")
 	public Representation doPut (Representation entity){
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		Order ret1 = db.getBillTemp(Integer.parseInt(uidString));

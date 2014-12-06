@@ -8,5 +8,7 @@
     <string name="title_activity_payment">Payment</string>
     <string name="menu_settings">Option menus</string>
     <string name="menu_button_edit">Chỉnh sửa</string>
-	<string name="menu_button_delete">Xóa</string>
+    <string name="menu_button_delete">Xóa</string>
+    <string name="title_activity_login">Login</string>
+
 </resources>

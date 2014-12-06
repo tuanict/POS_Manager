@@ -13,6 +13,11 @@ public final class R {
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
 
+         Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
+    
+
          Customize dimensions originally defined in res/values/dimens.xml (such as
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
@@ -38,109 +43,114 @@ public final class R {
         public static final int search=0x7f02000e;
     }
     public static final class id {
-        public static final int action_settings=0x7f08003f;
-        public static final int addUserAction=0x7f080013;
-        public static final int btsttic=0x7f08001a;
-        public static final int button1=0x7f080009;
-        public static final int button2=0x7f08000a;
-        public static final int contentEmployee=0x7f080011;
-        public static final int e_email_tb=0x7f080031;
-        public static final int e_name_tb=0x7f08002c;
-        public static final int e_pass_tb=0x7f080033;
-        public static final int e_phoneNumber_tb=0x7f080032;
-        public static final int employee=0x7f080010;
-        public static final int gridEmployee=0x7f080014;
-        public static final int gridMenu=0x7f08000f;
-        public static final int item1=0x7f080044;
-        public static final int item2=0x7f080045;
-        public static final int item3=0x7f080046;
-        public static final int item4=0x7f080047;
-        public static final int item5=0x7f080048;
-        public static final int item6=0x7f080049;
-        public static final int linearLayout1=0x7f08001d;
-        public static final int linearLayout2=0x7f080020;
-        public static final int lvbill=0x7f080004;
-        public static final int lvfoodstt=0x7f080021;
-        public static final int m_action1=0x7f08002a;
-        public static final int m_action2=0x7f08002b;
-        public static final int m_e_cancel_button=0x7f080036;
-        public static final int m_e_delete=0x7f080042;
-        public static final int m_e_done_button=0x7f080035;
-        public static final int m_e_edit=0x7f080041;
-        public static final int m_e_view=0x7f080040;
-        public static final int m_menu_dialog_pictureFood=0x7f080029;
-        public static final int m_name_food=0x7f080025;
-        public static final int m_option_food=0x7f080028;
-        public static final int m_price_food=0x7f080026;
-        public static final int m_status_food=0x7f080027;
-        public static final int menu=0x7f08000b;
-        public static final int menu_settings=0x7f080043;
-        public static final int name=0x7f080038;
-        public static final int numberof=0x7f08003a;
-        public static final int option_menu_f_edit=0x7f08004a;
-        public static final int option_menu_f_hideOrDisplay=0x7f08004b;
-        public static final int payment=0x7f080000;
-        public static final int picture_add_food=0x7f08000e;
-        public static final int picture_profile=0x7f080034;
-        public static final int price=0x7f080039;
-        public static final int radio_chef=0x7f080030;
-        public static final int radio_manager=0x7f08002e;
-        public static final int radio_position=0x7f08002d;
-        public static final int radio_waiter=0x7f08002f;
-        public static final int section_label=0x7f080037;
-        public static final int spHideOrDisplay=0x7f08000d;
-        public static final int spPosition=0x7f080012;
-        public static final int spSort=0x7f08000c;
-        public static final int spmonth=0x7f080019;
-        public static final int sptype=0x7f080016;
-        public static final int spyear=0x7f08001b;
-        public static final int statistic=0x7f080015;
-        public static final int tableRow2=0x7f080007;
-        public static final int tbfoods=0x7f080006;
-        public static final int textView1=0x7f080001;
-        public static final int textView11=0x7f08001e;
-        public static final int textView2=0x7f080022;
-        public static final int textView3=0x7f080023;
-        public static final int textView4=0x7f080024;
-        public static final int title2=0x7f080002;
-        public static final int title22=0x7f080003;
-        public static final int titlebill=0x7f080005;
-        public static final int total=0x7f08003b;
-        public static final int tvbtotal=0x7f08001f;
-        public static final int tvmonth=0x7f080017;
-        public static final int tvnamestt=0x7f08003c;
-        public static final int tvnumberofstt=0x7f08003d;
-        public static final int tvtitle=0x7f08001c;
-        public static final int tvtotal=0x7f080008;
-        public static final int tvtotalstt=0x7f08003e;
-        public static final int tvyear=0x7f080018;
+        public static final int action_settings=0x7f080042;
+        public static final int addUserAction=0x7f080016;
+        public static final int btsttic=0x7f08001d;
+        public static final int button1=0x7f08000c;
+        public static final int button2=0x7f08000d;
+        public static final int contentEmployee=0x7f080014;
+        public static final int e_email_tb=0x7f080034;
+        public static final int e_name_tb=0x7f08002f;
+        public static final int e_pass_tb=0x7f080036;
+        public static final int e_phoneNumber_tb=0x7f080035;
+        public static final int employee=0x7f080013;
+        public static final int gridEmployee=0x7f080017;
+        public static final int gridMenu=0x7f080012;
+        public static final int item1=0x7f080047;
+        public static final int item2=0x7f080048;
+        public static final int item3=0x7f080049;
+        public static final int item4=0x7f08004a;
+        public static final int item5=0x7f08004b;
+        public static final int item6=0x7f08004c;
+        public static final int linearLayout1=0x7f080020;
+        public static final int linearLayout2=0x7f080023;
+        public static final int login_email=0x7f080000;
+        public static final int login_pass=0x7f080001;
+        public static final int login_submit=0x7f080002;
+        public static final int lvbill=0x7f080007;
+        public static final int lvfoodstt=0x7f080024;
+        public static final int m_action1=0x7f08002d;
+        public static final int m_action2=0x7f08002e;
+        public static final int m_e_cancel_button=0x7f080039;
+        public static final int m_e_delete=0x7f080045;
+        public static final int m_e_done_button=0x7f080038;
+        public static final int m_e_edit=0x7f080044;
+        public static final int m_e_view=0x7f080043;
+        public static final int m_menu_dialog_pictureFood=0x7f08002c;
+        public static final int m_name_food=0x7f080028;
+        public static final int m_option_food=0x7f08002b;
+        public static final int m_price_food=0x7f080029;
+        public static final int m_status_food=0x7f08002a;
+        public static final int menu=0x7f08000e;
+        public static final int menu_settings=0x7f080046;
+        public static final int name=0x7f08003b;
+        public static final int numberof=0x7f08003d;
+        public static final int option_menu_f_edit=0x7f08004d;
+        public static final int option_menu_f_hideOrDisplay=0x7f08004e;
+        public static final int payment=0x7f080003;
+        public static final int picture_add_food=0x7f080011;
+        public static final int picture_profile=0x7f080037;
+        public static final int price=0x7f08003c;
+        public static final int radio_chef=0x7f080033;
+        public static final int radio_manager=0x7f080031;
+        public static final int radio_position=0x7f080030;
+        public static final int radio_waiter=0x7f080032;
+        public static final int section_label=0x7f08003a;
+        public static final int spHideOrDisplay=0x7f080010;
+        public static final int spPosition=0x7f080015;
+        public static final int spSort=0x7f08000f;
+        public static final int spmonth=0x7f08001c;
+        public static final int sptype=0x7f080019;
+        public static final int spyear=0x7f08001e;
+        public static final int statistic=0x7f080018;
+        public static final int tableRow2=0x7f08000a;
+        public static final int tbfoods=0x7f080009;
+        public static final int textView1=0x7f080004;
+        public static final int textView11=0x7f080021;
+        public static final int textView2=0x7f080025;
+        public static final int textView3=0x7f080026;
+        public static final int textView4=0x7f080027;
+        public static final int title2=0x7f080005;
+        public static final int title22=0x7f080006;
+        public static final int titlebill=0x7f080008;
+        public static final int total=0x7f08003e;
+        public static final int tvbtotal=0x7f080022;
+        public static final int tvmonth=0x7f08001a;
+        public static final int tvnamestt=0x7f08003f;
+        public static final int tvnumberofstt=0x7f080040;
+        public static final int tvtitle=0x7f08001f;
+        public static final int tvtotal=0x7f08000b;
+        public static final int tvtotalstt=0x7f080041;
+        public static final int tvyear=0x7f08001b;
     }
     public static final class layout {
         public static final int activity_employee_manager=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_manager=0x7f030002;
-        public static final int activity_menu_info_action=0x7f030003;
-        public static final int activity_menu_manager=0x7f030004;
-        public static final int activity_payment=0x7f030005;
-        public static final int activity_statistic_manager=0x7f030006;
-        public static final int e_info_action=0x7f030007;
-        public static final int fragment_manager_dummy=0x7f030008;
-        public static final int payment_item_layout=0x7f030009;
-        public static final int statistic_item_layout=0x7f03000a;
+        public static final int activity_login=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_manager=0x7f030003;
+        public static final int activity_menu_info_action=0x7f030004;
+        public static final int activity_menu_manager=0x7f030005;
+        public static final int activity_payment=0x7f030006;
+        public static final int activity_statistic_manager=0x7f030007;
+        public static final int e_info_action=0x7f030008;
+        public static final int fragment_manager_dummy=0x7f030009;
+        public static final int payment_item_layout=0x7f03000a;
+        public static final int statistic_item_layout=0x7f03000b;
     }
     public static final class menu {
         public static final int dialog_info_employee=0x7f070000;
         public static final int employee_manager=0x7f070001;
-        public static final int login_sys=0x7f070002;
-        public static final int main=0x7f070003;
-        public static final int manager=0x7f070004;
-        public static final int manager_employee_context_button=0x7f070005;
-        public static final int menu=0x7f070006;
-        public static final int menu_manager=0x7f070007;
-        public static final int option_manager_menu=0x7f070008;
-        public static final int option_menu_food_item=0x7f070009;
-        public static final int payment=0x7f07000a;
-        public static final int statistic_manager=0x7f07000b;
+        public static final int login=0x7f070002;
+        public static final int login_sys=0x7f070003;
+        public static final int main=0x7f070004;
+        public static final int manager=0x7f070005;
+        public static final int manager_employee_context_button=0x7f070006;
+        public static final int menu=0x7f070007;
+        public static final int menu_manager=0x7f070008;
+        public static final int option_manager_menu=0x7f070009;
+        public static final int option_menu_food_item=0x7f07000a;
+        public static final int payment=0x7f07000b;
+        public static final int statistic_manager=0x7f07000c;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -149,6 +159,7 @@ public final class R {
         public static final int menu_button_delete=0x7f050007;
         public static final int menu_button_edit=0x7f050006;
         public static final int menu_settings=0x7f050005;
+        public static final int title_activity_login=0x7f050008;
         public static final int title_activity_manager=0x7f050003;
         public static final int title_activity_payment=0x7f050004;
     }

@@ -10,17 +10,19 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
+
 import android.content.Context;
 
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
 import com.pj3.pos_manager.database.*;
+import com.pj3.pos_manager.POS_M;
 import com.pj3.pos_manager.Manager;
 public class MenuRouter extends ServerResource {
 	
 	@Get
 	public Representation doGet (Representation entity){
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		if(uidString.equals("all")){
@@ -73,7 +75,7 @@ public class MenuRouter extends ServerResource {
 	
 	@Post("json")
 	public Representation doPost (Representation entity){
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		String foodname = "";
 		String price  	= "";
 		String image	= "";
@@ -102,7 +104,7 @@ public class MenuRouter extends ServerResource {
 	
 	@Put("json")
 	public Representation doPut (Representation entity){
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		String foodname = "";
 		String price  	= "";
 		String image	= "";
@@ -135,7 +137,7 @@ public class MenuRouter extends ServerResource {
 	public Representation doDelete(Representation entity){
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		db.changeStatusFood(Integer.parseInt(uidString), false);
 		return new JsonRepresentation("{\"message\":\"done\"}");
 	}

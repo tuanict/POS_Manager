@@ -5,18 +5,18 @@ import java.util.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
-
 import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
+
 import android.content.Context;
 
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
 import com.pj3.pos_manager.database.*;
+import com.pj3.pos_manager.POS_M;
 import com.pj3.pos_manager.Manager;
-
 import com.pj3.pos_manager.database.DatabaseSource;
 
 public class BillRouter extends ServerResource {
@@ -24,7 +24,7 @@ public class BillRouter extends ServerResource {
 	@Get
 	public Representation doGet (Representation entity){
 		try {
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		
@@ -56,7 +56,7 @@ public class BillRouter extends ServerResource {
 	@Post("json")
 	public Representation doPost (Representation entity) {
 		try{
-			DatabaseSource db = Manager.db;
+			DatabaseSource db = POS_M.db;
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
 			JSONArray 			foodarray = jsonObj.getJSONArray("foodarray");

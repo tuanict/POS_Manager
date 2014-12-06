@@ -93,14 +93,14 @@ public class Manager extends Activity {
 	GridLayout gridEmployees;
 	PopupWindow popupWindow;
 	Map<LinearLayout, Employee> itemEmployee;
-	public static DatabaseSource db;
+	
 	public static String imagePath = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manager);
-		db = new DatabaseSource(this);
+//		db = new DatabaseSource(this);
 
 		Component serverComponent = new Component();
 		serverComponent.getServers().add(Protocol.HTTP, 8182);
@@ -148,24 +148,24 @@ public class Manager extends Activity {
 	}
 
 	public void initTable_Position() {
-		List<Position> pList = db.getPositions();
+		List<Position> pList = POS_M.db.getPositions();
 		if (pList.size() != 0) {
 			Position position = new Position();
 			position.setP_id(1);
 			position.setP_name("Quản lí");
 			position.setP_salary(5000000);
 
-			db.createPosition(position);
+			POS_M.db.createPosition(position);
 			position.setP_id(2);
 			position.setP_name("Bồi bàn");
 			position.setP_salary(3000000);
 
-			db.createPosition(position);
+			POS_M.db.createPosition(position);
 			position.setP_id(3);
 			position.setP_name("Đầu bếp");
 			position.setP_salary(3500000);
 
-			db.createPosition(position);
+			POS_M.db.createPosition(position);
 		}
 	}
 
@@ -173,13 +173,13 @@ public class Manager extends Activity {
 		List<Employee> employeess = new ArrayList<Employee>();
 		int select = spPosition.getSelectedItemPosition();
 		if (select == 0) {
-			employeess = db.getAllUsers();
+			employeess = POS_M.db.getAllUsers();
 		} else if (select == 1) {
-			employeess = db.getUserByPosition(1);
+			employeess = POS_M.db.getUserByPosition(1);
 		} else if (select == 2) {
-			employeess = db.getUserByPosition(2);
+			employeess = POS_M.db.getUserByPosition(2);
 		} else if (select == 3) {
-			employeess = db.getUserByPosition(3);
+			employeess = POS_M.db.getUserByPosition(3);
 		}
 		return employeess;
 	}
@@ -285,7 +285,7 @@ public class Manager extends Activity {
 					try {
 						Employee e = new Employee(name, email, pass, imagePath,
 								Integer.valueOf(phone), position);
-						db.createUser(e);
+						POS_M.db.createUser(e);
 						resetGridview();
 						dialogAdd.setTitle("Thêm nhân viên");
 						Toast.makeText(getApplicationContext(),
@@ -397,7 +397,7 @@ public class Manager extends Activity {
 														public void onClick(
 																DialogInterface dialog,
 																int which) {
-															boolean ok = db
+															boolean ok = POS_M.db
 																	.deleteUser(e_item
 																			.getE_id());
 															if (ok) {
@@ -613,7 +613,7 @@ public class Manager extends Activity {
 					e_item.setE_image(imagePath);
 					try {
 						e_item.setE_phone_number(Integer.valueOf(phone));
-						boolean ok = db.updateUser(e_item);
+						boolean ok = POS_M.db.updateUser(e_item);
 						if (ok) {
 							dialogEdit.setTitle("Chỉnh sửa");
 							resetGridview();
@@ -840,7 +840,7 @@ public class Manager extends Activity {
 								food.setM_option(option);
 								food.setM_image(imagePath);
 
-								db.createFood(food);
+								POS_M.db.createFood(food);
 								Toast.makeText(getApplicationContext(),
 										"Thêm món ăn thành công!",
 										Toast.LENGTH_SHORT).show();
@@ -891,19 +891,19 @@ public class Manager extends Activity {
 		int selectSort = spinerSort.getSelectedItemPosition();
 		if (selectHide == 0) {
 			if (selectSort == 0)
-				return sort(db.getAllFood(), true);
+				return sort(POS_M.db.getAllFood(), true);
 			else
-				return sort(db.getAllFood(), false);
+				return sort(POS_M.db.getAllFood(), false);
 		} else if (selectHide == 1) {
 			if (selectSort == 0)
-				return sort(db.getFoodsByStatus(true), true);
+				return sort(POS_M.db.getFoodsByStatus(true), true);
 			else
-				return sort(db.getFoodsByStatus(true), false);
+				return sort(POS_M.db.getFoodsByStatus(true), false);
 		} else {
 			if (selectSort == 0)
-				return sort(db.getFoodsByStatus(false), true);
+				return sort(POS_M.db.getFoodsByStatus(false), true);
 			else
-				return sort(db.getFoodsByStatus(false), false);
+				return sort(POS_M.db.getFoodsByStatus(false), false);
 		}
 
 	}
@@ -1086,7 +1086,7 @@ public class Manager extends Activity {
 															food.setM_image(imagePath);
 															food.setM_option(option);
 
-															db.updateMenu(food);
+															POS_M.db.updateMenu(food);
 															Toast.makeText(
 																	getApplicationContext(),
 																	"Cập nhật món ăn thành công!",
@@ -1134,7 +1134,7 @@ public class Manager extends Activity {
 									else
 										flag += "hiện";
 
-									db.changeStatusFood(food.getM_food_id(),
+									POS_M.db.changeStatusFood(food.getM_food_id(),
 											!status);
 									Toast.makeText(
 											getApplicationContext(),
@@ -1224,7 +1224,7 @@ public class Manager extends Activity {
 		// neworder1.setFoodTemp(newlisttempfood1);
 		// db.createBillTemp(neworder1);
 
-		final List<Order> allOrder = db.getOrderList();
+		final List<Order> allOrder = POS_M.db.getOrderList();
 		final List<bill> bills = new ArrayList<bill>();
 		if (allOrder != null) {
 			for (Order aOrder : allOrder) {
@@ -1233,7 +1233,7 @@ public class Manager extends Activity {
 				List<food> food_arr = new ArrayList<food>();
 				if (aOrder.getFoodTemp() != null) {
 					for (FoodTemprary aFood : aOrder.getFoodTemp()) {
-						Food tempFood = db.getFood(aFood.getFoodId());
+						Food tempFood = POS_M.db.getFood(aFood.getFoodId());
 						String nameFood = tempFood.getM_name();
 						int numberofFood = aFood.getCount();
 						int priceFood = tempFood.getM_price();
@@ -1312,22 +1312,22 @@ public class Manager extends Activity {
 						public void onClick(View v) {
 							Bill newBill = new Bill();
 							newBill.setB_count(ttpm);
-							int billid = db.createBill(newBill);
+							int billid = POS_M.db.createBill(newBill);
 							List<FoodTemprary> newlistFoodTempraries = allOrder
 									.get(billtemopos).getFoodTemp();
 							for (FoodTemprary aFood : newlistFoodTempraries) {
 								FoodStatistic newFoodStatistic = new FoodStatistic();
 								newFoodStatistic.setF_b_id(billid);
-								Food tempfood = db.getFood(aFood.getFoodId());
+								Food tempfood = POS_M.db.getFood(aFood.getFoodId());
 
 								newFoodStatistic.setF_count(aFood.getCount()
 										* tempfood.getM_price());
 								newFoodStatistic.setFpu(tempfood.getM_price());
 								newFoodStatistic.setF_m_id(aFood.getFoodId());
-								int c = db
+								int c = POS_M.db
 										.createFoodStatistic(newFoodStatistic);
 							}
-							db.deleteBillTemp(allOrder.get(billtemopos)
+							POS_M.db.deleteBillTemp(allOrder.get(billtemopos)
 									.getOrderId());
 							payment_main();
 						}
@@ -1360,13 +1360,13 @@ public class Manager extends Activity {
 			public void onClick(View v) {
 				try {
 					List<food> food_arr = new ArrayList<food>();
-					for (Food aFood : db.getAllFood()) {
+					for (Food aFood : POS_M.db.getAllFood()) {
 						int count = 0;
-						List<FoodStatistic> alistFoodStatistics = db
+						List<FoodStatistic> alistFoodStatistics = POS_M.db
 								.getStatisticByFoodId(aFood.getM_food_id());
 						if (alistFoodStatistics != null) {
 							for (FoodStatistic aFoodStatistic : alistFoodStatistics) {
-								Bill abill = db.getBill(aFoodStatistic
+								Bill abill = POS_M.db.getBill(aFoodStatistic
 										.getF_b_id());
 								java.util.Date adate = abill.getB_time_stamp();
 								int mini = adate.compareTo(get_minium_day());

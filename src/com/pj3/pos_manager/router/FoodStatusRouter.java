@@ -9,18 +9,22 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
+
 import android.content.Context;
+
 import java.util.*;
+
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
 import com.pj3.pos_manager.database.*;
+import com.pj3.pos_manager.POS_M;
 import com.pj3.pos_manager.Manager;
 
 public class FoodStatusRouter extends ServerResource {
 	
 	@Get
 	public Representation doGet (Representation entity){
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		JSONObject jo1 = new JSONObject();
@@ -87,7 +91,7 @@ public class FoodStatusRouter extends ServerResource {
 		int orderId=0;
 		int fid = 0;
 		int status =0;
-		DatabaseSource db = Manager.db;
+		DatabaseSource db = POS_M.db;
 		try{
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			
