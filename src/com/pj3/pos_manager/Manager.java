@@ -29,6 +29,7 @@ import com.pj3.pos_manager.res_obj.FoodTemprary;
 import com.pj3.pos_manager.res_obj.Order;
 import com.pj3.pos_manager.res_obj.Position;
 
+
 //android dependencies
 import android.media.Image;
 import android.net.Uri;
@@ -43,6 +44,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -80,6 +82,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 //restlet dependencies
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
@@ -93,6 +96,8 @@ public class Manager extends Activity {
 	GridLayout gridEmployees;
 	PopupWindow popupWindow;
 	Map<LinearLayout, Employee> itemEmployee;
+	public static DatabaseSource  db;
+	public static Context context;
 	
 	public static String imagePath = "";
 
@@ -100,7 +105,8 @@ public class Manager extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manager);
-//		db = new DatabaseSource(this);
+		db = POS_M.db;
+		context = Manager.this;
 
 		Component serverComponent = new Component();
 		serverComponent.getServers().add(Protocol.HTTP, 8182);
@@ -1087,7 +1093,8 @@ public class Manager extends Activity {
 																food.setM_status(false);
 															food.setM_name(name);
 															food.setM_price(iPrice);
-															food.setM_image(imagePath);
+															if(!imagePath.equals(""))
+																food.setM_image(imagePath);
 															food.setM_option(option);
 
 															POS_M.db.updateMenu(food);
