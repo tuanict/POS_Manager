@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="#8DEEEE">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,12 +122,14 @@
                 android:id="@+id/m_action1"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                style="@android:style/Widget.Button.Small"
                 android:text="action1" />
 
             <Button
                 android:id="@+id/m_action2"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                style="@android:style/Widget.Button.Small"
                 android:text="action2" 
                 android:layout_marginLeft="30dp"/>
         </LinearLayout>

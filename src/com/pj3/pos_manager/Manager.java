@@ -525,14 +525,7 @@ public class Manager extends Activity {
 
 		ImageView profile = (ImageView) dialogView
 				.findViewById(R.id.picture_profile);
-		profile.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), "Chưa xử lí chọn ảnh",
-						Toast.LENGTH_SHORT).show();
-			}
-		});
+		profile.setImageBitmap(BitmapFactory.decodeFile(e_item.getE_image()));
 		dialogView.show();
 	}
 
@@ -789,6 +782,7 @@ public class Manager extends Activity {
 	}
 
 	public void pictureAddHandler() {
+		imagePath = " ";
 		ImageView pictutreAdd = (ImageView) findViewById(R.id.picture_add_food);
 		String[] statusList = { "Hiện", "Ẩn" };
 		final ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(
