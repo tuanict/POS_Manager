@@ -235,7 +235,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/backgroud_e_manager"
-                        android:columnCount="6"
+                        android:columnCount="4"
                         android:orientation="horizontal"
                         tools:context=".GridXMLActivity" >
                     </GridLayout>
@@ -280,7 +280,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/backgroud_e_manager"
-                        android:columnCount="5"
+                        android:columnCount="4"
                         android:orientation="horizontal"
                         tools:context=".GridXMLActivity" >
                     </GridLayout>

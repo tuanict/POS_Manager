@@ -56,7 +56,7 @@
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:orientation="horizontal"
-			    android:layout_marginTop="15dp">
+			    android:layout_marginTop="20dp">
 			    <RadioButton android:id="@+id/radio_manager"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
@@ -74,7 +74,8 @@
             <EditText 
             android:id="@+id/e_email_tb"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/> 
+            android:layout_height="wrap_content"
+            /> 
             <EditText 
             android:id="@+id/e_phoneNumber_tb"
             android:layout_width="match_parent"

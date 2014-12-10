@@ -712,6 +712,9 @@ public class Manager extends Activity {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             imagePath = picturePath;
+            Toast.makeText(getApplicationContext(),
+					"Ảnh đã được chọn: "+ imagePath,
+					Toast.LENGTH_SHORT).show();
             cursor.close();
              
             
@@ -964,7 +967,11 @@ public class Manager extends Activity {
 			LinearLayout itemMenu = new LinearLayout(Manager.this);
 			itemMenu.setOrientation(LinearLayout.VERTICAL);
 			ImageView profileFood = new ImageView(Manager.this);
-			profileFood.setImageBitmap(BitmapFactory.decodeFile(food_i.getM_image()));
+			try{
+				profileFood.setImageBitmap(BitmapFactory.decodeFile(food_i.getM_image()));
+			}catch(Exception e){
+				profileFood.setBackgroundResource(R.drawable.man_brown);
+			}
 			profileFood.setLayoutParams(new LayoutParams(250, 200));
 
 			TextView name = new TextView(Manager.this);
