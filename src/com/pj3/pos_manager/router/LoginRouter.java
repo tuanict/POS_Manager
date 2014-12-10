@@ -51,7 +51,7 @@ public class LoginRouter  extends ServerResource{
 				bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 				byte[] b = baos.toByteArray(); 
 				String encodeImage = Base64.encodeToString(b, Base64.DEFAULT);
-				
+				ret.put("imageBase64", encodeImage);
 			}
 			else{
 				ret.put("message", "login fail");
