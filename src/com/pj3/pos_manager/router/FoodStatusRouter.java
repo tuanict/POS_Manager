@@ -9,27 +9,23 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
-
 import android.content.Context;
-
 import java.util.*;
-
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
 import com.pj3.pos_manager.database.*;
-import com.pj3.pos_manager.POS_M;
 import com.pj3.pos_manager.Manager;
 
 public class FoodStatusRouter extends ServerResource {
 	
 	@Get
 	public Representation doGet (Representation entity){
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		JSONObject jo1 = new JSONObject();
 		JSONArray ja1 = new JSONArray();
-		
+		int stt =0;
 		
 		List<Order> orderList = db.getOrderList();
 		System.out.println("tadaa"+ orderList.size());
@@ -49,7 +45,7 @@ public class FoodStatusRouter extends ServerResource {
 							jo2.put("f_name", f_name);
 							jo2.put("o_id", Integer.toString(z.getOrderId()));
 							jo2.put("status", q.getStatus());
-							
+							jo2.put("stt", stt ++);
 							jo2.put("f_note", q.getNote());
 							ja1.put(jo2);
 						}
@@ -86,12 +82,12 @@ public class FoodStatusRouter extends ServerResource {
 	
 	
 	
-	@Post
+	@Post("json")
 	public Representation doPost (Representation entity){
 		int orderId=0;
 		int fid = 0;
 		int status =0;
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
 		try{
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			
@@ -116,6 +112,34 @@ public class FoodStatusRouter extends ServerResource {
 		} catch(Exception e){
 			e.printStackTrace();
 			return new JsonRepresentation("{\"message\":\"error\"}");
+		}
+		
+	}
+	
+	@Put("json")
+	public Representation doPut(Representation entity){
+		DatabaseSource db = Manager.db;
+		String uidString = getQuery().getValues("q");
+		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
+		Order order = db.getBillTemp(Integer.parseInt(uidString));
+		if(order == null ) return new JsonRepresentation("{\"message\":\"error\"}");
+		try {
+			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
+			JSONObject 			jsonObj  = jsonRep.getJsonObject();
+			List<FoodTemprary> foodList = order.getFoodTemp();
+			for (FoodTemprary t: foodList){
+				if (t.getFoodId() == Integer.parseInt((String)jsonObj.get("f_id"))){
+					t.setStatus(Integer.parseInt((String)jsonObj.getString("status")));
+					break;
+				}
+			}
+			order.setFoodTemp(foodList);
+			db.updateBillTemp(order);
+			return new JsonRepresentation("{\"message\":\"done\"}");
+		
+		} catch (Exception e){
+			e.printStackTrace();
+			return new JsonRepresentation("{\"message\":\"internal error\"}");
 		}
 		
 	}

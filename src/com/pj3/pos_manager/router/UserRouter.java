@@ -7,13 +7,11 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
-
 import android.content.Context;
 
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
 import com.pj3.pos_manager.database.*;
-import com.pj3.pos_manager.POS_M;
 import com.pj3.pos_manager.Manager;
 //handle user router
 public class UserRouter extends ServerResource {
@@ -21,7 +19,7 @@ public class UserRouter extends ServerResource {
 	
 	@Get
 	public Representation doGet (Representation entity) throws Exception{
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		Employee  emp = null;
@@ -42,7 +40,7 @@ public class UserRouter extends ServerResource {
 	//create new user
 	@Post("json")
 	public Representation doPost (Representation entity)  {
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
 		try {
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
@@ -62,7 +60,7 @@ public class UserRouter extends ServerResource {
 	//edit user info
 	@Put("json")
 	public Representation doPut (Representation entity){
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		
@@ -85,7 +83,7 @@ public class UserRouter extends ServerResource {
 	//delete an user
 	@Delete
 	public Representation doDelete(Representation entity){
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		db.deleteUser(Integer.parseInt(uidString));

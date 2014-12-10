@@ -11,13 +11,11 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
-
 import android.content.Context;
 
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
 import com.pj3.pos_manager.database.*;
-import com.pj3.pos_manager.POS_M;
 import com.pj3.pos_manager.Manager;
 
 public class OrderRouter extends ServerResource {
@@ -25,7 +23,8 @@ public class OrderRouter extends ServerResource {
 	
 	@Get
 	public Representation doGet (Representation entity) {
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
+		
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		else if (uidString.equals("all")){
@@ -97,7 +96,8 @@ public class OrderRouter extends ServerResource {
 	
 	@Post("json")
 	public Representation doPost (Representation entity){
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
+		int orderid = -1;
 		try {
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
@@ -119,24 +119,25 @@ public class OrderRouter extends ServerResource {
 				listOfFood.add(x);
 			}
 			order.setFoodTemp(listOfFood);
-			db.createBillTemp(order);
+			orderid = db.createBillTemp(order);
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			//String temp  = "{ \"o_array\": [{\"o_id\": \"0001\", \"t_id\": \"002\", \"t_count\": \"001\",\"f_array\":[{\"f_id\": \"002\",\"f_count\":\"3\",\"f_note\": \"this is sparta\"}]}]}";
 			return new JsonRepresentation("{\"message\":\"error\"}");
 		}
-		return new JsonRepresentation("{\"message\":\"done\"}");
+		return new JsonRepresentation("{\"message\":\"done\", \"order_id\":\""+  Integer.toString(orderid) +"\"}");
 	}
 	
 	
 	
 	@Put("json")
 	public Representation doPut (Representation entity){
-		DatabaseSource db = POS_M.db;
+		DatabaseSource db = Manager.db;
 		String uidString = getQuery().getValues("q");
 		if(uidString == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		Order ret1 = db.getBillTemp(Integer.parseInt(uidString));
+		if(ret1 == null ) return new JsonRepresentation("{\"message\":\"error\"}");
 		try {
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
