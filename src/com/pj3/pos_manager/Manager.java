@@ -116,7 +116,7 @@ public class Manager extends Activity {
 		router.attach("/api/bills", BillRouter.class);
 		router.attach("/api/orders", OrderRouter.class);
 		router.attach("/api/foodstatus", FoodStatusRouter.class);
-		// router.attach("/login",LoginRouter.class);
+		 router.attach("/login",LoginRouter.class);
 		VirtualHost server = serverComponent.getDefaultHost();
 		server.attach(router);
 
@@ -325,7 +325,7 @@ public class Manager extends Activity {
 	}
 
 	public boolean checkNull(String input) {
-		return input.equals(" ");
+		return input.equals("");
 	}
 
 	@SuppressLint("NewApi")
@@ -602,8 +602,12 @@ public class Manager extends Activity {
 					e_item.setE_email(email);
 
 					e_item.setE_pass(pass);
+					if(!imagePath.equals("")){
+						e_item.setE_image(imagePath);
+					}else{
+						
+					}
 					
-					e_item.setE_image(imagePath);
 					try {
 						e_item.setE_phone_number(Integer.valueOf(phone));
 						boolean ok = POS_M.db.updateUser(e_item);
@@ -716,8 +720,6 @@ public class Manager extends Activity {
 					"Ảnh đã được chọn: "+ imagePath,
 					Toast.LENGTH_SHORT).show();
             cursor.close();
-             
-            
         }
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -785,7 +787,7 @@ public class Manager extends Activity {
 	}
 
 	public void pictureAddHandler() {
-		imagePath = " ";
+		imagePath = "";
 		ImageView pictutreAdd = (ImageView) findViewById(R.id.picture_add_food);
 		String[] statusList = { "Hiện", "Ẩn" };
 		final ArrayAdapter<String> adapterStatus = new ArrayAdapter<String>(
@@ -835,7 +837,8 @@ public class Manager extends Activity {
 								food.setM_price(iPrice);
 								food.setM_image("Anh");
 								food.setM_option(option);
-								food.setM_image(imagePath);
+								if(!imagePath.equals(""))
+									food.setM_image(imagePath);
 
 								POS_M.db.createFood(food);
 								Toast.makeText(getApplicationContext(),
