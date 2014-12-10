@@ -34,6 +34,7 @@ public class LoginRouter  extends ServerResource{
 				ret.put("email",t.getE_email());
 				ret.put("username", t.getE_name());
 				ret.put("id",t.getE_id());
+				ret.put("position", t.getPOSITION_p_id());
 				ret.put("image", t.getE_image());
 				
 			}
