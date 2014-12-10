@@ -44,10 +44,11 @@
                         <TextView
                             android:id="@+id/textView1"
                             android:layout_width="200dip"
-                            android:layout_height="50dip"
+                            android:layout_height="70dip"
                             android:layout_alignParentTop="true"
                             android:gravity="center"
                             android:text=" "
+                            android:textColor="#AA0000"
                             android:textSize="20sp" />
 
                         <TableRow
@@ -63,12 +64,14 @@
                         <TextView
                             android:id="@+id/titlebill"
                             android:layout_width="600dip"
-                            android:layout_height="50dip"
+                            android:layout_height="70dip"
                             android:layout_above="@+id/title22"
                             android:layout_alignLeft="@+id/title22"
                             android:gravity="center"
                             android:text="THANH TOÁN HÓA ĐƠN"
-                            android:textSize="20sp" />
+                            android:textColor="#439CC8"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
                         <ListView
                             android:id="@+id/tbfoods"
@@ -77,48 +80,55 @@
                             android:layout_alignRight="@+id/tableRow2"
                             android:layout_alignTop="@+id/title2"
                             android:layout_marginLeft="40dp"
-                            android:layout_toRightOf="@+id/textView1" >
+                            android:layout_toRightOf="@+id/textView1"
+                            android:background="@drawable/border_lv" >
                         </ListView>
 
                         <LinearLayout
                             android:id="@+id/title22"
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
+                            android:layout_width="650dp"
+                            android:layout_height="70dp"
                             android:layout_alignTop="@+id/lvbill"
                             android:layout_marginLeft="40dp"
-                            android:layout_toRightOf="@+id/textView1" >
+                            android:layout_toRightOf="@+id/textView1"
+                            android:background="@drawable/border_lv" >
 
                             <TextView
-                                android:layout_width="150dp"
+                                android:layout_width="125dp"
                                 android:layout_height="50dp"
+                                android:gravity="center"
                                 android:text="Item"
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:layout_width="150dp"
+                                android:layout_width="125dp"
                                 android:layout_height="50dp"
+                                android:gravity="center"
                                 android:text="Price"
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:layout_width="150dp"
+                                android:layout_width="100dp"
                                 android:layout_height="50dp"
+                                android:gravity="center"
                                 android:text="Number"
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:layout_width="150dp"
+                                android:layout_width="200dp"
                                 android:layout_height="50dp"
+                                android:gravity="center"
                                 android:text="Total"
                                 android:textSize="20sp" />
                         </LinearLayout>
 
                         <ListView
                             android:id="@+id/lvbill"
-                            android:layout_width="wrap_content"
+                            android:layout_width="650dp"
                             android:layout_height="wrap_content"
                             android:layout_alignRight="@+id/textView1"
-                            android:layout_below="@+id/textView1" >
+                            android:layout_below="@+id/textView1"
+                            android:background="@drawable/border_lv" >
                         </ListView>
 
                         <TableRow
@@ -130,19 +140,20 @@
                             android:layout_marginTop="22dp" >
 
                             <TextView
-                                android:layout_width="200dp"
+                                android:layout_width="500dp"
                                 android:layout_height="50dip"
-                                android:gravity="center"
-                                android:text="Total:"
+                                android:gravity="center_vertical|right"
+                                android:text="Total: "
                                 android:textSize="22sp" />
 
                             <TextView
                                 android:id="@+id/tvtotal"
-                                android:layout_width="400dp"
+                                android:layout_width="200dp"
                                 android:layout_height="50dip"
-                                android:gravity="center"
                                 android:text="0 VNĐ"
-                                android:textSize="22sp" />
+                                android:textColor="#AA0000"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
                         </TableRow>
 
                         <Button
@@ -151,9 +162,9 @@
                             android:layout_height="wrap_content"
                             android:layout_alignLeft="@+id/tbfoods"
                             android:layout_below="@+id/tableRow2"
-                            android:focusableInTouchMode="true"
                             android:layout_marginLeft="104dp"
                             android:layout_marginTop="61dp"
+                            android:focusableInTouchMode="true"
                             android:text="Thanh toán" />
 
                         <Button
@@ -162,8 +173,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/button1"
                             android:layout_alignRight="@+id/tableRow2"
-                            android:focusableInTouchMode="true"
                             android:layout_marginRight="145dp"
+                            android:focusableInTouchMode="true"
                             android:text="Cập nhật" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -177,7 +188,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal" >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -191,7 +202,8 @@
                             android:layout_height="40dp"
                             android:layout_weight="1" />
 
-                        <!-- <ImageView
+                        <!--
+                        <ImageView
                             android:id="@+id/search_quick_image"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -206,7 +218,8 @@
                             android:layout_marginLeft="5dp"
                             android:completionThreshold="1"
                             android:ems="10" >
-                        </AutoCompleteTextView> -->
+                        </AutoCompleteTextView>
+                        -->
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -295,8 +308,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" >
-
-                        <Spinner
+<Spinner
                             android:id="@+id/sptype"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
@@ -346,6 +358,8 @@
                             android:layout_toRightOf="@+id/sptype"
                             android:gravity="center"
                             android:text="THỐNG KÊ SẢN PHẨM"
+                            android:textStyle="bold"
+                            android:textColor="#439CC8" 
                             android:textSize="20dp" />
 
                         <LinearLayout
@@ -359,51 +373,58 @@
 
                             <TextView
                                 android:id="@+id/textView11"
-                                android:layout_width="300dp"
+                                android:layout_width="220dp"
                                 android:layout_height="50dp"
-                                android:gravity="center"
+                                android:layout_weight="1.17"
+                                android:gravity="center_vertical|right"
                                 android:text="Tổng doanh thu: "
                                 android:textSize="20dp" />
 
                             <TextView
                                 android:id="@+id/tvbtotal"
-                                android:layout_width="300dp"
+                                android:layout_width="145dp"
                                 android:layout_height="50dp"
-                                android:gravity="center"
+                                android:layout_weight="0.02"
                                 android:text="0 VNĐ"
-                                android:textSize="20dp" />
+                                android:textColor="#AA0000"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/linearLayout2"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_above="@+id/lvfoodstt"
+                            android:layout_height="70dp"
                             android:layout_alignLeft="@+id/linearLayout1"
                             android:layout_alignRight="@+id/tvtitle"
                             android:layout_below="@+id/linearLayout1"
-                            android:layout_marginLeft="40dp" >
+                            android:layout_marginLeft="40dp"
+                            android:background="@drawable/border_lv" >
 
                             <TextView
                                 android:id="@+id/textView2"
                                 android:layout_width="200dp"
-                                android:layout_height="30dp"
+                                android:layout_height="50dp"
                                 android:text="Tên sản phẩm"
-                                android:textSize="20dp" />
+                                  android:gravity="center"
+                                android:textSize="18dp" />
 
                             <TextView
                                 android:id="@+id/textView3"
-                                android:layout_width="200dp"
-                                android:layout_height="30dp"
+                                android:layout_width="100dp"
+                                android:layout_height="50dp"
                                 android:text="Số lượng"
-                                android:textSize="20dp" />
+                                  android:gravity="center"
+                                android:textSize="18dp" />
 
                             <TextView
                                 android:id="@+id/textView4"
                                 android:layout_width="200dp"
-                                android:layout_height="30dp"
+                                android:layout_height="50dp"
                                 android:text="Thành tiền"
-                                android:textSize="20dp" />
+                                  android:gravity="center"
+                                android:textSize="18dp" />
                         </LinearLayout>
 
                         <Spinner
@@ -426,7 +447,9 @@
                             android:layout_height="wrap_content"
                             android:layout_alignLeft="@+id/linearLayout2"
                             android:layout_alignParentRight="true"
-                            android:layout_alignTop="@+id/spyear" >
+                            android:layout_below="@+id/linearLayout2"
+                            android:background="@drawable/border_lv" >
+
                         </ListView>
                     </RelativeLayout>
                 </LinearLayout>

@@ -1223,17 +1223,17 @@ public class Manager extends Activity {
 //		neworder.setCount(randomNum2);
 //		neworder.setFoodTemp(newlisttempfood);
 //		db.createBillTemp(neworder);
-		//
-		// FoodTemprary newtempfood1 = new FoodTemprary();
-		// newtempfood1.setFoodId(2);
-		// newtempfood1.setCount(10);
-		// List<FoodTemprary> newlisttempfood1 = new ArrayList<FoodTemprary>();
-		// newlisttempfood1.add(newtempfood1);
-		// Order neworder1 = new Order();
-		// neworder1.setTableId(2);
-		// neworder1.setCount(1);
-		// neworder1.setFoodTemp(newlisttempfood1);
-		// db.createBillTemp(neworder1);
+//		
+//		 FoodTemprary newtempfood1 = new FoodTemprary();
+//		 newtempfood1.setFoodId(2);
+//		 newtempfood1.setCount(10);
+//		 List<FoodTemprary> newlisttempfood1 = new ArrayList<FoodTemprary>();
+//		 newlisttempfood1.add(newtempfood1);
+//		 Order neworder1 = new Order();
+//		 neworder1.setTableId(2);
+//		 neworder1.setCount(1);
+//		 neworder1.setFoodTemp(newlisttempfood1);
+//		 db.createBillTemp(neworder1);
 
 		final List<Order> allOrder = POS_M.db.getOrderList();
 		final List<bill> bills = new ArrayList<bill>();

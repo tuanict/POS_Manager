@@ -8,18 +8,21 @@
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:textSize="20sp"
+          android:gravity="center"
         android:text="TextView" />
       <TextView
         android:id="@+id/tvnumberofstt"
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:textSize="20sp"
+          android:gravity="center"
         android:text="TextView" />
        <TextView
         android:id="@+id/tvtotalstt"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:textSize="20sp"
+         android:gravity="center"
         android:text="TextView" />
 
 </LinearLayout>

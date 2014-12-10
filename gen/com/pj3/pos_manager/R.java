@@ -28,19 +28,20 @@ public final class R {
     public static final class drawable {
         public static final int add_food=0x7f020000;
         public static final int backgroud_e_manager=0x7f020001;
-        public static final int button_edit=0x7f020002;
-        public static final int coffeeicon=0x7f020003;
-        public static final int delete=0x7f020004;
-        public static final int edit_icon=0x7f020005;
-        public static final int frame_item_in_grid=0x7f020006;
-        public static final int green_add=0x7f020007;
-        public static final int ic_launcher=0x7f020008;
-        public static final int icon_profile_food=0x7f020009;
-        public static final int list_add_user=0x7f02000a;
-        public static final int logo=0x7f02000b;
-        public static final int man_brown=0x7f02000c;
-        public static final int option=0x7f02000d;
-        public static final int search=0x7f02000e;
+        public static final int border_lv=0x7f020002;
+        public static final int button_edit=0x7f020003;
+        public static final int coffeeicon=0x7f020004;
+        public static final int delete=0x7f020005;
+        public static final int edit_icon=0x7f020006;
+        public static final int frame_item_in_grid=0x7f020007;
+        public static final int green_add=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int icon_profile_food=0x7f02000a;
+        public static final int list_add_user=0x7f02000b;
+        public static final int logo=0x7f02000c;
+        public static final int man_brown=0x7f02000d;
+        public static final int option=0x7f02000e;
+        public static final int search=0x7f02000f;
     }
     public static final class id {
         public static final int action_settings=0x7f080042;
@@ -68,7 +69,7 @@ public final class R {
         public static final int login_pass=0x7f080001;
         public static final int login_submit=0x7f080002;
         public static final int lvbill=0x7f080007;
-        public static final int lvfoodstt=0x7f080024;
+        public static final int lvfoodstt=0x7f080027;
         public static final int m_action1=0x7f08002d;
         public static final int m_action2=0x7f08002e;
         public static final int m_e_cancel_button=0x7f080039;
@@ -107,9 +108,9 @@ public final class R {
         public static final int tbfoods=0x7f080009;
         public static final int textView1=0x7f080004;
         public static final int textView11=0x7f080021;
-        public static final int textView2=0x7f080025;
-        public static final int textView3=0x7f080026;
-        public static final int textView4=0x7f080027;
+        public static final int textView2=0x7f080024;
+        public static final int textView3=0x7f080025;
+        public static final int textView4=0x7f080026;
         public static final int title2=0x7f080005;
         public static final int title22=0x7f080006;
         public static final int titlebill=0x7f080008;
