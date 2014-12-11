@@ -37,7 +37,7 @@ public class OrderRouter extends ServerResource {
 				JSONObject jo2 = new JSONObject();
 				for(Order ret : lo){
 					
-						
+						jo1 = new JSONObject();
 						jo1.put("o_id", ret.getOrderId());
 						jo1.put("t_id", ret.getTableId());
 						jo1.put("t_count",ret.getCount());
@@ -47,7 +47,8 @@ public class OrderRouter extends ServerResource {
 							jo2.put("f_id", t.getFoodId());
 							jo2.put("f_count", t.getCount());
 							jo2.put("f_note", t.getNote());
-							
+							Food dz = db.getFood(t.getFoodId());
+							jo2.put("f_name",dz.getM_name());
 							foodArray.put(jo2.toString());
 							
 						}

@@ -37,7 +37,7 @@ public class MenuRouter extends ServerResource {
 					element.put("f_id", f.getM_food_id());
 					element.put("f_name", f.getM_name());
 					element.put("f_price", f.getM_price());
-					element.put("f_image", f.getM_price());
+					element.put("f_image", f.getM_image());
 					element.put("f_status", f.getM_status());
 					element.put("f_options", f.getM_option());
 					ja.put(element);
@@ -60,7 +60,7 @@ public class MenuRouter extends ServerResource {
 				jo.put("f_id", ret.getM_food_id());
 				jo.put("f_name", ret.getM_name());
 				jo.put("f_price", ret.getM_price());
-				jo.put("f_image", ret.getM_price());
+				jo.put("f_image", ret.getM_image());
 				jo.put("f_status", ret.getM_status());
 				jo.put("f_options", ret.getM_option());
 			} catch(Exception e){
