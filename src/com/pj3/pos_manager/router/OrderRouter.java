@@ -31,7 +31,7 @@ public class OrderRouter extends ServerResource {
 			try {
 			//get all order
 				List<Order> lo = db.getOrderList();
-				if(lo == null ) return new JsonRepresentation("{\"message\":\"no order\"}"); 
+				if(lo == null || lo.size() == 0 ) return new JsonRepresentation("{\"message\":\"no order\"}"); 
 				JSONObject jo1 = new JSONObject();
 				JSONArray orderArray = new JSONArray();
 				JSONObject jo2 = new JSONObject();
@@ -47,8 +47,16 @@ public class OrderRouter extends ServerResource {
 							jo2.put("f_id", t.getFoodId());
 							jo2.put("f_count", t.getCount());
 							jo2.put("f_note", t.getNote());
-							Food dz = db.getFood(t.getFoodId());
-							jo2.put("f_name",dz.getM_name());
+							
+							Food dz = null;
+							try{
+								dz = db.getFood(t.getFoodId());
+							}
+							catch (Exception e){
+								
+							}
+							
+							jo2.put("f_name",dz != null ? dz.getM_name() : "");
 							foodArray.put(jo2.toString());
 							
 						}
