@@ -135,7 +135,7 @@ public class OrderRouter extends ServerResource {
 			//String temp  = "{ \"o_array\": [{\"o_id\": \"0001\", \"t_id\": \"002\", \"t_count\": \"001\",\"f_array\":[{\"f_id\": \"002\",\"f_count\":\"3\",\"f_note\": \"this is sparta\"}]}]}";
 			return new JsonRepresentation("{\"message\":\"error\"}");
 		}
-		return new JsonRepresentation("{\"message\":\"done\", \"order_id\":\""+  Integer.toString(orderid) +"\"}");
+		return new JsonRepresentation("{\"message\":\"done\", \"o_id\":\""+  Integer.toString(orderid) +"\"}");
 	}
 	
 	
