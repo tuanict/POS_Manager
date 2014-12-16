@@ -128,7 +128,7 @@ public class FoodStatusRouter extends ServerResource {
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
 			List<FoodTemprary> foodList = order.getFoodTemp();
 			for (FoodTemprary t: foodList){
-				if (t.getFoodId() == Integer.parseInt((String)jsonObj.get("f_id"))){
+				if (t.getFoodId() == Integer.parseInt(jsonObj.getString("f_id"))){
 					t.setStatus(Integer.parseInt((String)jsonObj.getString("status")));
 					break;
 				}

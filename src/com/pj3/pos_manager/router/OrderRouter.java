@@ -47,7 +47,7 @@ public class OrderRouter extends ServerResource {
 							jo2.put("f_id", t.getFoodId());
 							jo2.put("f_count", t.getCount());
 							jo2.put("f_note", t.getNote());
-							
+							jo2.put("status",t.getStatus());
 							Food dz = null;
 							try{
 								dz = db.getFood(t.getFoodId());
@@ -57,7 +57,7 @@ public class OrderRouter extends ServerResource {
 							}
 							
 							jo2.put("f_name",dz != null ? dz.getM_name() : "");
-							foodArray.put(jo2.toString());
+							foodArray.put(jo2);
 							
 						}
 						jo1.put("f_array", foodArray);
@@ -89,7 +89,7 @@ public class OrderRouter extends ServerResource {
 					jo2.put("f_id", t.getFoodId());
 					jo2.put("f_count", t.getCount());
 					jo2.put("f_note", t.getNote());
-					foodArray.put(jo2.toString());
+					foodArray.put(jo2);
 					
 				}
 				jo1.put("f_array", foodArray);
@@ -135,7 +135,7 @@ public class OrderRouter extends ServerResource {
 			//String temp  = "{ \"o_array\": [{\"o_id\": \"0001\", \"t_id\": \"002\", \"t_count\": \"001\",\"f_array\":[{\"f_id\": \"002\",\"f_count\":\"3\",\"f_note\": \"this is sparta\"}]}]}";
 			return new JsonRepresentation("{\"message\":\"error\"}");
 		}
-		return new JsonRepresentation("{\"message\":\"done\", \"o_id\":\""+  Integer.toString(orderid) +"\"}");
+		return new JsonRepresentation("{\"message\":\"done\", \"order_id\":\""+  Integer.toString(orderid) +"\"}");
 	}
 	
 	
