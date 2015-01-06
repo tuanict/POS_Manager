@@ -47,6 +47,9 @@ public class OrderRouter extends ServerResource {
 							jo2.put("f_id", t.getFoodId());
 							jo2.put("f_count", t.getCount());
 							jo2.put("f_note", t.getNote());
+							Food z = db.getFood(t.getFoodId());
+							jo2.put("f_image", z.getM_image());
+							z = null;
 							jo2.put("status",t.getStatus());
 							Food dz = null;
 							try{
