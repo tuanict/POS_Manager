@@ -46,6 +46,7 @@ public class FoodStatusRouter extends ServerResource {
 							jo2.put("o_id", Integer.toString(z.getOrderId()));
 							jo2.put("status", q.getStatus());
 							jo2.put("stt", stt ++);
+							jo2.put("f_image", f.getM_image());
 							jo2.put("f_note", q.getNote());
 							ja1.put(jo2);
 						}
