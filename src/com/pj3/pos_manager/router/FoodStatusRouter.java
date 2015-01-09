@@ -93,22 +93,26 @@ public class FoodStatusRouter extends ServerResource {
 			JsonRepresentation  jsonRep  = new JsonRepresentation(entity);
 			
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
-			orderId = Integer.parseInt(jsonObj.getString("o_id"));
-			fid = Integer.parseInt(jsonObj.getString("f_id"));
-			status = Integer.parseInt(jsonObj.getString("status"));
-			Order order = db.getBillTemp(orderId);
-			List<FoodTemprary> foodList = order.getFoodTemp();
-			
-			for( FoodTemprary t : foodList){
-				if(t.getFoodId() == fid){
-					t.setStatus(status);
-					System.out.println("tadada" + t.getStatus());
-					
-					break;
+			JSONArray jsonArr = jsonObj.getJSONArray("f_array");
+			for (int i=0; i< jsonArr.length(); i ++){
+				JSONObject jizz = jsonArr.getJSONObject(i);
+				orderId = Integer.parseInt(jizz.getString("o_id"));
+				fid = Integer.parseInt(jizz.getString("f_id"));
+				status = Integer.parseInt(jizz.getString("status"));
+				Order order = db.getBillTemp(orderId);
+				List<FoodTemprary> foodList = order.getFoodTemp();
+				for( FoodTemprary t : foodList){
+					if(t.getFoodId() == fid){
+						t.setStatus(status);
+						System.out.println("tadada" + t.getStatus());
+						
+						break;
+					}
 				}
+				order.setFoodTemp(foodList);
+				db.updateBillTemp(order);
 			}
-			order.setFoodTemp(foodList);
-			db.updateBillTemp(order);
+			
 			return new JsonRepresentation("{\"message\":\"done\"}");
 		} catch(Exception e){
 			e.printStackTrace();
