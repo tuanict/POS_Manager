@@ -33,16 +33,17 @@ public class MenuRouter extends ServerResource {
 			}
 			try{
 				for(Food f: listOfFood){
-					element = new JSONObject();
-					element.put("f_id", f.getM_food_id());
-					element.put("f_name", f.getM_name());
-					element.put("f_price", f.getM_price());
-					element.put("f_image", f.getM_image());
-					element.put("f_status", f.getM_status());
-					element.put("f_options", f.getM_option());
-					ja.put(element);
+					if(f.getM_status() == true){
+						element = new JSONObject();
+						element.put("f_id", f.getM_food_id());
+						element.put("f_name", f.getM_name());
+						element.put("f_price", f.getM_price());
+						element.put("f_image", f.getM_image());
+						element.put("f_status", f.getM_status());
+						element.put("f_options", f.getM_option());
+						ja.put(element);
 					
-					
+					}
 				}
 				ret.put("m_array", ja);
 				return new JsonRepresentation(ret);
