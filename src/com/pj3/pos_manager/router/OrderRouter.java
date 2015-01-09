@@ -1,5 +1,6 @@
 package com.pj3.pos_manager.router;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,9 @@ import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import com.pj3.*;
@@ -51,6 +55,12 @@ public class OrderRouter extends ServerResource {
 							jo2.put("f_note", t.getNote());
 							Food z = db.getFood(t.getFoodId());
 							jo2.put("f_image", z.getM_image());
+							Bitmap bm = BitmapFactory.decodeFile(z.getM_image());
+							ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+							bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+							byte[] b = baos.toByteArray(); 
+							String encodeImage = Base64.encodeToString(b, Base64.DEFAULT);
+							jo2.put("base64_data", encodeImage);
 							z = null;
 							jo2.put("status",t.getStatus());
 							Food dz = null;

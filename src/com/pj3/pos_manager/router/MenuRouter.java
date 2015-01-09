@@ -1,6 +1,7 @@
 package com.pj3.pos_manager.router;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,7 +11,11 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
@@ -39,6 +44,12 @@ public class MenuRouter extends ServerResource {
 						element.put("f_name", f.getM_name());
 						element.put("f_price", f.getM_price());
 						element.put("f_image", f.getM_image());
+						Bitmap bm = BitmapFactory.decodeFile(f.getM_image());
+						ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+						bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+						byte[] b = baos.toByteArray(); 
+						String encodeImage = Base64.encodeToString(b, Base64.DEFAULT);
+						element.put("base64_data", encodeImage);
 						element.put("f_status", f.getM_status());
 						element.put("f_options", f.getM_option());
 						ja.put(element);
