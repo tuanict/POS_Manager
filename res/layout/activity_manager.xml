@@ -242,16 +242,22 @@
                             android:layout_marginTop="5dp"
                             android:src="@drawable/add_food" />
                     </LinearLayout>
-
-                    <GridLayout
-                        android:id="@+id/gridMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/backgroud_e_manager"
-                        android:columnCount="4"
-                        android:orientation="horizontal"
-                        tools:context=".GridXMLActivity" >
-                    </GridLayout>
+					<ScrollView 
+					    	android:layout_width="match_parent"
+	                        android:layout_height="match_parent">
+	                    <GridLayout
+	                        android:id="@+id/gridMenu"
+	                        android:layout_width="match_parent"
+	                        android:layout_height="match_parent"
+	                        android:background="@drawable/backgroud_e_manager"
+	                        android:columnCount="4"
+	                        android:useDefaultMargins="true"
+	                        android:rowOrderPreserved="true"
+	                        android:rowCount="20"
+	                        android:orientation="horizontal"
+	                        tools:context=".GridXMLActivity" >
+	                    </GridLayout>
+                    </ScrollView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -287,16 +293,19 @@
                             android:layout_marginLeft="50dp"
                             android:src="@drawable/list_add_user" />
                     </LinearLayout>
-
-                    <GridLayout
-                        android:id="@+id/gridEmployee"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/backgroud_e_manager"
-                        android:columnCount="4"
-                        android:orientation="horizontal"
-                        tools:context=".GridXMLActivity" >
-                    </GridLayout>
+					<ScrollView 
+					    	android:layout_width="match_parent"
+	                        android:layout_height="match_parent">
+	                    <GridLayout
+	                        android:id="@+id/gridEmployee"
+	                        android:layout_width="match_parent"
+	                        android:layout_height="match_parent"
+	                        android:background="@drawable/backgroud_e_manager"
+	                        android:columnCount="3"
+	                        android:orientation="horizontal"
+	                        tools:context=".GridXMLActivity" >
+	                    </GridLayout>
+                    </ScrollView>
                 </LinearLayout>
 
                 <LinearLayout

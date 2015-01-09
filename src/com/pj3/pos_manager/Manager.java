@@ -12,6 +12,7 @@ import java.util.Random;
 
 import com.pj3.pos_manager.router.BillRouter;
 import com.pj3.pos_manager.router.FoodStatusRouter;
+import com.pj3.pos_manager.router.ImageRouter;
 import com.pj3.pos_manager.router.LoginRouter;
 import com.pj3.pos_manager.router.MenuRouter;
 import com.pj3.pos_manager.router.OrderRouter;
@@ -28,6 +29,7 @@ import com.pj3.pos_manager.res_obj.FoodStatistic;
 import com.pj3.pos_manager.res_obj.FoodTemprary;
 import com.pj3.pos_manager.res_obj.Order;
 import com.pj3.pos_manager.res_obj.Position;
+
 
 
 //android dependencies
@@ -81,6 +83,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 
 //restlet dependencies
