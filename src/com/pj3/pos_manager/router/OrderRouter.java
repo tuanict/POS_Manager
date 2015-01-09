@@ -11,7 +11,9 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.*;
 import org.restlet.ext.json.JsonRepresentation;
+
 import android.content.Context;
+import android.util.Log;
 
 import com.pj3.*;
 import com.pj3.pos_manager.res_obj.*;
@@ -115,8 +117,10 @@ public class OrderRouter extends ServerResource {
 			JSONObject 			jsonObj  = jsonRep.getJsonObject();
 			String tableId = jsonObj.getString("t_id");
 			JSONArray foodArray = jsonObj.getJSONArray("f_array");
+			String tableCount = jsonObj.getString("count");
 			
 			Order order = new Order();
+			order.setCount(Integer.parseInt(tableCount));
 			order.setTableId(Integer.parseInt(tableId));
 			FoodTemprary x = new FoodTemprary();
 			List<FoodTemprary> listOfFood = new ArrayList<FoodTemprary>();
@@ -125,6 +129,7 @@ public class OrderRouter extends ServerResource {
 				String fid = foodArray.getJSONObject(i).getString("f_id");
 				x.setFoodId(Integer.parseInt(fid));
 				String count = foodArray.getJSONObject(i).getString("f_count");
+				Log.e("dem", ""+count);
 				x.setCount(Integer.parseInt(count));
 				String note = foodArray.getJSONObject(i).getString("f_note");
 				x.setNote(note);	

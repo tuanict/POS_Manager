@@ -76,7 +76,7 @@
                         <ListView
                             android:id="@+id/tbfoods"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="125dp"
                             android:layout_alignRight="@+id/tableRow2"
                             android:layout_alignTop="@+id/title2"
                             android:layout_marginLeft="40dp"
